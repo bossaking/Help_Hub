@@ -42,9 +42,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
         signUpButton = findViewById(R.id.registration_button);
 
+        //Gdy naciskamy przycisk rejestracji
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String email = mEmail.getText().toString().trim();
                 String password = mPassword.getText().toString().trim();
 
@@ -52,7 +54,10 @@ public class RegistrationActivity extends AppCompatActivity {
                     return;
                 }
 
+                //Próbujemy zarejestrować użytkownika
                 firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+                    //Jeżeli udało się
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
@@ -63,6 +68,8 @@ public class RegistrationActivity extends AppCompatActivity {
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
+
+                    //Jeżeli się nie udało
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(RegistrationActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();

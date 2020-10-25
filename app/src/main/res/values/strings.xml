@@ -6,6 +6,6 @@
     <string name="email_hint">E-mail</string>
     <string name="password_hint">Password</string>
     <string name="repeat_password_hint">Repeat password</string>
-    <string name="registration_button">Sign up</string>
+    <string name="registration_button" translatable="false">Sign up</string>
 
 </resources>

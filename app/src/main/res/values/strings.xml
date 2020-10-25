@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Help_Hub</string>
+
+    <!--REGISTRATION ACTIVITY-->
+    <string name="registration_header">Registration</string>
+    <string name="email_hint">E-mail</string>
+    <string name="password_hint">Password</string>
+    <string name="repeat_password_hint">Repeat password</string>
+    <string name="registration_button">Sign up</string>
+
 </resources>

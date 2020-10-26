@@ -11,6 +11,8 @@ h
 8app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml,6\e\6ec7d34b130497a10dc92abcde9b313d370a89df
 R
 "app/src/main/res/values/colors.xml,9\6\969faa2a5d9f5e8390e958d2c07f2cfd54676e6b
+R
+"app/src/main/res/values/styles.xml,f\7\f79cc2688e29fcbc286fda14ae07b27c9e83690f
 k
 ;app/src/test/java/com/example/help_hub/ExampleUnitTest.java,8\4\845cc9a63aad7f0f9334f4307ecd98824771b936
 >

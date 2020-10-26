@@ -41,7 +41,7 @@ public class RegistrationActivity extends AppCompatActivity {
         repeatPassword = findViewById(R.id.registration_repeat_password);
 
         signUpButton = findViewById(R.id.registration_button);
-
+        //pierwsza zmiana
         //Gdy naciskamy przycisk rejestracji
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override

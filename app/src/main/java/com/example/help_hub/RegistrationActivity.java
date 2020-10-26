@@ -42,6 +42,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
         signUpButton = findViewById(R.id.registration_button);
 
+        //komentarz test
+        //Czajnik wali konika
         //Gdy naciskamy przycisk rejestracji
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override

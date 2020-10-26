@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Help_Hub</string>
+    <string name="registration_header">Регистрация</string>
+    <string name="email_hint">Адрес E-mail</string>
+    <string name="password_hint">Пароль</string>
+    <string name="repeat_password_hint">Повторите пароль</string>
+</resources>

@@ -7,5 +7,14 @@
     <string name="password_hint">Password</string>
     <string name="repeat_password_hint">Repeat password</string>
     <string name="registration_button" translatable="false">Sign up</string>
+    <!--REGISTRATION ERRORS-->
+    <string name="email_empty_error">The field cannot be empty</string>
+    <string name="email_validate_error" translatable="false">Not valid E-mail address</string>
+    <string name="password_length_error" translatable="false">Password must contain at least 8 characters</string>
+    <string name="password_match_error" translatable="false">Passwords do not match</string>
+
+
+    <!--LOADING DIALOG-->
+    <string name="loading_dialog_title" translatable="false">Loading...</string>
 
 </resources>

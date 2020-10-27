@@ -5,4 +5,5 @@
     <string name="email_hint">E-mail</string>
     <string name="password_hint">Hasło</string>
     <string name="repeat_password_hint">Powtórz hasło</string>
+    <string name="email_empty_error">Pole nie może być puste</string>
 </resources>

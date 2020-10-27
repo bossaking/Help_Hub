@@ -13,6 +13,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCanceledListener;
@@ -21,11 +22,15 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.SignInMethodQueryResult;
+
+import java.util.List;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     EditText mEmail, mPassword, mRepeatPassword;
     Button signUpButton;
+
 
     FirebaseAuth firebaseAuth;
 
@@ -33,6 +38,14 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+        TextView goToLoginActivity = findViewById(R.id.go_to_login);
+        goToLoginActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(RegistrationActivity.this, "Login Activity", Toast.LENGTH_LONG).show();
+            }
+        });
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -114,6 +127,23 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 final LoadingDialog loadingDialog = new LoadingDialog(RegistrationActivity.this);
                 loadingDialog.StartLoadingDialog();
+
+                //Sprawdzamy, czy podany E-mail nie jest już zarejestrowany
+                firebaseAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                        if(task.isSuccessful()){
+                            List<String> methods = task.getResult().getSignInMethods();
+                            if(!methods.isEmpty()){
+                                loadingDialog.DismissDialog();
+                                mEmail.setError(getString(R.string.email_exists_error));
+                                mEmail.setBackgroundResource(R.drawable.edit_error_border);
+                                mEmail.requestFocus();
+                            }
+                        }
+                    }
+                });
+
                 //Próbujemy zarejestrować użytkownika
                 firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 
@@ -127,7 +157,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             //Zamienić przekirowanie z "Main Activity" na "User Activity"
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
-                            Toast.makeText(RegistrationActivity.this, "Error: " + task.getException(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegistrationActivity.this, "Error: " + task.getException(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -151,7 +181,7 @@ public class RegistrationActivity extends AppCompatActivity {
             return false;
         }
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             mEmail.setError(getString(R.string.email_validate_error));
             mEmail.setBackgroundResource(R.drawable.edit_error_border);
             return false;

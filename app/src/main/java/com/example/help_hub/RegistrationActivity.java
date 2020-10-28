@@ -43,16 +43,12 @@ public class RegistrationActivity extends AppCompatActivity {
         goToLoginActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(RegistrationActivity.this, "Login Activity", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
             }
         });
 
         firebaseAuth = FirebaseAuth.getInstance();
-
-        if(firebaseAuth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-        }
 
         mEmail = findViewById(R.id.registration_email);
         final Drawable defaultEditTextDrawable = mEmail.getBackground();
@@ -156,6 +152,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                             //Zamienić przekirowanie z "Main Activity" na "User Activity"
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
                         }else{
                             Toast.makeText(RegistrationActivity.this, "Error: " + task.getException(), Toast.LENGTH_SHORT).show();
                         }

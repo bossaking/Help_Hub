@@ -5,4 +5,13 @@
     <string name="email_hint">E-mail</string>
     <string name="password_hint">Hasło</string>
     <string name="repeat_password_hint">Powtórz hasło</string>
+    <string name="email_empty_error">Pole nie może być puste</string>
+    <string name="loading_dialog_title">Ładowanie...</string>
+    <string name="go_to_login_text"><u>Zaloguj się</u></string>
+    <string name="email_validate_error">Nieprawidłowy e-mail</string>
+    <string name="password_length_error">Hasło musi zawierać co najmniej 8 znaków</string>
+    <string name="email_exists_error">Użytkownik z podanym e-mail już istnieje</string>
+    <string name="have_account_question">Masz już konto?</string>
+    <string name="registration_button" translatable="false">Zarejestruj</string>
+    <string name="password_match_error">Hasła są różne</string>
 </resources>

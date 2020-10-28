@@ -6,6 +6,34 @@
     <string name="email_hint">E-mail</string>
     <string name="password_hint">Password</string>
     <string name="repeat_password_hint">Repeat password</string>
-    <string name="registration_button" translatable="false">Sign up</string>
+    <string name="registration_button">Sign up</string>
+    <string name="have_account_question">Already have an account?</string>
+    <string name="go_to_login_text"><u>Sign In</u></string>
+
+    <!--REGISTRATION ERRORS-->
+    <string name="email_empty_error">The field cannot be empty</string>
+    <string name="email_validate_error">Not valid E-mail address</string>
+    <string name="email_exists_error">User with the given e-mail already exists</string>
+    <string name="password_length_error">Password must contain at least 8 characters</string>
+    <string name="password_match_error">Passwords do not match</string>
+
+    <!--LOGIN ACTIVITY-->
+    <string name="login_title" translatable="false">Login</string>
+    <string name="login_button" translatable="false">Sign In</string>
+    <string name="no_account_question" translatable="false">Not registered yet?</string>
+    <string name="go_to_registration_text" translatable="false"><u>Sign Up</u></string>
+    <string name="forgot_password_question" translatable="false">Forgot password?</string>
+
+    <!--LOGIN ERRORS-->
+    <string name="login_error" translatable="false">Invalid e-mail address or password</string>
+
+    <!--LOADING DIALOG-->
+    <string name="loading_dialog_title">Loading...</string>
+
+    <!--RESET PASSWORD DIALOG-->
+    <string name="reset_password_title" translatable="false">Reset password</string>
+    <string name="reset_password_message" translatable="false">Enter your e-mail address</string>
+    <string name="reset_positive_button" translatable="false">Reset</string>
+
 
 </resources>

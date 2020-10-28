@@ -44,3 +44,7 @@ p
 @app/src/main/java/com/example/help_hub/RegistrationActivity.java,6\4\64d5dcceeb09cba3b787833c55b1efca92d27859
 i
 9app/src/main/java/com/example/help_hub/LoginActivity.java,c\3\c3cb5f4a715f1aa121a1312d4f11eae6b8901f34
+i
+9app/src/main/java/com/example/help_hub/LoadingDialog.java,c\f\cf2ba998e17f7a361d80ee792268812e7819a0a8
+o
+?app/src/main/java/com/example/help_hub/ResetPasswordDialog.java,8\c\8cac4f191976d473ea38fbb0974a133df9ab3cd6

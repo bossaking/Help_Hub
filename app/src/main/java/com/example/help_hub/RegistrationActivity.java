@@ -151,7 +151,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             loadingDialog.DismissDialog();
 
                             //Zamienić przekirowanie z "Main Activity" na "User Activity"
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            startActivity(new Intent(getApplicationContext(), NewUserBasicInformationsActivity.class));
                             finish();
                         }else{
                             Toast.makeText(RegistrationActivity.this, "Error: " + task.getException(), Toast.LENGTH_SHORT).show();

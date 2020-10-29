@@ -1,16 +1,0 @@
-
-
-java:S1186n"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(«û³±8‹ıüıÖ.
-n
-java:S1128"LRemove this unused import 'com.google.android.gms.tasks.OnCanceledListener'.(‹¥Õşÿÿÿÿ8º¶íıÖ.
-I
-java:S1659",Declare "loginErrorSpan" on a separate line.(Á’”8µ½µıÖ.
-j	java:S100~"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Å®Ñ¡8€ç†şÖ.
-
-java:S1186z"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(±¾ê8‹ıüıÖ.
-I
-java:S1659",Declare "forgotPassword" on a separate line.(Á’”8×ÔÒÿÖ.
-]	java:S110"<This class has 9 parents which is greater than 5 authorized.(¡Îåàıÿÿÿÿ8™ÄÀˆ×.
-I
-java:S1659"'Declare "mPassword" on a separate line.(Í¶ˆÁúÿÿÿÿ8ÁÌ‡ıÖ.
-p	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(À°°ùùÿÿÿÿ8¥ˆ‹şÖ.

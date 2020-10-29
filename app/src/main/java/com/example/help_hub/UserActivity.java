@@ -33,7 +33,7 @@ public class UserActivity extends AppCompatActivity {
                 gallery.setType("image/*");
                 gallery.setAction(Intent.ACTION_GET_CONTENT);
 
-                startActivityForResult(Intent.createChooser(gallery, "Sellect Picture"), PICK_IMAGE);
+                startActivityForResult(Intent.createChooser(gallery, "Select Picture"), PICK_IMAGE);
             }
         });
 
@@ -47,6 +47,7 @@ public class UserActivity extends AppCompatActivity {
         });
     }
 
+    //Zmiana zdjęcia
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

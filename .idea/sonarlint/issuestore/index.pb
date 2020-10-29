@@ -9,10 +9,6 @@ b
 2app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml,8\e\8e27ba16c655f421171956147d0fde89b7d25d17
 h
 8app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml,6\e\6ec7d34b130497a10dc92abcde9b313d370a89df
-R
-"app/src/main/res/values/colors.xml,9\6\969faa2a5d9f5e8390e958d2c07f2cfd54676e6b
-R
-"app/src/main/res/values/styles.xml,f\7\f79cc2688e29fcbc286fda14ae07b27c9e83690f
 k
 ;app/src/test/java/com/example/help_hub/ExampleUnitTest.java,8\4\845cc9a63aad7f0f9334f4307ecd98824771b936
 >
@@ -46,3 +42,11 @@ p
 @app/src/main/java/com/example/help_hub/RegistrationActivity.java,6\4\64d5dcceeb09cba3b787833c55b1efca92d27859
 i
 9app/src/main/java/com/example/help_hub/LoginActivity.java,c\3\c3cb5f4a715f1aa121a1312d4f11eae6b8901f34
+i
+9app/src/main/java/com/example/help_hub/LoadingDialog.java,c\f\cf2ba998e17f7a361d80ee792268812e7819a0a8
+o
+?app/src/main/java/com/example/help_hub/ResetPasswordDialog.java,8\c\8cac4f191976d473ea38fbb0974a133df9ab3cd6
+|
+Lapp/src/main/java/com/example/help_hub/NewUserBasicInformationsActivity.java,0\d\0db6681820676c986cdef97aaf7897c37babf889
+h
+8app/src/main/java/com/example/help_hub/UserActivity.java,1\b\1b94361cb52bd292049a96c9ef3643b18608f0e2

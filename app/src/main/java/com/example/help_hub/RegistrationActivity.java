@@ -4,10 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCanceledListener;
@@ -16,11 +22,15 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.SignInMethodQueryResult;
+
+import java.util.List;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    EditText mEmail, mPassword, repeatPassword;
+    EditText mEmail, mPassword, mRepeatPassword;
     Button signUpButton;
+
 
     FirebaseAuth firebaseAuth;
 
@@ -29,16 +39,72 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        TextView goToLoginActivity = findViewById(R.id.go_to_login);
+        goToLoginActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
+            }
+        });
+
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if(firebaseAuth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-        }
-
         mEmail = findViewById(R.id.registration_email);
+        final Drawable defaultEditTextDrawable = mEmail.getBackground();
+
+        mEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mEmail.setBackground(defaultEditTextDrawable);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         mPassword = findViewById(R.id.registration_password);
-        repeatPassword = findViewById(R.id.registration_repeat_password);
+        mPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mPassword.setBackground(defaultEditTextDrawable);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mRepeatPassword = findViewById(R.id.registration_repeat_password);
+        mRepeatPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mRepeatPassword.setBackground(defaultEditTextDrawable);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         signUpButton = findViewById(R.id.registration_button);
 
@@ -49,10 +115,30 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 String email = mEmail.getText().toString().trim();
                 String password = mPassword.getText().toString().trim();
+                String repeatPassword = mRepeatPassword.getText().toString().trim();
 
-                if(email.isEmpty() || password.isEmpty()){
+                if(!ValidateEmail(email) || !ValidatePassword(password, repeatPassword)) {
                     return;
                 }
+
+                final LoadingDialog loadingDialog = new LoadingDialog(RegistrationActivity.this);
+                loadingDialog.StartLoadingDialog();
+
+                //Sprawdzamy, czy podany E-mail nie jest już zarejestrowany
+                firebaseAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                        if(task.isSuccessful()){
+                            List<String> methods = task.getResult().getSignInMethods();
+                            if(!methods.isEmpty()){
+                                loadingDialog.DismissDialog();
+                                mEmail.setError(getString(R.string.email_exists_error));
+                                mEmail.setBackgroundResource(R.drawable.edit_error_border);
+                                mEmail.requestFocus();
+                            }
+                        }
+                    }
+                });
 
                 //Próbujemy zarejestrować użytkownika
                 firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -62,9 +148,13 @@ public class RegistrationActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(RegistrationActivity.this, "User created", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            loadingDialog.DismissDialog();
+
+                            //Zamienić przekirowanie z "Main Activity" na "User Activity"
+                            startActivity(new Intent(getApplicationContext(), NewUserBasicInformationsActivity.class));
+                            finish();
                         }else{
-                            Toast.makeText(RegistrationActivity.this, "Error: " + task.getException(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegistrationActivity.this, "Error: " + task.getException(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -77,5 +167,40 @@ public class RegistrationActivity extends AppCompatActivity {
                 });
             }
         });
+
+    }
+
+    private boolean ValidateEmail(String email){
+
+        if(email.isEmpty()){
+            mEmail.setError(getString(R.string.email_empty_error));
+            mEmail.setBackgroundResource(R.drawable.edit_error_border);
+            return false;
+        }
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            mEmail.setError(getString(R.string.email_validate_error));
+            mEmail.setBackgroundResource(R.drawable.edit_error_border);
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean ValidatePassword(String password, String repeatPassword){
+
+        if(password.length() < 8){
+            mPassword.setError(getString(R.string.password_length_error));
+            mPassword.setBackgroundResource(R.drawable.edit_error_border);
+            return false;
+        }
+
+        if(!password.equals(repeatPassword)){
+            mRepeatPassword.setError(getString(R.string.password_match_error));
+            mRepeatPassword.setBackgroundResource(R.drawable.edit_error_border);
+            return false;
+        }
+
+        return  true;
     }
 }

@@ -50,3 +50,5 @@ o
 Lapp/src/main/java/com/example/help_hub/NewUserBasicInformationsActivity.java,0\d\0db6681820676c986cdef97aaf7897c37babf889
 h
 8app/src/main/java/com/example/help_hub/UserActivity.java,1\b\1b94361cb52bd292049a96c9ef3643b18608f0e2
+j
+:app/src/main/java/com/example/help_hub/UserDataChange.java,a\6\a6ed960e1a71f5d668ce48ae1844f6790bc9d84e

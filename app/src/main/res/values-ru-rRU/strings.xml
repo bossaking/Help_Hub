@@ -18,8 +18,7 @@
     <string name="new_user_user_name">Имя пользователя</string>
     <string name="new_user_phone_number">Телефонный номер</string>
     <string name="new_user_city">город</string>
-    <string name="user_data_change_old_password">Прежний пароль</string>
-    <string name="user_data_change_new_password">Новый пароль</string>
     <string name="save_button">Сохранить</string>
     <string name="edit_button">редактировать</string>
+    <string name="user_data_change_new_password_button">Сменить пароль</string>
 </resources>

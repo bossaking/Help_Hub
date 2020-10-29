@@ -14,29 +14,13 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <EditText
-            android:id="@+id/user_data_change_old_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/user_data_change_old_password"
-            android:layout_marginHorizontal="10sp"
-            android:inputType="textPassword"/>
-
-        <EditText
-            android:id="@+id/user_data_change_new_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/user_data_change_new_password"
-            android:layout_marginHorizontal="10sp"
-            android:inputType="textPassword"/>
-
         <Button
-            android:id="@+id/user_data_change_save_button"
+            android:id="@+id/user_data_change_new_password_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20sp"
-            android:text="@string/save_button"/>
+            android:text="@string/user_data_change_new_password_button"/>
 
     </LinearLayout>
 

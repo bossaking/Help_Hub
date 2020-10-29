@@ -18,8 +18,7 @@
     <string name="new_user_user_name">Nazwa użytkownika</string>
     <string name="new_user_phone_number">Numer telefonu</string>
     <string name="new_user_city">Miasto</string>
-    <string name="user_data_change_old_password">Stare hasło</string>
-    <string name="user_data_change_new_password">Nowe hasło</string>
     <string name="save_button">Zapisz</string>
     <string name="edit_button">Edytuj</string>
+    <string name="user_data_change_new_password_button">Zmień hasło</string>
 </resources>

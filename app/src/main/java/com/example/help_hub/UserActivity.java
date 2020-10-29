@@ -27,6 +27,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageOptions;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.IOException;
 
@@ -47,6 +50,7 @@ public class UserActivity extends AppCompatActivity {
     StorageReference storageReference;
 
     String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,16 +68,11 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent galleryIntent;
-
-                try{
-                    galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                }catch(Exception e){
-                    galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                }
 
 
-                startActivityForResult(galleryIntent, PICK_IMAGE);
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON).setCropShape(CropImageView.CropShape.OVAL)
+                        .start(UserActivity.this);
             }
         });
 
@@ -81,7 +80,7 @@ public class UserActivity extends AppCompatActivity {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),UserDataChange.class);
+                Intent intent = new Intent(getApplicationContext(), UserDataChange.class);
                 startActivity(intent);
             }
         });
@@ -100,16 +99,22 @@ public class UserActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         loadingDialog.StartLoadingDialog();
 
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
-            imageUri = data.getData();
-            SetProfileImage(imageUri);
-            UploadImageToDatabase(imageUri);
-        }else{
-            loadingDialog.DismissDialog();
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                SetProfileImage(resultUri);
+                UploadImageToDatabase(resultUri);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                loadingDialog.DismissDialog();
+            } else {
+                loadingDialog.DismissDialog();
+            }
         }
     }
 
-    private void GetUserInformation(){
+    private void GetUserInformation() {
 
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
@@ -138,11 +143,11 @@ public class UserActivity extends AppCompatActivity {
 
     }
 
-    private void SetProfileImage(Uri imageUri){
+    private void SetProfileImage(Uri imageUri) {
         Picasso.get().load(imageUri).into(profileImage);
     }
 
-    private void UploadImageToDatabase(Uri imageUri){
+    private void UploadImageToDatabase(Uri imageUri) {
         StorageReference fileRef = storageReference.child("users/" + userId + "/profile.jpg");
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override

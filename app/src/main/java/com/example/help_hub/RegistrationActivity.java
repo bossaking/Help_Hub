@@ -26,11 +26,12 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 
 import java.util.List;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity implements TextWatcher {
 
     EditText mEmail, mPassword, mRepeatPassword;
     Button signUpButton;
 
+    Drawable defaultEditTextDrawable;
 
     FirebaseAuth firebaseAuth;
 
@@ -51,60 +52,15 @@ public class RegistrationActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         mEmail = findViewById(R.id.registration_email);
-        final Drawable defaultEditTextDrawable = mEmail.getBackground();
+        defaultEditTextDrawable = mEmail.getBackground();
 
-        mEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mEmail.setBackground(defaultEditTextDrawable);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+        mEmail.addTextChangedListener(this);
 
         mPassword = findViewById(R.id.registration_password);
-        mPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mPassword.setBackground(defaultEditTextDrawable);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+        mPassword.addTextChangedListener(this);
 
         mRepeatPassword = findViewById(R.id.registration_repeat_password);
-        mRepeatPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mRepeatPassword.setBackground(defaultEditTextDrawable);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+        mRepeatPassword.addTextChangedListener(this);
 
         signUpButton = findViewById(R.id.registration_button);
 
@@ -113,8 +69,8 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String email = mEmail.getText().toString().trim();
-                String password = mPassword.getText().toString().trim();
+                final String email = mEmail.getText().toString().trim();
+                final String password = mPassword.getText().toString().trim();
                 String repeatPassword = mRepeatPassword.getText().toString().trim();
 
                 if(!ValidateEmail(email) || !ValidatePassword(password, repeatPassword)) {
@@ -131,38 +87,18 @@ public class RegistrationActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             List<String> methods = task.getResult().getSignInMethods();
                             if(!methods.isEmpty()){
-                                loadingDialog.DismissDialog();
+
                                 mEmail.setError(getString(R.string.email_exists_error));
                                 mEmail.setBackgroundResource(R.drawable.edit_error_border);
                                 mEmail.requestFocus();
+                            }else{
+                                Intent intent = new Intent(getApplicationContext(), NewUserBasicInformationsActivity.class);
+                                intent.putExtra("USER_EMAIL", email);
+                                intent.putExtra("USER_PASSWORD", password);
+                                startActivity(intent);
                             }
                         }
-                    }
-                });
-
-                //Próbujemy zarejestrować użytkownika
-                firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-
-                    //Jeżeli udało się
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(RegistrationActivity.this, "User created", Toast.LENGTH_SHORT).show();
-                            loadingDialog.DismissDialog();
-
-                            //Zamienić przekirowanie z "Main Activity" na "User Activity"
-                            startActivity(new Intent(getApplicationContext(), NewUserBasicInformationsActivity.class));
-                            finish();
-                        }else{
-                            Toast.makeText(RegistrationActivity.this, "Error: " + task.getException(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-
-                    //Jeżeli się nie udało
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(RegistrationActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        loadingDialog.DismissDialog();
                     }
                 });
             }
@@ -202,5 +138,22 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
         return  true;
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        mRepeatPassword.setBackground(defaultEditTextDrawable);
+        mPassword.setBackground(defaultEditTextDrawable);
+        mEmail.setBackground(defaultEditTextDrawable);
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 }

@@ -41,6 +41,10 @@
     <string name="new_user_phone_number">Phone number</string>
     <string name="new_user_city">City</string>
 
+    <!--EMPTY FIELD ERROR-->
+    <string name="empty_field_error" translatable="false">The field cannot be empty</string>
+
+
     <!-- SAVE AND EDIT BUTTONS-->
     <string name="edit_button">Edit</string>
     <string name="save_button">Save</string>

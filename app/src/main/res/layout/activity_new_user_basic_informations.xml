@@ -21,21 +21,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/new_user_user_name"
-            android:layout_marginHorizontal="10sp"/>
+            android:layout_marginHorizontal="10sp"
+            android:inputType="textPersonName"/>
 
         <EditText
             android:id="@+id/new_user_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/new_user_phone_number"
-            android:layout_marginHorizontal="10sp"/>
+            android:layout_marginHorizontal="10sp"
+            android:inputType="phone"/>
 
         <EditText
             android:id="@+id/new_user_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/new_user_city"
-            android:layout_marginHorizontal="10sp"/>
+            android:layout_marginHorizontal="10sp"
+            android:inputType="textShortMessage"/>
 
         <Button
             android:id="@+id/new_user_save_button"

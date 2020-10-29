@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button logoutButton;
     TextView userIdText;
+    Button profileButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         logoutButton = findViewById(R.id.logout_button);
         userIdText = findViewById(R.id.user_id_text);
+        profileButton = findViewById(R.id.profile_button);
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         userIdText.setText(firebaseAuth.getUid());
@@ -34,5 +36,15 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),UserActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
+
 }

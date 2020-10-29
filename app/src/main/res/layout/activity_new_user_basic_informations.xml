@@ -16,35 +16,39 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Wprowadź niezbędne dane"
+            android:text="@string/new_user_header"
             android:textAlignment="center"
             android:layout_margin="20sp"
             android:textSize="25sp"/>
 
         <EditText
+            android:id="@+id/new_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nazwa użytkownika"
+            android:hint="@string/new_user_user_name"
             android:layout_marginHorizontal="10sp"/>
 
         <EditText
+            android:id="@+id/new_user_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Numer telefonu"
+            android:hint="@string/new_user_phone_number"
             android:layout_marginHorizontal="10sp"/>
 
         <EditText
+            android:id="@+id/new_user_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Miasto"
+            android:hint="@string/new_user_city"
             android:layout_marginHorizontal="10sp"/>
 
         <Button
+            android:id="@+id/new_user_save_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20sp"
-            android:text="Zapisz"/>
+            android:text="@string/save_button"/>
 
     </LinearLayout>
 

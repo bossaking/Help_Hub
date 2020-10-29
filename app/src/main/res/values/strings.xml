@@ -35,5 +35,18 @@
     <string name="reset_password_message" translatable="false">Enter your e-mail address</string>
     <string name="reset_positive_button" translatable="false">Reset</string>
 
+    <!-- NEW USER BASIC INFORMATIONS ACTIVITY-->
+    <string name="new_user_header">Input necessary data</string>
+    <string name="new_user_user_name">User name</string>
+    <string name="new_user_phone_number">Phone number</string>
+    <string name="new_user_city">City</string>
+
+    <!-- SAVE AND EDIT BUTTONS-->
+    <string name="edit_button">Edit</string>
+    <string name="save_button">Save</string>
+
+    <!-- USER DATA CHANGE-->
+    <string name="user_data_change_old_password">Old password</string>
+    <string name="user_data_change_new_password">New password</string>
 
 </resources>

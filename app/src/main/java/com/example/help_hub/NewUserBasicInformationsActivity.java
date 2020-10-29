@@ -133,7 +133,7 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
             //Jeżeli się nie udało
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(NewUserBasicInformationsActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(NewUserBasicInformationsActivity.this, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                 loadingDialog.DismissDialog();
             }
         });
@@ -162,7 +162,7 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         });
 

@@ -35,6 +35,11 @@
     <string name="reset_password_message" translatable="false">Enter your e-mail address</string>
     <string name="reset_positive_button" translatable="false">Reset</string>
 
+    <!--Change PASSWORD DIALOG-->
+    <string name="change_password_title" translatable="false">Change password</string>
+    <string name="change_password_message" translatable="false">Enter your old password</string>
+    <string name="change_positive_button" translatable="false">Change</string>
+
     <!-- NEW USER BASIC INFORMATIONS ACTIVITY-->
     <string name="new_user_header">Input necessary data</string>
     <string name="new_user_user_name">User name</string>

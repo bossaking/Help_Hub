@@ -9,3 +9,13 @@ h
 8app/src/main/java/com/example/help_hub/UserActivity.java,1\b\1b94361cb52bd292049a96c9ef3643b18608f0e2
 i
 9app/src/main/java/com/example/help_hub/LoginActivity.java,c\3\c3cb5f4a715f1aa121a1312d4f11eae6b8901f34
+<
+build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
+h
+8app/src/main/java/com/example/help_hub/MainActivity.java,2\a\2ae92c7daf77ca742d0fe27065be8dbb4a721c6f
+j
+:app/src/main/java/com/example/help_hub/UserDataChange.java,a\6\a6ed960e1a71f5d668ce48ae1844f6790bc9d84e
+o
+?app/src/main/java/com/example/help_hub/ResetPasswordDialog.java,8\c\8cac4f191976d473ea38fbb0974a133df9ab3cd6
+p
+@app/src/main/java/com/example/help_hub/ChangePasswordDialog.java,d\c\dc1f0314aed431aeba12c77de572fc34a6ca179c

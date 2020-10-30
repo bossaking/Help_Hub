@@ -78,6 +78,7 @@ public class ResetPasswordDialog implements TextWatcher {
 
     private boolean ValidateEmail(String email){
 
+
         if(email.isEmpty()){
             mEmail.setError(myActivity.getString(R.string.email_empty_error));
             mEmail.setBackgroundResource(R.drawable.edit_error_border);

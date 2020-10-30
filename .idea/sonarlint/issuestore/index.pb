@@ -7,3 +7,15 @@ Lapp/src/main/java/com/example/help_hub/NewUserBasicInformationsActivity.java,0
 app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 h
 8app/src/main/java/com/example/help_hub/UserActivity.java,1\b\1b94361cb52bd292049a96c9ef3643b18608f0e2
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+h
+8app/src/main/java/com/example/help_hub/ImageAdapter.java,4\5\45537dae2e56b52a73d253dbaa45c202f96639d6
+q
+Aapp/src/main/java/com/example/help_hub/User_Profile_Fragment.java,7\c\7cc828da03ea465d24370d58dd07999ae68571f0
+i
+9app/src/main/java/com/example/help_hub/LoginActivity.java,c\3\c3cb5f4a715f1aa121a1312d4f11eae6b8901f34
+o
+?app/src/main/java/com/example/help_hub/ResetPasswordDialog.java,8\c\8cac4f191976d473ea38fbb0974a133df9ab3cd6
+j
+:app/src/main/java/com/example/help_hub/UserDataChange.java,a\6\a6ed960e1a71f5d668ce48ae1844f6790bc9d84e

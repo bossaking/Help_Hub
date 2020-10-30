@@ -3,7 +3,7 @@
 
     <!--REGISTRATION ACTIVITY-->
     <string name="registration_header">Registration</string>
-    <string name="email_hint">E-mail</string>
+    <string name="email_hint">E-mail adress</string>
     <string name="password_hint">Password</string>
     <string name="repeat_password_hint">Repeat password</string>
     <string name="registration_button">Sign up</string>

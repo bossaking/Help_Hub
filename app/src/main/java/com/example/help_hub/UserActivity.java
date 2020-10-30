@@ -51,18 +51,17 @@ public class UserActivity extends AppCompatActivity {
     List<Uri> userPortfolioPhotos;
     ClipData clipData;
 
+    User_Profile_Fragment user_profile_fragment;
+    User_Portfolio_Photos_Fragment user_portfolio_photos_fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
         fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.user_fragment_container);
 
-        if(fragment == null){
-            fragment = new User_Profile_Fragment();
-            fragmentManager.beginTransaction().add(R.id.user_fragment_container, fragment).commit();
-        }
+        ShowUserProfile();
 
         userPortfolioPhotos = new ArrayList<>();
         userPortfolioPhotos.add(Uri.parse("android.resource://" + getPackageName() + "/drawable/add_a_photo_24"));
@@ -80,10 +79,31 @@ public class UserActivity extends AppCompatActivity {
                 }
             }
         }
-        
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.user_fragment_container);
         fragment.onActivityResult(requestCode, resultCode, data);
     }
 
+    public void ShowAllPortfolioPhotos(){
+        if(user_portfolio_photos_fragment == null){
+            user_portfolio_photos_fragment = new User_Portfolio_Photos_Fragment();
+        }
+        fragmentManager.beginTransaction().replace(R.id.user_fragment_container, user_portfolio_photos_fragment).commit();
+    }
 
+    public void ShowUserProfile(){
+        if(userFragment == null){
+            userFragment = new User_Profile_Fragment();
+        }
+        fragmentManager.beginTransaction().replace(R.id.user_fragment_container, userFragment).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(fragmentManager.findFragmentById(R.id.user_fragment_container) instanceof User_Portfolio_Photos_Fragment){
+            ShowUserProfile();
+        }else{
+            super.onBackPressed();
+        }
+    }
 }

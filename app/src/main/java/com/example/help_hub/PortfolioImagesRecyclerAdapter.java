@@ -1,0 +1,87 @@
+package com.example.help_hub;
+
+import android.net.Uri;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+
+import java.util.List;
+
+public class PortfolioImagesRecyclerAdapter extends RecyclerView.Adapter {
+
+
+    public interface OnClickListener{
+        void onImageClick(int position);
+    }
+    public interface  OnLongClickListener{
+        void onImageLongClick(int position);
+    }
+
+
+    private List<Uri> images;
+    private OnClickListener onClickListener;
+    private OnLongClickListener onLongClickListener;
+
+    public static class AdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+
+        public ImageView imageView;
+        OnClickListener onClickListener;
+        OnLongClickListener onLongClickListener;
+
+        public AdapterViewHolder(@NonNull View itemView, OnClickListener onClickListener, OnLongClickListener onLongClickListener) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.portfolio_image);
+            this.onClickListener = onClickListener;
+            this.onLongClickListener = onLongClickListener;
+            imageView.setOnClickListener(this);
+            imageView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onClickListener.onImageClick(getAdapterPosition());
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            onLongClickListener.onImageLongClick(getAdapterPosition());
+            return true;
+        }
+    }
+
+    public PortfolioImagesRecyclerAdapter(List<Uri> images, OnClickListener onClickListener, OnLongClickListener onLongClickListener){
+        this.images = images;
+        this.onClickListener = onClickListener;
+        this.onLongClickListener = onLongClickListener;
+    }
+
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.portfolio_image_card, parent, false);
+        AdapterViewHolder adapterViewHolder = new AdapterViewHolder(view, onClickListener, onLongClickListener);
+        return adapterViewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Uri currentUri = images.get(position);
+        ImageView imageView = ((AdapterViewHolder)holder).imageView;
+        if(position < getItemCount() - 1){
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        }
+        Glide.with(holder.itemView).load(currentUri).placeholder(R.drawable.base_image_24).into(imageView);
+    }
+
+    @Override
+    public int getItemCount() {
+        return images.size();
+    }
+}

@@ -1,0 +1,35 @@
+
+V
+java:S1659-"4Declare "showAllPortfolioPhotos" on a separate line.(‰Êïüÿÿÿÿ8ºôÇ²×.
+W
+java:S1128"5Remove this unused import 'android.content.ClipData'.(°ú‚üÿÿÿÿ8Ç²™´×.
+F
+java:S16591")Declare "secondImage" on a separate line.(ÓãËÉ8ºôÇ²×.
+P
+java:S1659-".Declare "mUserPhoneNumber" on a separate line.(‰Êïüÿÿÿÿ8ºôÇ²×.
+E
+java:S16591"(Declare "firstImage" on a separate line.(ÓãËÉ8ºôÇ²×.
+D
+java:S1185@"(Remove this method to simply inherit it.(¥Ë©8ÛäÀ²×.
+b	java:S101)"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(“ ëÑ
+M
+java:S1128"0Remove this unused import 'android.media.Image'.(ëïøÂ8İÄš´×.
+I
+java:S1659-"'Declare "mUserCity" on a separate line.(‰Êïüÿÿÿÿ8ºôÇ²×.
+\
+java:S1854‡"9Remove this useless assignment to local variable "error".(Èÿ‚ûúÿÿÿÿ8µßõ²×.
+p	java:S100—"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¤†÷Âıÿÿÿÿ8ıë¾´×.
+X	java:S1252"<This block of commented-out lines of code should be removed.(åò™ˆ8´º—µ×.
+M
+java:S1481‡"*Remove this unused "error" local variable.(Èÿ‚ûúÿÿÿÿ8µßõ²×.
+e
+java:S2259«"GA "NullPointerException" could be thrown; "imageView" is nullable here.(°¯èù8Èº¸µ×.
+q
+java:S2259Ä"NA "NullPointerException" could be thrown; "documentSnapshot" is nullable here.(ŸäğŸÿÿÿÿÿ8˜«°´×.
+p	java:S100½"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÍÄÌóüÿÿÿÿ8˜«°´×.
+E
+java:S16591"(Declare "thirdImage" on a separate line.(ÓãËÉ8ºôÇ²×.
+U
+java:S1659-"3Declare "addNextPortfolioPhoto" on a separate line.(‰Êïüÿÿÿÿ8ºôÇ²×.
+k	java:S100Ü"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(äÃÈ8˜«°´×.
+p	java:S100à"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ò®äúÿÿÿÿ8˜«°´×.

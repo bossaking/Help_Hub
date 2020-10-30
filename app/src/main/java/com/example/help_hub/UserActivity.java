@@ -3,7 +3,11 @@ package com.example.help_hub;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -11,7 +15,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,136 +39,71 @@ import com.theartofdev.edmodo.cropper.CropImageOptions;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserActivity extends AppCompatActivity {
 
-    Button editButton;
 
-    TextView mUserName, mUserPhoneNumber, mUserCity;
+    FragmentManager fragmentManager;
+    Fragment userFragment;
 
-    private ImageView profileImage;
-    private static final int PICK_IMAGE = 10;
-    Uri imageUri;
+    List<Uri> userPortfolioPhotos;
+    ClipData clipData;
 
-    LoadingDialog loadingDialog;
-
-    FirebaseAuth firebaseAuth;
-    FirebaseFirestore firebaseFirestore;
-    StorageReference storageReference;
-
-    String userId;
+    User_Profile_Fragment user_profile_fragment;
+    User_Portfolio_Photos_Fragment user_portfolio_photos_fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        storageReference = FirebaseStorage.getInstance().getReference();
+        fragmentManager = getSupportFragmentManager();
 
-        loadingDialog = new LoadingDialog(this);
-        loadingDialog.StartLoadingDialog();
+        ShowUserProfile();
 
-        profileImage = (ImageView) findViewById(R.id.Profile_Image);
-        profileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-
-                CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON).setCropShape(CropImageView.CropShape.OVAL)
-                        .start(UserActivity.this);
-            }
-        });
-
-        editButton = findViewById(R.id.user_edit_button);
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UserDataChange.class);
-                startActivity(intent);
-            }
-        });
-
-        mUserPhoneNumber = findViewById(R.id.user_phone_number);
-        mUserName = findViewById(R.id.user_name);
-        mUserCity = findViewById(R.id.user_city);
-        userId = firebaseAuth.getUid();
-        GetUserInformation();
-
+        userPortfolioPhotos = new ArrayList<>();
+        userPortfolioPhotos.add(Uri.parse("android.resource://" + getPackageName() + "/drawable/add_a_photo_24"));
     }
-
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        loadingDialog.StartLoadingDialog();
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-                SetProfileImage(resultUri);
-                UploadImageToDatabase(resultUri);
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-                loadingDialog.DismissDialog();
-            } else {
-                loadingDialog.DismissDialog();
+        if(requestCode == 100 && resultCode == RESULT_OK){
+            ClipData clipData = data.getClipData();
+            if(clipData != null){
+                for(int i = 0; i < clipData.getItemCount(); i++){
+                    userPortfolioPhotos.add(userPortfolioPhotos.size() - 1, clipData.getItemAt(i).getUri());
+                }
             }
         }
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.user_fragment_container);
+        fragment.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void GetUserInformation() {
-
-        DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                mUserName.setText(documentSnapshot.getString("Name"));
-                mUserPhoneNumber.setText(documentSnapshot.getString("Phone number"));
-                mUserCity.setText(documentSnapshot.getString("City"));
-            }
-        });
-
-        StorageReference profileRef = storageReference.child("users/" + userId + "/profile.jpg");
-        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                SetProfileImage(uri);
-                loadingDialog.DismissDialog();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                loadingDialog.DismissDialog();
-            }
-        });
-
+    public void ShowAllPortfolioPhotos(){
+        if(user_portfolio_photos_fragment == null){
+            user_portfolio_photos_fragment = new User_Portfolio_Photos_Fragment();
+        }
+        fragmentManager.beginTransaction().replace(R.id.user_fragment_container, user_portfolio_photos_fragment).commit();
     }
 
-    private void SetProfileImage(Uri imageUri) {
-        Picasso.get().load(imageUri).into(profileImage);
+    public void ShowUserProfile(){
+        if(userFragment == null){
+            userFragment = new User_Profile_Fragment();
+        }
+        fragmentManager.beginTransaction().replace(R.id.user_fragment_container, userFragment).commit();
     }
 
-    private void UploadImageToDatabase(Uri imageUri) {
-        StorageReference fileRef = storageReference.child("users/" + userId + "/profile.jpg");
-        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(getApplicationContext(), "Photo has been loaded", Toast.LENGTH_SHORT).show();
-                loadingDialog.DismissDialog();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                loadingDialog.DismissDialog();
-            }
-        });
-    }
+    @Override
+    public void onBackPressed() {
 
+        if(fragmentManager.findFragmentById(R.id.user_fragment_container) instanceof User_Portfolio_Photos_Fragment){
+            ShowUserProfile();
+        }else{
+            super.onBackPressed();
+        }
+    }
 }

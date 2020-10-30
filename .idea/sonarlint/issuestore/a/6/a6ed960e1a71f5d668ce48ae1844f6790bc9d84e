@@ -1,6 +1,13 @@
 
+<<<<<<< HEAD
+d
+java:S1128"BRemove this unused import 'com.google.firebase.auth.FirebaseUser'.(’àíÐùÿÿÿÿ8µ¬áÊ×.
+d
+java:S1128"BRemove this unused import 'com.google.firebase.auth.FirebaseAuth'.(ÝÄðöûÿÿÿÿ8¥¤©Ë×.
+=======
 W	java:S110	"<This class has 9 parents which is greater than 5 authorized.(ò÷8”ïÌ×.
 y
 java:S1450"]Remove the "changePassword" field and declare it as a local variable in the relevant methods.(ö¬Ì8äÿšÌ×.
 P
 java:S1128".Remove this unused import 'android.view.View'.(Ø½­äþÿÿÿÿ8”ïÌ×.
+>>>>>>> Develop

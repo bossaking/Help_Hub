@@ -57,4 +57,9 @@
     <!-- USER DATA CHANGE-->
     <string name="user_data_change_new_password_button">Change password</string>
 
+    <!--USER ACTIVITY-->
+    <string name="portfolio_title" translatable="false"><u>Portfolio</u></string>
+    <string name="add_new_portfolio_photo" translatable="false">Add new photos</string>
+    <string name="show_all_portfolio_photos" translatable="false">Show all</string>
+
 </resources>

@@ -17,9 +17,12 @@ public class UserDataChange extends AppCompatActivity {
 
         changePassword = findViewById(R.id.user_data_change_new_password_button);
 
-        changePassword.setOnClickListener(v -> {
-            ChangePasswordDialog changePasswordDialog = new ChangePasswordDialog(UserDataChange.this);
-            changePasswordDialog.StartChangePasswordDialog();
+        changePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChangePasswordDialog changePasswordDialog = new ChangePasswordDialog(UserDataChange.this);
+                changePasswordDialog.StartChangePasswordDialog();
+            }
         });
     }
 }

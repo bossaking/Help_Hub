@@ -3,7 +3,7 @@
 
     <!--REGISTRATION ACTIVITY-->
     <string name="registration_header">Registration</string>
-    <string name="email_hint">E-mail</string>
+    <string name="email_hint">E-mail adress</string>
     <string name="password_hint">Password</string>
     <string name="repeat_password_hint">Repeat password</string>
     <string name="registration_button">Sign up</string>
@@ -34,6 +34,11 @@
     <string name="reset_password_title" translatable="false">Reset password</string>
     <string name="reset_password_message" translatable="false">Enter your e-mail address</string>
     <string name="reset_positive_button" translatable="false">Reset</string>
+
+    <!--Change PASSWORD DIALOG-->
+    <string name="change_password_title" translatable="false">Change password</string>
+    <string name="change_password_message" translatable="false">Enter your old password</string>
+    <string name="change_positive_button" translatable="false">Change</string>
 
     <!-- NEW USER BASIC INFORMATIONS ACTIVITY-->
     <string name="new_user_header">Input necessary data</string>

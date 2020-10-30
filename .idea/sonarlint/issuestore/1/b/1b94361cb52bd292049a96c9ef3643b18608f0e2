@@ -1,61 +1,25 @@
 
-`
-java:S1128">Remove this unused import 'androidx.cardview.widget.CardView'.(ğÒ³ãıÿÿÿÿ8ÂÎÇ²×.
-V
-java:S1128"4Remove this unused import 'android.widget.GridView'.(éĞÏ«ÿÿÿÿÿ8ƒ÷¤¯×.
-e
-java:S1128"HRemove this unused import 'com.google.firebase.firestore.EventListener'.(˜¥¨Õ8èÄÅ²×.
-U
-java:S1128"8Remove this unused import 'android.provider.MediaStore'.(ãçšş8ËÚÆ²×.
 S
-java:S1128"1Remove this unused import 'android.widget.Toast'.(©›ïÍúÿÿÿÿ8èÄÅ²×.
-Z
-java:S1128"8Remove this unused import 'android.widget.LinearLayout'.(çîšçúÿÿÿÿ8ÂÎÇ²×.
-U
-java:S1128"8Remove this unused import 'androidx.annotation.NonNull'.(ˆÛúÜ8èÄÅ²×.
-T
-java:S1128"2Remove this unused import 'android.widget.Button'.(²òıÿÿÿÿ8ÂÎÇ²×.
-e
-java:S1128#"CRemove this unused import 'com.google.firebase.storage.UploadTask'.(®ğÇıÿÿÿÿ8èÄÅ²×.
-V
-java:S1128$"9Remove this unused import 'com.squareup.picasso.Picasso'.(£œ¿×8èÄÅ²×.
-P
-java:S1128".Remove this unused import 'android.view.View'.(Ø½­äşÿÿÿÿ8ËÚÆ²×.
-i
-java:S1128&"LRemove this unused import 'com.theartofdev.edmodo.cropper.CropImageOptions'.(•Ïº8¸×¬×.
-V
-java:S1128"4Remove this unused import 'android.widget.TextView'.(„Ë‚ˆÿÿÿÿÿ8ÂÎÇ²×.
-r
-java:S1128 "URemove this unused import 'com.google.firebase.firestore.FirebaseFirestoreException'.(Å˜šÅ8èÄÅ²×.
-V
-java:S1128"9Remove this unused import 'androidx.annotation.Nullable'.(¾Èêš8èÄÅ²×.
-i
-java:S1128"LRemove this unused import 'com.google.firebase.firestore.FirebaseFirestore'.(§ä…ª8ÂÎÇ²×.
-b
-java:S1128%"ERemove this unused import 'com.theartofdev.edmodo.cropper.CropImage'.(ª¦”8ËÚÆ²×.
-m
-java:S1128"KRemove this unused import 'com.google.android.gms.tasks.OnFailureListener'.(ï¿ŞŞúÿÿÿÿ8èÄÅ²×.
-d
-java:S1128"BRemove this unused import 'com.google.firebase.auth.FirebaseAuth'.(İÄğöûÿÿÿÿ8ÂÎÇ²×.
-m
-java:S1128"KRemove this unused import 'com.google.firebase.firestore.DocumentSnapshot'.(´Ëá¿ÿÿÿÿÿ8èÄÅ²×.
-R
-java:S1128)"0Remove this unused import 'java.io.IOException'.(ªº»Úıÿÿÿÿ8Ö•«×.
-Q
-java:S1128"4Remove this unused import 'android.widget.ListView'.(Œ‰Ö×8¶ùÌ¯×.
-P
-java:S1128"4Remove this unused import 'android.graphics.Bitmap'.(¾ì8Ö•«×.
-k
-java:S1128""IRemove this unused import 'com.google.firebase.storage.StorageReference'.(é–ö†üÿÿÿÿ8ÂÎÇ²×.
-j
-java:S1128!"HRemove this unused import 'com.google.firebase.storage.FirebaseStorage'.(Ê¾ğíıÿÿÿÿ8ËÚÆ²×.
-f
-java:S1128'"IRemove this unused import 'com.theartofdev.edmodo.cropper.CropImageView'.(âÆíƒ8ËÚÆ²×.
+java:S1128"8Remove this unused import 'android.provider.MediaStore'.(ãçšş8ñ¯Å×.
+V	java:S110"<This class has 9 parents which is greater than 5 authorized.(û¼µú8ñ¯Å×.
+J
+java:S1481"*Remove this unused "error" local variable.(Èÿ‚ûúÿÿÿÿ8ñ¯Å×.
+g
+java:S1128"LRemove this unused import 'com.theartofdev.edmodo.cropper.CropImageOptions'.(•Ïº8ñ¯Å×.
+N
+java:S1128"4Remove this unused import 'android.graphics.Bitmap'.(¾ì8Ö•«×.
+B
+java:S1659"'Declare "mUserCity" on a separate line.(²íòÊ8½›¨×.
+m	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÍÄÌóüÿÿÿÿ8‡Ëª¨×.
+h	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(äÃÈ8–±¼ª×.
+I
+java:S1068".Remove this unused "PICK_IMAGE" private field.(±Ÿ¯Ô8ñ¯Å×.
+m	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ò®äúÿÿÿÿ8Š“ı©×.
 Y
-java:S1117L"<Rename "clipData" which hides the field declared at line 52.(ã²»8Ê½Œ´×.
-h
-java:S1128"KRemove this unused import 'com.google.android.gms.tasks.OnSuccessListener'.(íå¡8èÄÅ²×.
-i
-java:S1128"LRemove this unused import 'com.google.firebase.firestore.DocumentReference'.(«Ë8èÄÅ²×.
-W
-java:S1128"5Remove this unused import 'android.widget.ImageView'.(ú¯ëàüÿÿÿÿ8ÂÎÇ²×.
+java:S1854"9Remove this useless assignment to local variable "error".(Èÿ‚ûúÿÿÿÿ8ñ¯Å×.
+I
+java:S1659".Declare "mUserPhoneNumber" on a separate line.(²íòÊ8½›¨×.
+P
+java:S1128"0Remove this unused import 'java.io.IOException'.(ªº»Úıÿÿÿÿ8Ö•«×.
+n
+java:S2259"NA "NullPointerException" could be thrown; "documentSnapshot" is nullable here.(ŸäğŸÿÿÿÿÿ8€úµ¨×.

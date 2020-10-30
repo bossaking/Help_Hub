@@ -6,4 +6,12 @@
 
     <color name="red">#E70D0D</color>
     <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    
+    <color name="dark_blue">#3023AE</color>
+    <color name="purple">#C86DD7</color>
+    
+    <color name="login_form_details">#CCFFFFFF</color>
+    <color name="login_form_details_light">#1AFFFFFF</color>
+    <color name="login_form_details_medium">#66FFFFFF</color>
 </resources>

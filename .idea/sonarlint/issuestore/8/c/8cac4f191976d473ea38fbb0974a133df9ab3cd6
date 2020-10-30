@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 S
 java:S1128	"=Remove this unused import 'android.renderscript.ScriptGroup'.(Äã‹°
 —
@@ -15,3 +16,27 @@ c	java:S100%"NRename this method name to match the regular expression '^[a-z][
 c	java:S100O"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Å®Ñ¡
 H
 java:S1128"2Remove this unused import 'android.app.ActionBar'.(Åêñª
+=======
+E
+java:S1604>"(Make this anonymous inner class a lambda(žÔÐÎ8ôë—Ì×.
+J
+java:S1604C"(Make this anonymous inner class a lambda(œÁÈÌþÿÿÿÿ8ôë—Ì×.
+E
+java:S16046"(Make this anonymous inner class a lambda(ŸÏ¡Ž8ôë—Ì×.
+O
+java:S1128"2Remove this unused import 'android.app.ActionBar'.(Åêñª8ôë—Ì×.
+Z
+java:S1128	"=Remove this unused import 'android.renderscript.ScriptGroup'.(Äã‹°8ôë—Ì×.
+Z
+java:S1128"8Remove this unused import 'android.widget.LinearLayout'.(çîšçúÿÿÿÿ8ôë—Ì×.
+[
+java:S1128">Remove this unused import 'android.provider.ContactsContract'.(üç§±8ôë—Ì×.
+T
+java:S1128"2Remove this unused import 'android.widget.Button'.(²òžýÿÿÿÿ8ôë—Ì×.
+ž
+java:S1186b"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(«û³±8ôë—Ì×.
+ž
+java:S1186l"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(±¾ê8ôë—Ì×.
+j	java:S100%"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‚ûÛ8ôë—Ì×.
+j	java:S100O"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Å®Ñ¡8ôë—Ì×.
+>>>>>>> Develop

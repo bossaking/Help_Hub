@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 g
 java:S1128"LRemove this unused import 'com.google.android.gms.tasks.OnCanceledListener'.(‹¥Õþÿÿÿÿ
 —
@@ -13,3 +14,30 @@ B
 java:S1659",Declare "forgotPassword" on a separate line.(Á’”
 c	java:S100~"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Å®Ñ¡
 i	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(À°°ùùÿÿÿÿ
+=======
+I
+java:S1659",Declare "forgotPassword" on a separate line.(Á’”8âÄÝÌ×.
+J
+java:S1604@"(Make this anonymous inner class a lambda(‚’…´øÿÿÿÿ8âÄÝÌ×.
+n
+java:S1128"LRemove this unused import 'com.google.android.gms.tasks.OnCanceledListener'.(‹¥Õþÿÿÿÿ8âÄÝÌ×.
+ž
+java:S1186z"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(±¾ê8âÄÝÌ×.
+J
+java:S1604N"(Make this anonymous inner class a lambda(óÂãÚúÿÿÿÿ8âÄÝÌ×.
+J
+java:S16045"(Make this anonymous inner class a lambda(ßÅÿ´ûÿÿÿÿ8âÄÝÌ×.
+J
+java:S1604d"(Make this anonymous inner class a lambda(·òŸçùÿÿÿÿ8âÄÝÌ×.
+]	java:S110"<This class has 9 parents which is greater than 5 authorized.(¡Îåàýÿÿÿÿ8âÄÝÌ×.
+J
+java:S1604Z"(Make this anonymous inner class a lambda(œÁÈÌþÿÿÿÿ8âÄÝÌ×.
+I
+java:S1659",Declare "loginErrorSpan" on a separate line.(Á’”8âÄÝÌ×.
+ž
+java:S1186n"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(«û³±8âÄÝÌ×.
+j	java:S100~"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Å®Ñ¡8âÄÝÌ×.
+p	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(À°°ùùÿÿÿÿ8âÄÝÌ×.
+I
+java:S1659"'Declare "mPassword" on a separate line.(Í¶ˆÁúÿÿÿÿ8âÄÝÌ×.
+>>>>>>> Develop

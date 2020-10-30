@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -54,31 +56,37 @@ public class UserActivity extends AppCompatActivity {
     User_Profile_Fragment user_profile_fragment;
     User_Portfolio_Photos_Fragment user_portfolio_photos_fragment;
 
+    public Database database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
         fragmentManager = getSupportFragmentManager();
-
+        database = Database.getInstance(this);
         ShowUserProfile();
 
-        userPortfolioPhotos = new ArrayList<>();
-        userPortfolioPhotos.add(Uri.parse("android.resource://" + getPackageName() + "/drawable/add_a_photo_24"));
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 100 && resultCode == RESULT_OK){
+        if(requestCode == 100 && resultCode == Activity.RESULT_OK){
             ClipData clipData = data.getClipData();
             if(clipData != null){
                 for(int i = 0; i < clipData.getItemCount(); i++){
-                    userPortfolioPhotos.add(userPortfolioPhotos.size() - 1, clipData.getItemAt(i).getUri());
+
+                    PortfolioImage portfolioImage = new PortfolioImage(DocumentFile.fromSingleUri(getApplicationContext(), clipData.getItemAt(i).getUri()).getName(),
+                            clipData.getItemAt(i).getUri());
+
+                    database.AddNewImage(portfolioImage);
+                    database.LoadPortfolioImageToDatabase(portfolioImage);
                 }
             }
         }
+
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.user_fragment_container);
         fragment.onActivityResult(requestCode, resultCode, data);
     }

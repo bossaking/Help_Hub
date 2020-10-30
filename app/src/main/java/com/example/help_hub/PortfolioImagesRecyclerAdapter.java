@@ -24,7 +24,7 @@ public class PortfolioImagesRecyclerAdapter extends RecyclerView.Adapter {
     }
 
 
-    private List<Uri> images;
+    private List<PortfolioImage> images;
     private OnClickListener onClickListener;
     private OnLongClickListener onLongClickListener;
 
@@ -55,7 +55,7 @@ public class PortfolioImagesRecyclerAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public PortfolioImagesRecyclerAdapter(List<Uri> images, OnClickListener onClickListener, OnLongClickListener onLongClickListener){
+    public PortfolioImagesRecyclerAdapter(List<PortfolioImage> images, OnClickListener onClickListener, OnLongClickListener onLongClickListener){
         this.images = images;
         this.onClickListener = onClickListener;
         this.onLongClickListener = onLongClickListener;
@@ -72,7 +72,7 @@ public class PortfolioImagesRecyclerAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Uri currentUri = images.get(position);
+        Uri currentUri = images.get(position).getImageUri();
         ImageView imageView = ((AdapterViewHolder)holder).imageView;
         if(position < getItemCount() - 1){
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);

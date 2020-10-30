@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -57,6 +58,7 @@ public class User_Profile_Fragment extends Fragment {
     String userId;
 
     UserActivity userActivity;
+    Database database;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,7 +109,11 @@ public class User_Profile_Fragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        userActivity = (UserActivity)getActivity();
+        userActivity = (UserActivity) getActivity();
+        database = Database.getInstance(userActivity);
+        database.arrayChangedListener = () -> {
+          LoadUserPortfolioPhotos();
+        };
         GetUserInformation();
         LoadUserPortfolioPhotos();
     }
@@ -129,55 +135,55 @@ public class User_Profile_Fragment extends Fragment {
             } else {
                 loadingDialog.DismissDialog();
             }
-        }else if(requestCode == 100 && resultCode == RESULT_OK){
+        } else if (requestCode == 100 && resultCode == RESULT_OK) {
 
-                LoadUserPortfolioPhotos();
+            LoadUserPortfolioPhotos();
+            loadingDialog.DismissDialog();
 
-                loadingDialog.DismissDialog();
-
-        }else{
+        } else {
             loadingDialog.DismissDialog();
         }
     }
 
-    private void LoadUserPortfolioPhotos(){
+    private void LoadUserPortfolioPhotos() {
 
         ImageView imageView = null;
         firstImagesLayout.removeAllViews();
 
-        for(int i = 0; i < userActivity.userPortfolioPhotos.size() && i < 3; i++){
+        for (int i = 0; i < database.GetPortfolioImagesCount() && i < 3; i++) {
             imageView = new ImageView(getActivity());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300, 3f);
-            layoutParams.setMargins(5,10,5,5);
+            layoutParams.setMargins(5, 10, 5, 5);
             imageView.setLayoutParams(layoutParams);
             imageView.setVisibility(View.VISIBLE);
             firstImagesLayout.addView(imageView);
-            Glide.with(getActivity()).load(userActivity.userPortfolioPhotos.get(i)).placeholder(R.drawable.base_image_24).into(imageView);
+            Glide.with(getActivity()).load(database.GetImage(i).getImageUri()).placeholder(R.drawable.base_image_24).into(imageView);
             int finalI = i;
             imageView.setOnLongClickListener(c -> {
-                DeleteProfileImage(finalI);
+                DeletePortfolioImage(finalI);
                 return true;
             });
         }
 
-        if(userActivity.userPortfolioPhotos.size() > 3){
+        if (database.GetPortfolioImagesCount() > 3) {
 
             showAllPortfolioPhotos.setVisibility(View.VISIBLE);
 
-        }else{
+        } else {
+            showAllPortfolioPhotos.setVisibility(View.GONE);
             imageView.setOnClickListener(v -> {
                 Intent intent;
 
-                try{
+                try {
                     intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                }catch (Exception e){
+                } catch (Exception e) {
                     intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                 }
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 getActivity().startActivityForResult(intent, 100);
             });
 
-            imageView.setOnLongClickListener(v ->  true);
+            imageView.setOnLongClickListener(v -> true);
         }
 
     }
@@ -202,6 +208,8 @@ public class User_Profile_Fragment extends Fragment {
             loadingDialog.DismissDialog();
         });
 
+        LoadUserPortfolioPhotos();
+
     }
 
     private void SetProfileImage(Uri imageUri) {
@@ -219,7 +227,7 @@ public class User_Profile_Fragment extends Fragment {
         });
     }
 
-    private void DeleteProfileImage(int position){
+    private void DeletePortfolioImage(int position) {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.portfolio_photo_options, null);
 
@@ -228,8 +236,8 @@ public class User_Profile_Fragment extends Fragment {
         AlertDialog dialog = builder.create();
 
         Button deletePhoto = view.findViewById(R.id.delete_portfolio_photo);
-        deletePhoto.setOnClickListener(c->{
-            userActivity.userPortfolioPhotos.remove(position);
+        deletePhoto.setOnClickListener(c -> {
+            database.DeletePortfolioImageFromFirebase(database.GetImage(position));
             LoadUserPortfolioPhotos();
             dialog.dismiss();
         });

@@ -1,6 +1,8 @@
 package com.example.help_hub;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +27,8 @@ public class User_Portfolio_Photos_Fragment extends Fragment implements Portfoli
     private RecyclerView.LayoutManager layoutManager;
 
     UserActivity userActivity;
+
+    Database database;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,15 +49,17 @@ public class User_Portfolio_Photos_Fragment extends Fragment implements Portfoli
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         userActivity = (UserActivity) getActivity();
-
+        database = Database.getInstance(userActivity);
+        adapter = new PortfolioImagesRecyclerAdapter(database.GetPortfolioImages(), this, this);
+        database.arrayChangedListener = () -> {
+            adapter.notifyDataSetChanged();
+        };
         recyclerView = getActivity().findViewById(R.id.portfolio_images_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new PortfolioImagesRecyclerAdapter(userActivity.userPortfolioPhotos, this, this);
+
 
         recyclerView.setAdapter(adapter);
-
-
 
     }
 
@@ -64,6 +71,7 @@ public class User_Portfolio_Photos_Fragment extends Fragment implements Portfoli
     }
 
     private void AddNewPortfolioPhotos(){
+
         Intent intent;
 
         try{
@@ -73,17 +81,18 @@ public class User_Portfolio_Photos_Fragment extends Fragment implements Portfoli
         }
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         getActivity().startActivityForResult(intent, 100);
+
     }
 
     @Override
     public void onImageClick(int position) {
-        if(position == userActivity.userPortfolioPhotos.size() - 1)
+        if(position == database.GetPortfolioImagesCount() - 1)
         AddNewPortfolioPhotos();
     }
 
     @Override
     public void onImageLongClick(int position) {
-        if(position == userActivity.userPortfolioPhotos.size() - 1)
+        if(position == database.GetPortfolioImagesCount() - 1)
             return;
 
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
@@ -95,7 +104,7 @@ public class User_Portfolio_Photos_Fragment extends Fragment implements Portfoli
 
         Button deletePhoto = view.findViewById(R.id.delete_portfolio_photo);
         deletePhoto.setOnClickListener(c->{
-            userActivity.userPortfolioPhotos.remove(position);
+            database.DeletePortfolioImageFromFirebase(database.GetImage(position));
             adapter.notifyDataSetChanged();
             dialog.dismiss();
         });
@@ -103,4 +112,5 @@ public class User_Portfolio_Photos_Fragment extends Fragment implements Portfoli
         dialog.setCancelable(true);
         dialog.show();
     }
+
 }

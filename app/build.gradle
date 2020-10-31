@@ -53,4 +53,7 @@ dependencies {
 
     //For image cropping
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+
+    //For portfolio description
+    implementation'com.borjabravo:readmoretextview:2.0.1'
 }

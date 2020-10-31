@@ -150,21 +150,12 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
         userMap.put("Phone number", phoneNumber);
         userMap.put("City", city);
 
-        documentReference.set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+        documentReference.set(userMap).addOnSuccessListener(aVoid -> {
+            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), UserActivity.class));
+            finish();
+        }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
 
-                startActivity(new Intent(getApplicationContext(), UserActivity.class));
-                finish();
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
 
     }
 

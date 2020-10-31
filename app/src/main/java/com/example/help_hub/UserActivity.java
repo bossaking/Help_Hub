@@ -64,7 +64,6 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user);
 
         fragmentManager = getSupportFragmentManager();
-        database = Database.getInstance(this);
         ShowUserProfile();
 
     }
@@ -72,6 +71,8 @@ public class UserActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        database = Database.getInstance(this);
 
         if(requestCode == 100 && resultCode == Activity.RESULT_OK){
             ClipData clipData = data.getClipData();

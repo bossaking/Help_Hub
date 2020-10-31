@@ -1,5 +1,6 @@
 package com.example.help_hub;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -69,7 +72,7 @@ public class UserDataChange extends AppCompatActivity {
         userMap.put("City", user.getCity());
         userMap.put("Description", user.getDescription());
 
-        documentReference.set(userMap).addOnSuccessListener(aVoid -> {
+        documentReference.set(userMap).addOnCompleteListener(task -> {
             Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
             finish();
         }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());

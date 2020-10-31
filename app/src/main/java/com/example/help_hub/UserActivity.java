@@ -112,7 +112,7 @@ public class UserActivity extends AppCompatActivity {
         if(fragmentManager.findFragmentById(R.id.user_fragment_container) instanceof User_Portfolio_Photos_Fragment){
             ShowUserProfile();
         }else{
-            super.onBackPressed();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
     }
 }

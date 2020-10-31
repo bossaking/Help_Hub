@@ -19,12 +19,4 @@ public class PortfolioImage {
     public String getImageTitle() {
         return imageTitle;
     }
-
-    public void setImageTitle(String imageTitle) {
-        this.imageTitle = imageTitle;
-    }
-
-    public void setImageUri(Uri imageUri) {
-        this.imageUri = imageUri;
-    }
 }

@@ -61,5 +61,7 @@
     <string name="portfolio_title" translatable="false"><u>Portfolio</u></string>
     <string name="add_new_portfolio_photo" translatable="false">Add new photos</string>
     <string name="show_all_portfolio_photos" translatable="false">Show all</string>
+    <string name="expand_description" translatable="false">Show more</string>
+    <string name="collapse_description" translatable="false">Show less</string>
 
 </resources>

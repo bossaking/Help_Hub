@@ -1,5 +1,6 @@
 package com.example.help_hub;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import androidx.cardview.widget.CardView;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 
+import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -43,22 +46,18 @@ import static android.app.Activity.RESULT_OK;
 public class User_Profile_Fragment extends Fragment {
 
     Button editButton;
-    TextView mUserName, mUserPhoneNumber, mUserCity, showAllPortfolioPhotos;
+    TextView mUserName, mUserPhoneNumber, mUserCity, showAllPortfolioPhotos, mUserPortfolioDescription;
     LinearLayout firstImagesLayout;
-
 
     ImageView profileImage;
 
-    LoadingDialog loadingDialog;
-
-    FirebaseAuth firebaseAuth;
-    FirebaseFirestore firebaseFirestore;
-    StorageReference storageReference;
-
-    String userId;
+    LoadingDialog dataLoadingDialog;
+    LoadingDialog imageLoadingDialog;
 
     UserActivity userActivity;
     Database database;
+    UserDatabase userDatabase;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,13 +70,12 @@ public class User_Profile_Fragment extends Fragment {
 
         View view = inflater.inflate(R.layout.user_profile_fragment, container, false);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        storageReference = FirebaseStorage.getInstance().getReference();
+        userActivity = (UserActivity)getActivity();
 
-        loadingDialog = new LoadingDialog(getActivity());
-        loadingDialog.StartLoadingDialog();
-
+        dataLoadingDialog = new LoadingDialog(getActivity());
+        imageLoadingDialog = new LoadingDialog(getActivity());
+        dataLoadingDialog.StartLoadingDialog();
+        imageLoadingDialog.StartLoadingDialog();
 
         firstImagesLayout = view.findViewById(R.id.first_images_layout);
 
@@ -100,48 +98,61 @@ public class User_Profile_Fragment extends Fragment {
         mUserPhoneNumber = view.findViewById(R.id.user_phone_number);
         mUserName = view.findViewById(R.id.user_name);
         mUserCity = view.findViewById(R.id.user_city);
-        userId = firebaseAuth.getUid();
+        mUserPortfolioDescription = view.findViewById(R.id.portfolio_description);
+
+
+
+        if(Database.instance == null){
+            database = Database.getInstance(userActivity);
+            database.arrayChangedListener = this::LoadUserPortfolioPhotos;
+            database.Initialize();
+        }else{
+            database = Database.getInstance(userActivity);
+            LoadUserPortfolioPhotos();
+        }
+
+        if(UserDatabase.instance == null){
+            userDatabase = UserDatabase.getInstance(userActivity);
+            userDatabase.profileDataLoaded = this::GetUserInformation;
+            userDatabase.profileImageLoaded = this::SetProfileImage;
+        }else{
+            userDatabase = UserDatabase.getInstance(userActivity);
+            GetUserInformation();
+            SetProfileImage(userDatabase.getUser().getProfileImage());
+        }
 
         return view;
     }
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        userActivity = (UserActivity) getActivity();
-        database = Database.getInstance(userActivity);
-        database.arrayChangedListener = () -> {
-          LoadUserPortfolioPhotos();
-        };
-        GetUserInformation();
-        LoadUserPortfolioPhotos();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        loadingDialog.StartLoadingDialog();
+        imageLoadingDialog.StartLoadingDialog();
 
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
                 SetProfileImage(resultUri);
-                UploadImageToDatabase(resultUri);
+                userDatabase.SetUserProfileImage(resultUri);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(getContext(), "Error: " + result.getError(), Toast.LENGTH_LONG).show();
-                loadingDialog.DismissDialog();
+                imageLoadingDialog.DismissDialog();
             } else {
-                loadingDialog.DismissDialog();
+                imageLoadingDialog.DismissDialog();
             }
         } else if (requestCode == 100 && resultCode == RESULT_OK) {
 
             LoadUserPortfolioPhotos();
-            loadingDialog.DismissDialog();
+            imageLoadingDialog.DismissDialog();
 
         } else {
-            loadingDialog.DismissDialog();
+            imageLoadingDialog.DismissDialog();
         }
     }
 
@@ -151,12 +162,14 @@ public class User_Profile_Fragment extends Fragment {
         firstImagesLayout.removeAllViews();
 
         for (int i = 0; i < database.GetPortfolioImagesCount() && i < 3; i++) {
-            imageView = new ImageView(getActivity());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300, 3f);
-            layoutParams.setMargins(5, 10, 5, 5);
-            imageView.setLayoutParams(layoutParams);
-            imageView.setVisibility(View.VISIBLE);
-            firstImagesLayout.addView(imageView);
+
+            @SuppressLint("InflateParams")
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.portfolio_image_card, null);
+            imageView = view.findViewById(R.id.portfolio_image);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 300, 3f);
+            layoutParams.setMargins(0, 10, 5, 5);
+            view.setLayoutParams(layoutParams);
+            firstImagesLayout.addView(view);
             Glide.with(getActivity()).load(database.GetImage(i).getImageUri()).placeholder(R.drawable.base_image_24).into(imageView);
             int finalI = i;
             imageView.setOnLongClickListener(c -> {
@@ -190,41 +203,23 @@ public class User_Profile_Fragment extends Fragment {
 
     private void GetUserInformation() {
 
-        DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
+        User user = userDatabase.getUser();
 
-        final ListenerRegistration registration = documentReference.addSnapshotListener((documentSnapshot, e) -> {
-            mUserName.setText(documentSnapshot.getString("Name"));
-            mUserPhoneNumber.setText(documentSnapshot.getString("Phone number"));
-            mUserCity.setText(documentSnapshot.getString("City"));
-        });
-
-        StorageReference profileRef = storageReference.child("users/" + userId + "/profile.jpg");
-        profileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            SetProfileImage(uri);
-            loadingDialog.DismissDialog();
-            registration.remove();
-        }).addOnFailureListener(e -> {
-            Toast.makeText(getContext(), "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-            loadingDialog.DismissDialog();
-        });
-
-        LoadUserPortfolioPhotos();
-
+        mUserName.setText(user.getName());
+        mUserPhoneNumber.setText(user.getPhoneNumber());
+        mUserCity.setText(user.getCity());
+        mUserPortfolioDescription.setText(user.getDescription() == null ? "" : user.getDescription());
+        if (mUserPortfolioDescription.getText().toString().isEmpty()) {
+            mUserPortfolioDescription.setVisibility(View.GONE);
+        } else {
+            mUserPortfolioDescription.setVisibility(View.VISIBLE);
+        }
+        dataLoadingDialog.DismissDialog();
     }
 
     private void SetProfileImage(Uri imageUri) {
         Glide.with(getActivity()).load(imageUri).placeholder(R.drawable.default_user_image).into(profileImage);
-    }
-
-    private void UploadImageToDatabase(Uri imageUri) {
-        StorageReference fileRef = storageReference.child("users/" + userId + "/profile.jpg");
-        fileRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
-            Toast.makeText(getContext(), "Photo has been loaded", Toast.LENGTH_SHORT).show();
-            loadingDialog.DismissDialog();
-        }).addOnFailureListener(e -> {
-            Toast.makeText(getContext(), "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-            loadingDialog.DismissDialog();
-        });
+        imageLoadingDialog.DismissDialog();
     }
 
     private void DeletePortfolioImage(int position) {
@@ -245,5 +240,4 @@ public class User_Profile_Fragment extends Fragment {
         dialog.setCancelable(true);
         dialog.show();
     }
-
 }

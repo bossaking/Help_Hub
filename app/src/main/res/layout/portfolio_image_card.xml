@@ -14,7 +14,8 @@
             android:id="@+id/portfolio_image"
             android:layout_width="match_parent"
             android:layout_height="150sp"
-            android:src="@drawable/default_user_image"/>
+            android:src="@drawable/default_user_image"
+            android:scaleType="center"/>
 
     </RelativeLayout>
 

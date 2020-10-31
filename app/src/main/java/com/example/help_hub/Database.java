@@ -5,18 +5,25 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.recyclerview.widget.AsyncListDiffer;
 
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageMetadata;
@@ -28,8 +35,14 @@ import java.util.List;
 
 public class Database {
 
+    public interface ArrayChangedListener {
+        void ArrayChanged();
+    }
+
+
     StorageReference storageReference;
     FirebaseAuth firebaseAuth;
+    FirebaseFirestore firebaseFirestore;
 
     String userId;
 
@@ -37,7 +50,8 @@ public class Database {
 
     List<PortfolioImage> portfolioImages;
 
-    private static Database instance;
+
+    public static Database instance = null;
 
     public ArrayChangedListener arrayChangedListener;
 
@@ -46,8 +60,8 @@ public class Database {
         this.context = myActivity.getApplicationContext();
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
         userId = firebaseAuth.getUid();
-        this.portfolioImages = GetAllPhotosFromFirebase();
     }
 
     public static Database getInstance(Activity activity) {
@@ -56,6 +70,14 @@ public class Database {
             instance = new Database(activity);
         }
         return instance;
+    }
+
+    public static void ClearInstance(){
+        instance = null;
+    }
+
+    public void Initialize(){
+        GetAllPhotosFromFirebase();
     }
 
     public void LoadPortfolioImageToDatabase(PortfolioImage portfolioImage) {
@@ -73,13 +95,12 @@ public class Database {
         imgRef.delete();
     }
 
-    public List<PortfolioImage> GetAllPhotosFromFirebase() {
-
-        List<PortfolioImage> portfolioImages = new ArrayList<>();
-        portfolioImages.add(new PortfolioImage("DefaultImage",
-                Uri.parse("android.resource://" + context.getPackageName() + "/drawable/add_a_photo_24")));
+    public void GetAllPhotosFromFirebase() {
 
         StorageReference imagesRef = storageReference.child("users/" + userId + "/portfolio photos");
+        portfolioImages = new ArrayList<>();
+        AddNewImage(new PortfolioImage("DefaultImage",
+                Uri.parse("android.resource://" + context.getPackageName() + "/drawable/add_a_photo_24")));
 
         imagesRef.listAll().addOnSuccessListener(listResult -> {
             for (StorageReference fileRef : listResult.getItems()) {
@@ -92,7 +113,7 @@ public class Database {
                 });
             }
         });
-        return portfolioImages;
+
 
     }
 
@@ -101,7 +122,11 @@ public class Database {
     }
 
     public void AddNewImage(PortfolioImage portfolioImage) {
-        portfolioImages.add(portfolioImages.size() - 1, portfolioImage);
+        if(GetPortfolioImagesCount() == 0){
+            portfolioImages.add(portfolioImages.size(), portfolioImage);
+        }else{
+            portfolioImages.add(portfolioImages.size() - 1, portfolioImage);
+        }
         if (arrayChangedListener != null) {
             arrayChangedListener.ArrayChanged();
         }
@@ -115,8 +140,5 @@ public class Database {
         return portfolioImages.get(position);
     }
 
-    public interface ArrayChangedListener {
-        void ArrayChanged();
-    }
 
 }

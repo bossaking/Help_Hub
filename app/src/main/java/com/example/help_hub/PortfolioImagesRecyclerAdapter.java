@@ -74,9 +74,6 @@ public class PortfolioImagesRecyclerAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Uri currentUri = images.get(position).getImageUri();
         ImageView imageView = ((AdapterViewHolder)holder).imageView;
-        if(position < getItemCount() - 1){
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        }
         Glide.with(holder.itemView).load(currentUri).placeholder(R.drawable.base_image_24).into(imageView);
     }
 

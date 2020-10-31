@@ -1,14 +1,10 @@
 package com.example.help_hub;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.ClipData;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,27 +13,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
-
-import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -100,7 +79,17 @@ public class User_Profile_Fragment extends Fragment {
         mUserCity = view.findViewById(R.id.user_city);
         mUserPortfolioDescription = view.findViewById(R.id.portfolio_description);
 
+        return view;
+    }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         if(Database.instance == null){
             database = Database.getInstance(userActivity);
@@ -121,12 +110,6 @@ public class User_Profile_Fragment extends Fragment {
             SetProfileImage(userDatabase.getUser().getProfileImage());
         }
 
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -170,7 +153,8 @@ public class User_Profile_Fragment extends Fragment {
             layoutParams.setMargins(0, 10, 5, 5);
             view.setLayoutParams(layoutParams);
             firstImagesLayout.addView(view);
-            Glide.with(getActivity()).load(database.GetImage(i).getImageUri()).placeholder(R.drawable.base_image_24).into(imageView);
+            Glide.with(getActivity()).load(database.GetImage(i).getImageUri()).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
+                    .into(imageView);
             int finalI = i;
             imageView.setOnLongClickListener(c -> {
                 DeletePortfolioImage(finalI);
@@ -218,7 +202,7 @@ public class User_Profile_Fragment extends Fragment {
     }
 
     private void SetProfileImage(Uri imageUri) {
-        Glide.with(getActivity()).load(imageUri).placeholder(R.drawable.default_user_image).into(profileImage);
+        Glide.with(getActivity()).load(imageUri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24).into(profileImage);
         imageLoadingDialog.DismissDialog();
     }
 

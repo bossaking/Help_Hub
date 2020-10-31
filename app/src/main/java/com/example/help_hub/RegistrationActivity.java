@@ -41,12 +41,9 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
         setContentView(R.layout.activity_registration);
 
         TextView goToLoginActivity = findViewById(R.id.go_to_login);
-        goToLoginActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                finish();
-            }
+        goToLoginActivity.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            finish();
         });
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -65,43 +62,41 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
         signUpButton = findViewById(R.id.registration_button);
 
         //Gdy naciskamy przycisk rejestracji
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        signUpButton.setOnClickListener(v -> {
 
-                final String email = mEmail.getText().toString().trim();
-                final String password = mPassword.getText().toString().trim();
-                String repeatPassword = mRepeatPassword.getText().toString().trim();
+            final String email = mEmail.getText().toString().trim();
+            final String password = mPassword.getText().toString().trim();
+            String repeatPassword = mRepeatPassword.getText().toString().trim();
 
-                if(!ValidateEmail(email) || !ValidatePassword(password, repeatPassword)) {
-                    return;
-                }
-
-                final LoadingDialog loadingDialog = new LoadingDialog(RegistrationActivity.this);
-                loadingDialog.StartLoadingDialog();
-
-                //Sprawdzamy, czy podany E-mail nie jest już zarejestrowany
-                firebaseAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                        if(task.isSuccessful()){
-                            List<String> methods = task.getResult().getSignInMethods();
-                            if(!methods.isEmpty()){
-
-                                mEmail.setError(getString(R.string.email_exists_error));
-                                mEmail.setBackgroundResource(R.drawable.edit_error_border);
-                                mEmail.requestFocus();
-                            }else{
-                                Intent intent = new Intent(getApplicationContext(), NewUserBasicInformationsActivity.class);
-                                intent.putExtra("USER_EMAIL", email);
-                                intent.putExtra("USER_PASSWORD", password);
-                                startActivity(intent);
-                            }
-                        }
-                        loadingDialog.DismissDialog();
-                    }
-                });
+            if(!ValidateEmail(email) || !ValidatePassword(password, repeatPassword)) {
+                return;
             }
+
+            final LoadingDialog loadingDialog = new LoadingDialog(RegistrationActivity.this);
+            loadingDialog.StartLoadingDialog();
+
+            //Sprawdzamy, czy podany E-mail nie jest już zarejestrowany
+            firebaseAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                @Override
+                public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                    if(task.isSuccessful()){
+                        List<String> methods = task.getResult().getSignInMethods();
+                        if(!methods.isEmpty()){
+
+                            mEmail.setError(getString(R.string.email_exists_error));
+                            mEmail.setBackgroundResource(R.drawable.edit_error_border);
+                            mEmail.requestFocus();
+                        }else{
+                            Intent intent = new Intent(getApplicationContext(), NewUserBasicInformationsActivity.class);
+                            intent.putExtra("USER_EMAIL", email);
+                            intent.putExtra("USER_PASSWORD", password);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                    loadingDialog.DismissDialog();
+                }
+            });
         });
 
     }

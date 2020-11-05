@@ -1,9 +1,20 @@
 package com.example.help_hub;
+
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.documentfile.provider.DocumentFile;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,19 +24,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.List;
+
 import static android.app.Activity.RESULT_OK;
 
-public class User_Profile_Fragment extends Fragment {
+public class UserProfile extends Fragment {
 
-    Button editButton;
-    TextView mUserName, mUserPhoneNumber, mUserCity, showAllPortfolioPhotos, mUserPortfolioDescription;
+    FragmentManager fragmentManager;
+
+    Activity myActivity;
+    Context myContext;
+
+    public Database database;
+
+    TextView mUserName, mUserPhoneNumber, mUserCity, showAllPortfolioPhotos, mUserPortfolioDescription, editButton, logoutButton;
     LinearLayout firstImagesLayout;
 
     ImageView profileImage;
@@ -33,23 +51,21 @@ public class User_Profile_Fragment extends Fragment {
     LoadingDialog dataLoadingDialog;
     LoadingDialog imageLoadingDialog;
 
-    UserActivity userActivity;
-    Database database;
     UserDatabase userDatabase;
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
-        View view = inflater.inflate(R.layout.user_profile_fragment, container, false);
-
-        userActivity = (UserActivity)getActivity();
+        myActivity = getActivity();
 
         dataLoadingDialog = new LoadingDialog(getActivity());
         imageLoadingDialog = new LoadingDialog(getActivity());
@@ -60,7 +76,7 @@ public class User_Profile_Fragment extends Fragment {
 
         showAllPortfolioPhotos = view.findViewById(R.id.show_all_photos);
         showAllPortfolioPhotos.setOnClickListener(c -> {
-            userActivity.ShowAllPortfolioPhotos();
+            ShowAllPortfolioPhotos();
         });
 
         profileImage = view.findViewById(R.id.Profile_Image);
@@ -74,6 +90,15 @@ public class User_Profile_Fragment extends Fragment {
             startActivity(intent);
         });
 
+        logoutButton = view.findViewById(R.id.user_logout_button);
+        logoutButton.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            UserDatabase.ClearInstance();
+            Database.ClearInstance();
+            startActivity(new Intent(myContext, LoginActivity.class));
+            myActivity.finish();
+        });
+
         mUserPhoneNumber = view.findViewById(R.id.user_phone_number);
         mUserName = view.findViewById(R.id.user_name);
         mUserCity = view.findViewById(R.id.user_city);
@@ -85,37 +110,44 @@ public class User_Profile_Fragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        myActivity = getActivity();
+        myContext = myActivity.getApplicationContext();
+
+        fragmentManager = getChildFragmentManager();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
 
-        if(Database.instance == null){
-            database = Database.getInstance(userActivity);
-            database.arrayChangedListener = this::LoadUserPortfolioPhotos;
-            database.Initialize();
-        }else{
-            database = Database.getInstance(userActivity);
-            LoadUserPortfolioPhotos();
-        }
+    public void ShowAllPortfolioPhotos(){
 
-        if(UserDatabase.instance == null){
-            userDatabase = UserDatabase.getInstance(userActivity);
-            userDatabase.profileDataLoaded = this::GetUserInformation;
-            userDatabase.profileImageLoaded = this::SetProfileImage;
-        }else{
-            userDatabase = UserDatabase.getInstance(userActivity);
-            GetUserInformation();
-            SetProfileImage(userDatabase.getUser().getProfileImage());
-        }
-
+        Intent intent = new Intent(getContext(), UserPortfolioPhotosActivity.class);
+        startActivity(intent);
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        database = Database.getInstance(myActivity);
 
         imageLoadingDialog.StartLoadingDialog();
+
+        if(requestCode == 100 && resultCode == Activity.RESULT_OK){
+            ClipData clipData = data.getClipData();
+            if(clipData != null){
+                for(int i = 0; i < clipData.getItemCount(); i++){
+
+                    PortfolioImage portfolioImage = new PortfolioImage(DocumentFile.fromSingleUri(myContext,
+                            clipData.getItemAt(i).getUri()).getName(), clipData.getItemAt(i).getUri());
+
+                    database.AddNewImage(portfolioImage);
+                    database.LoadPortfolioImageToDatabase(portfolioImage);
+                }
+            }
+        }
 
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -137,6 +169,31 @@ public class User_Profile_Fragment extends Fragment {
         } else {
             imageLoadingDialog.DismissDialog();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(Database.instance == null){
+            database = Database.getInstance(myActivity);
+            database.arrayChangedListener = this::LoadUserPortfolioPhotos;
+            database.Initialize();
+        }else{
+            database = Database.getInstance(myActivity);
+            LoadUserPortfolioPhotos();
+        }
+
+        if(UserDatabase.instance == null){
+            userDatabase = UserDatabase.getInstance(myActivity);
+            userDatabase.profileDataLoaded = this::GetUserInformation;
+            userDatabase.profileImageLoaded = this::SetProfileImage;
+        }else{
+            userDatabase = UserDatabase.getInstance(myActivity);
+            GetUserInformation();
+            SetProfileImage(userDatabase.getUser().getProfileImage());
+        }
+
     }
 
     private void LoadUserPortfolioPhotos() {

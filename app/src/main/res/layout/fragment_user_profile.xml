@@ -128,7 +128,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textColor="@color/colorAccent"
-                    android:text="@string/logout_title" />
+                    android:text="@string/logout_title"
+                    android:layout_marginBottom="20sp"/>
 
             </LinearLayout>
         </LinearLayout>

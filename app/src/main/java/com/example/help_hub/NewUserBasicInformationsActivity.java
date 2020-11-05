@@ -152,7 +152,7 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
 
         documentReference.set(userMap).addOnSuccessListener(aVoid -> {
             Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(), UserActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
 

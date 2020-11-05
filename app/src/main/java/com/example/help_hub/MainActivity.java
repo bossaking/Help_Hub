@@ -1,46 +1,36 @@
 package com.example.help_hub;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button logoutButton;
-    TextView userIdText;
-    Button profileButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        logoutButton = findViewById(R.id.logout_button);
-        userIdText = findViewById(R.id.user_id_text);
-        profileButton = findViewById(R.id.profile_button);
-
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        userIdText.setText(firebaseAuth.getUid());
-
-        logoutButton.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
-            UserDatabase.ClearInstance();
-            Database.ClearInstance();
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-            finish();
-        });
-
-        profileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(),UserActivity.class);
-            startActivity(intent);
-        });
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(navView, navController);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        fragment.getChildFragmentManager().getFragments().get(0).onActivityResult(requestCode, resultCode, data);
+    }
 }

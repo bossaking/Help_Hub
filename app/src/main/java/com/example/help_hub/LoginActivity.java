@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -50,59 +49,44 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
 
         defaultTextView = mEmail.getBackground();
 
-        goToRegistration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), RegistrationActivity.class));
-                finish();
-            }
+        goToRegistration.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), RegistrationActivity.class));
+            finish();
         });
 
         mEmail.addTextChangedListener(this);
         mPassword.addTextChangedListener(this);
 
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = mEmail.getText().toString().trim();
-                String password = mPassword.getText().toString().trim();
-                final LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
-                loadingDialog.StartLoadingDialog();
+        mLoginButton.setOnClickListener(v -> {
+            String email = mEmail.getText().toString().trim();
+            String password = mPassword.getText().toString().trim();
+            final LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
+            loadingDialog.StartLoadingDialog();
 
-                if(!ValidateEmail(email) || !ValidatePassword(password)){
-                    loadingDialog.DismissDialog();
-                    return;
-                }
-
-
-                firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
-                        }else{
-                            Toast.makeText(LoginActivity.this, "Error: " + task.getException(), Toast.LENGTH_LONG).show();
-                            loadingDialog.DismissDialog();
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        loginErrorSpan.setVisibility(View.VISIBLE);
-                        loadingDialog.DismissDialog();
-                    }
-                });
+            if(!ValidateEmail(email) || !ValidatePassword(password)){
+                loadingDialog.DismissDialog();
+                return;
             }
+
+
+            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish();
+                }else{
+                    Toast.makeText(LoginActivity.this, "Error: " + task.getException(), Toast.LENGTH_LONG).show();
+                    loadingDialog.DismissDialog();
+                }
+            }).addOnFailureListener(e -> {
+                loginErrorSpan.setVisibility(View.VISIBLE);
+                loadingDialog.DismissDialog();
+            });
         });
 
-        forgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ResetPasswordDialog resetPasswordDialog = new ResetPasswordDialog(LoginActivity.this);
-                resetPasswordDialog.StartResetPasswordDialog();
-            }
+        forgotPassword.setOnClickListener(v -> {
+            ResetPasswordDialog resetPasswordDialog = new ResetPasswordDialog(LoginActivity.this);
+            resetPasswordDialog.StartResetPasswordDialog();
         });
     }
 

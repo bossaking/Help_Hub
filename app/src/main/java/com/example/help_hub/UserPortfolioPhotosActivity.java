@@ -5,58 +5,52 @@ import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class User_Portfolio_Photos_Fragment extends Fragment implements PortfolioImagesRecyclerAdapter.OnClickListener, PortfolioImagesRecyclerAdapter.OnLongClickListener {
+import android.provider.MediaStore;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
+public class UserPortfolioPhotosActivity extends AppCompatActivity implements PortfolioImagesRecyclerAdapter.OnClickListener, PortfolioImagesRecyclerAdapter.OnLongClickListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    UserActivity userActivity;
-
     Database database;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.activity_user_portfolio_photos);
+
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.user_portfolio_photos_fragment_layout, container, false);
-
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        userActivity = (UserActivity) getActivity();
-        database = Database.getInstance(userActivity);
+        database = Database.getInstance(this);
         adapter = new PortfolioImagesRecyclerAdapter(database.GetPortfolioImages(), this, this);
         database.arrayChangedListener = () -> {
             adapter.notifyDataSetChanged();
         };
-        recyclerView = getActivity().findViewById(R.id.portfolio_images_recycler_view);
+        recyclerView = findViewById(R.id.portfolio_images_recycler_view);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager = new LinearLayoutManager(this);
 
 
         recyclerView.setAdapter(adapter);
@@ -66,7 +60,19 @@ public class User_Portfolio_Photos_Fragment extends Fragment implements Portfoli
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100 && resultCode == Activity.RESULT_OK){
+            ClipData clipData = data.getClipData();
+            if(clipData != null){
+                for(int i = 0; i < clipData.getItemCount(); i++){
 
+                    PortfolioImage portfolioImage = new PortfolioImage(DocumentFile.fromSingleUri(getApplicationContext(),
+                            clipData.getItemAt(i).getUri()).getName(), clipData.getItemAt(i).getUri());
+
+                    database.AddNewImage(portfolioImage);
+                    database.LoadPortfolioImageToDatabase(portfolioImage);
+                }
+            }
+        }
         adapter.notifyDataSetChanged();
     }
 
@@ -80,14 +86,14 @@ public class User_Portfolio_Photos_Fragment extends Fragment implements Portfoli
             intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         }
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        getActivity().startActivityForResult(intent, 100);
+        startActivityForResult(intent, 100);
 
     }
 
     @Override
     public void onImageClick(int position) {
         if(position == database.GetPortfolioImagesCount() - 1)
-        AddNewPortfolioPhotos();
+            AddNewPortfolioPhotos();
     }
 
     @Override
@@ -95,10 +101,10 @@ public class User_Portfolio_Photos_Fragment extends Fragment implements Portfoli
         if(position == database.GetPortfolioImagesCount() - 1)
             return;
 
-        LayoutInflater layoutInflater = getActivity().getLayoutInflater();
+        LayoutInflater layoutInflater = getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.portfolio_photo_options, null);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(view);
         AlertDialog dialog = builder.create();
 
@@ -113,4 +119,16 @@ public class User_Portfolio_Photos_Fragment extends Fragment implements Portfoli
         dialog.show();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == android.R.id.home){
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

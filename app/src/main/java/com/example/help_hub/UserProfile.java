@@ -11,12 +11,16 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -43,7 +47,7 @@ public class UserProfile extends Fragment {
 
     public Database database;
 
-    TextView mUserName, mUserPhoneNumber, mUserCity, showAllPortfolioPhotos, mUserPortfolioDescription, editButton, logoutButton;
+    TextView mUserName, mUserPhoneNumber, mUserCity, showAllPortfolioPhotos, mUserPortfolioDescription, logoutButton;
     LinearLayout firstImagesLayout;
 
     ImageView profileImage;
@@ -67,6 +71,8 @@ public class UserProfile extends Fragment {
 
         myActivity = getActivity();
 
+        setHasOptionsMenu(true);
+
         dataLoadingDialog = new LoadingDialog(getActivity());
         imageLoadingDialog = new LoadingDialog(getActivity());
         dataLoadingDialog.StartLoadingDialog();
@@ -83,12 +89,6 @@ public class UserProfile extends Fragment {
         profileImage.setOnClickListener(view1 -> CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON).setCropShape(CropImageView.CropShape.OVAL)
                 .start(getActivity()));
-
-        editButton = view.findViewById(R.id.user_edit_button);
-        editButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), UserDataChange.class);
-            startActivity(intent);
-        });
 
         logoutButton = view.findViewById(R.id.user_logout_button);
         logoutButton.setOnClickListener(v -> {
@@ -108,12 +108,36 @@ public class UserProfile extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.user_profile_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == R.id.user_menu_edit){
+            Intent intent = new Intent(getContext(), UserDataChange.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         myActivity = getActivity();
         myContext = myActivity.getApplicationContext();
 
         fragmentManager = getChildFragmentManager();
+
+        Toolbar myToolbar = myActivity.findViewById(R.id.my_toolbar);
+        ((MainActivity)myActivity).setSupportActionBar(myToolbar);
+        ((MainActivity)myActivity).getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     @Override

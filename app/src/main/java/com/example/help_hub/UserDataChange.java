@@ -72,7 +72,7 @@ public class UserDataChange extends AppCompatActivity {
         userMap.put("City", user.getCity());
         userMap.put("Description", user.getDescription());
 
-        documentReference.set(userMap).addOnCompleteListener(task -> {
+        documentReference.update(userMap).addOnCompleteListener(task -> {
             Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
             finish();
         }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());

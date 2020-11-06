@@ -67,6 +67,8 @@
     <string name="title_activity_main" translatable="false">MainActivity</string>
     <string name="title_orders" translatable="false">Orders</string>
     <string name="title_user_profile" translatable="false">Profile</string>
+    <string name="title_administration_panel" translatable="false">Administration</string>
+
 
 
 </resources>

@@ -71,12 +71,14 @@ public class UserDatabase {
             user.setPhoneNumber(documentSnapshot.getString("Phone number"));
             user.setCity(documentSnapshot.getString("City"));
             user.setDescription(documentSnapshot.getString("Description"));
+            user.setRole(documentSnapshot.getString("Role"));
             if(profileDataLoaded != null){
                 profileDataLoaded.ProfileDataLoaded();
             }
 
         });
 
+        //PROFILE IMAGE
         StorageReference profileRef = storageReference.child("users/" + userId + "/profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(uri -> {
             user.setProfileImage(uri);
@@ -107,8 +109,6 @@ public class UserDatabase {
             Toast.makeText(context, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
         });
     }
-
-
 
     public User getUser(){
         return user;

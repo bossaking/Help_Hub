@@ -15,7 +15,10 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
+    UserDatabase userDatabase;
+    BottomNavigationView navView;
 
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,14 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
+
+        loadingDialog = new LoadingDialog(this);
+        loadingDialog.StartLoadingDialog();
+
+        if(UserDatabase.instance == null){
+            userDatabase = UserDatabase.getInstance(this);
+            userDatabase.profileDataLoaded = this::CheckRole;
+        }
     }
 
     @Override
@@ -32,5 +43,18 @@ public class MainActivity extends AppCompatActivity {
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         fragment.getChildFragmentManager().getFragments().get(0).onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void CheckRole(){
+        navView = findViewById(R.id.nav_view);
+        if(userDatabase.getUser().getRole() != null){
+            if(userDatabase.getUser().getRole().equals("Administrator")) {
+                navView.getMenu().findItem(R.id.administration).setVisible(true);
+            }
+        }else{
+            userDatabase.getUser().setRole("User");
+        }
+
+        loadingDialog.DismissDialog();
     }
 }

@@ -149,6 +149,7 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
         userMap.put("Name", name);
         userMap.put("Phone number", phoneNumber);
         userMap.put("City", city);
+        userMap.put("Role", "User");
 
         documentReference.set(userMap).addOnSuccessListener(aVoid -> {
             Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();

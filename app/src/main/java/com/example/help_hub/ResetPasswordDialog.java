@@ -51,28 +51,18 @@ public class ResetPasswordDialog implements TextWatcher {
         dialog = builder.create();
         builder.setCancelable(true);
         dialog.show();
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = mEmail.getText().toString().trim();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String email = mEmail.getText().toString().trim();
 
-                if(!ValidateEmail(email)){
-                    return;
-                }
-                FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(myActivity.getApplicationContext(), "Reset link sent to your e-mail", Toast.LENGTH_LONG).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(myActivity.getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-
-                dialog.dismiss();
+            if(!ValidateEmail(email)){
+                return;
             }
+            FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnSuccessListener(aVoid ->
+                    Toast.makeText(myActivity.getApplicationContext(), "Reset link sent to your e-mail", Toast.LENGTH_LONG).show())
+                    .addOnFailureListener(e
+                    -> Toast.makeText(myActivity.getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
+
+            dialog.dismiss();
         });
     }
 

@@ -1,4 +1,4 @@
-package com.example.help_hub;
+package com.example.help_hub.AlertDialogues;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,22 +8,20 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.widget.EditText;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.help_hub.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-public class EditForbiddenWordDialog implements TextWatcher {
+import java.util.Objects;
 
-    private Activity myActivity;
+public class EditForbiddenWordDialog extends Dialog implements TextWatcher {
+
+
+    private final Activity myActivity;
     private AlertDialog dialog;
     private EditText mWord;
     private Drawable defaultBackground;
-    private String word;
+    private final String word;
 
     public EditForbiddenWordDialog(Activity myActivity, String word) {
         this.myActivity = myActivity;
@@ -33,7 +31,7 @@ public class EditForbiddenWordDialog implements TextWatcher {
     public void startEditForbiddenWordDialog() {
         mWord = new EditText(myActivity.getApplicationContext());
         defaultBackground = mWord.getBackground();
-        mWord.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
+        mWord.setInputType(InputType.TYPE_CLASS_TEXT);
         mWord.addTextChangedListener(this);
         mWord.setText(word);
 
@@ -50,17 +48,13 @@ public class EditForbiddenWordDialog implements TextWatcher {
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
             FirebaseFirestore words = FirebaseFirestore.getInstance();
-            words.collection("forbiddenWords").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (document.get("word").toString().equals(word)) {
-                                words.collection("forbiddenWords").document(document.getId()).update("word", mWord.getText().toString());
-                                myActivity.recreate();
-                                dialog.dismiss();
-                                return;
-                            }
+            words.collection("forbiddenWords").get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        if (Objects.requireNonNull(document.get("word")).toString().equals(word)) {
+                            words.collection("forbiddenWords").document(document.getId()).update("word", mWord.getText().toString());
+                            dismissDialog();
+                            dialog.dismiss();
                         }
                     }
                 }
@@ -69,17 +63,13 @@ public class EditForbiddenWordDialog implements TextWatcher {
 
         dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(v -> {
             FirebaseFirestore words = FirebaseFirestore.getInstance();
-            words.collection("forbiddenWords").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (document.get("word").toString().equals(word)) {
-                                words.collection("forbiddenWords").document(document.getId()).delete();
-                                myActivity.recreate();
-                                dialog.dismiss();
-                                return;
-                            }
+            words.collection("forbiddenWords").get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        if (Objects.requireNonNull(document.get("word")).toString().equals(word)) {
+                            words.collection("forbiddenWords").document(document.getId()).delete();
+                            dismissDialog();
+                            dialog.dismiss();
                         }
                     }
                 }

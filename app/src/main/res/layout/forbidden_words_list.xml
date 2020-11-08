@@ -9,7 +9,7 @@
         android:id="@+id/add_forbidden_words_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add new word"/>
+        android:text="@string/add_new_word"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/forbidden_words_recycler_view"

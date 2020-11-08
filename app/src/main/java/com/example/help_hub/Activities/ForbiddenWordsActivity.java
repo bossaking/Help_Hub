@@ -1,43 +1,33 @@
-package com.example.help_hub;
+package com.example.help_hub.Activities;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.ContentView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.help_hub.AlertDialogues.AddForbiddenWordDialog;
+import com.example.help_hub.AlertDialogues.EditForbiddenWordDialog;
+import com.example.help_hub.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.Console;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class ForbiddenWordsActivity extends AppCompatActivity {
 
     private RecyclerView.Adapter adapter;
-    private RecyclerView recyclerView;
+    RecyclerView recyclerView;
+    List<String> words = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,17 +38,21 @@ public class ForbiddenWordsActivity extends AppCompatActivity {
         Button add_forbidden_word_button = findViewById(R.id.add_forbidden_words_button);
 
         add_forbidden_word_button.setOnClickListener(v -> {
-            AddForbiddenWordDialog addForbiddenWordDialog = new AddForbiddenWordDialog(ForbiddenWordsActivity.this);
+            AddForbiddenWordDialog addForbiddenWordDialog = new AddForbiddenWordDialog(this);
+            addForbiddenWordDialog.setOnDialogDismissedListener(this::UpdateView);
             addForbiddenWordDialog.startAddForbiddenWordDialog();
         });
 
         recyclerView = findViewById(R.id.forbidden_words_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(ForbiddenWordsActivity.this));
+
+        UpdateView();
     }
 
-    private class ForbiddenWordHolder extends RecyclerView.ViewHolder implements  View.OnClickListener {
 
-        private TextView mWord;
+    private class ForbiddenWordHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private final TextView mWord;
         private String word;
 
         public ForbiddenWordHolder(@NonNull LayoutInflater inflater, ViewGroup parent) {
@@ -77,15 +71,18 @@ public class ForbiddenWordsActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             EditForbiddenWordDialog editForbiddenWordDialog = new EditForbiddenWordDialog(ForbiddenWordsActivity.this, word);
+            editForbiddenWordDialog.setOnDialogDismissedListener(ForbiddenWordsActivity.this::UpdateView);
             editForbiddenWordDialog.startEditForbiddenWordDialog();
         }
     }
 
     private class ForbiddenWordsAdapter extends RecyclerView.Adapter<ForbiddenWordHolder> {
 
-        private List<String> words;
+        private final List<String> words;
 
-        public ForbiddenWordsAdapter(List<String> words) {this.words = words;}
+        public ForbiddenWordsAdapter(List<String> words) {
+            this.words = words;
+        }
 
         @NonNull
         @Override
@@ -96,46 +93,34 @@ public class ForbiddenWordsActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ForbiddenWordHolder holder, int position) {
-
+            String word = words.get(position);
+            holder.bind(word);
         }
 
         @Override
         public int getItemCount() {
             return words.size();
         }
-
-        @Override
-        public void onBindViewHolder(@NonNull ForbiddenWordHolder holder, int position, @NonNull List<Object> payloads) {
-            String word = words.get(position);
-            holder.bind(word);
-        }
     }
 
-    public void updateView() {
-        List<String> words = new ArrayList<>();
-        FirebaseFirestore wordsStorage = FirebaseFirestore.getInstance();
-        wordsStorage.collection("forbiddenWords").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        words.add(document.get("word").toString());
-                    }
+    public void UpdateView() {
 
-                    if (adapter == null) {
-                        adapter = new ForbiddenWordsAdapter(words);
-                        recyclerView.setAdapter(adapter);
-                    } else {
-                        adapter.notifyDataSetChanged();
-                    }
+        words.clear();
+        FirebaseFirestore wordsStorage = FirebaseFirestore.getInstance();
+        wordsStorage.collection("forbiddenWords").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                    words.add(Objects.requireNonNull(document.get("word")).toString());
+                }
+
+                if(adapter == null) {
+                    adapter = new ForbiddenWordsAdapter(words);
+                    recyclerView.setAdapter(adapter);
+                }else{
+                    adapter.notifyDataSetChanged();
                 }
             }
         });
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateView();
     }
 }

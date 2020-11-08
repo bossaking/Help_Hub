@@ -1,23 +1,23 @@
-package com.example.help_hub;
+package com.example.help_hub.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.help_hub.AlertDialogues.ChangePasswordDialog;
+import com.example.help_hub.OtherClasses.User;
+import com.example.help_hub.R;
+import com.example.help_hub.Singletones.UserDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserDataChange extends AppCompatActivity {
+public class UserDataChangeActivity extends AppCompatActivity {
 
     private Button changePassword, applyChanges;
     EditText mChangedDescription, mChangedName, mChangedPhoneNumber, mChangedCity;
@@ -49,7 +49,7 @@ public class UserDataChange extends AppCompatActivity {
         mChangedPhoneNumber.setText(user.getPhoneNumber());
 
         changePassword.setOnClickListener(v -> {
-            ChangePasswordDialog changePasswordDialog = new ChangePasswordDialog(UserDataChange.this);
+            ChangePasswordDialog changePasswordDialog = new ChangePasswordDialog(UserDataChangeActivity.this);
             changePasswordDialog.StartChangePasswordDialog();
         });
 

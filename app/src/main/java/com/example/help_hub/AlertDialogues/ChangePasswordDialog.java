@@ -1,4 +1,4 @@
-package com.example.help_hub;
+package com.example.help_hub.AlertDialogues;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,6 +12,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.help_hub.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ChangePasswordDialog implements TextWatcher {

@@ -1,4 +1,4 @@
-package com.example.help_hub;
+package com.example.help_hub.OtherClasses;
 
 import android.net.Uri;
 

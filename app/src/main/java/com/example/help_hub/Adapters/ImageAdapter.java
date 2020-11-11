@@ -1,4 +1,4 @@
-package com.example.help_hub;
+package com.example.help_hub.Adapters;
 
 import android.content.ClipData;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import com.example.help_hub.R;
 
 public class ImageAdapter extends BaseAdapter {
 

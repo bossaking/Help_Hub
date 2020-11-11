@@ -1,13 +1,11 @@
-package com.example.help_hub;
+package com.example.help_hub.OtherClasses;
 
 import android.net.Uri;
 
 public class User {
 
-    private String Name, PhoneNumber, City, Description, Id;
+    private String Name, PhoneNumber, City, Description, Id, Role;
     private Uri ProfileImage;
-
-
 
     public User(String Id){
         this.Id = Id;
@@ -60,5 +58,13 @@ public class User {
 
     public void setId(String id) {
         Id = id;
+    }
+
+    public String getRole() {
+        return Role;
+    }
+
+    public void setRole(String role) {
+        Role = role;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.help_hub;
+package com.example.help_hub.Adapters;
 
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.help_hub.OtherClasses.PortfolioImage;
+import com.example.help_hub.R;
 
 import java.util.List;
 

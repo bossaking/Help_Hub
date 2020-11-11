@@ -1,20 +1,16 @@
-package com.example.help_hub;
+package com.example.help_hub.Singletones;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;
 
+import com.example.help_hub.OtherClasses.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class UserDatabase {
 
@@ -71,12 +67,14 @@ public class UserDatabase {
             user.setPhoneNumber(documentSnapshot.getString("Phone number"));
             user.setCity(documentSnapshot.getString("City"));
             user.setDescription(documentSnapshot.getString("Description"));
+            user.setRole(documentSnapshot.getString("Role"));
             if(profileDataLoaded != null){
                 profileDataLoaded.ProfileDataLoaded();
             }
 
         });
 
+        //PROFILE IMAGE
         StorageReference profileRef = storageReference.child("users/" + userId + "/profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(uri -> {
             user.setProfileImage(uri);
@@ -107,8 +105,6 @@ public class UserDatabase {
             Toast.makeText(context, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
         });
     }
-
-
 
     public User getUser(){
         return user;

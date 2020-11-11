@@ -1,31 +1,15 @@
-package com.example.help_hub;
+package com.example.help_hub.Singletones;
 
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.provider.ContactsContract;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.documentfile.provider.DocumentFile;
-import androidx.recyclerview.widget.AsyncListDiffer;
-
-import com.google.android.gms.tasks.OnCanceledListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
+import com.example.help_hub.OtherClasses.PortfolioImage;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 
@@ -33,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Database {
+public class UserPortfolioImagesDatabase {
 
     public interface ArrayChangedListener {
         void ArrayChanged();
@@ -51,11 +35,11 @@ public class Database {
     List<PortfolioImage> portfolioImages;
 
 
-    public static Database instance = null;
+    public static UserPortfolioImagesDatabase instance = null;
 
     public ArrayChangedListener arrayChangedListener;
 
-    private Database(Activity myActivity) {
+    private UserPortfolioImagesDatabase(Activity myActivity) {
 
         this.context = myActivity.getApplicationContext();
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -64,10 +48,10 @@ public class Database {
         userId = firebaseAuth.getUid();
     }
 
-    public static Database getInstance(Activity activity) {
+    public static UserPortfolioImagesDatabase getInstance(Activity activity) {
 
         if (instance == null) {
-            instance = new Database(activity);
+            instance = new UserPortfolioImagesDatabase(activity);
         }
         return instance;
     }

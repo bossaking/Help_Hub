@@ -1,4 +1,4 @@
-package com.example.help_hub;
+package com.example.help_hub.Fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -11,12 +11,16 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,11 +30,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.help_hub.*;
+import com.example.help_hub.Activities.LoginActivity;
+import com.example.help_hub.Activities.MainActivity;
+import com.example.help_hub.Activities.UserDataChangeActivity;
+import com.example.help_hub.Activities.UserPortfolioPhotosActivity;
+import com.example.help_hub.AlertDialogues.LoadingDialog;
+import com.example.help_hub.OtherClasses.PortfolioImage;
+import com.example.help_hub.OtherClasses.User;
+import com.example.help_hub.Singletones.UserDatabase;
+import com.example.help_hub.Singletones.UserPortfolioImagesDatabase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-
-import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -41,9 +53,9 @@ public class UserProfile extends Fragment {
     Activity myActivity;
     Context myContext;
 
-    public Database database;
+    public UserPortfolioImagesDatabase userPortfolioImagesDatabase;
 
-    TextView mUserName, mUserPhoneNumber, mUserCity, showAllPortfolioPhotos, mUserPortfolioDescription, editButton, logoutButton;
+    TextView mUserName, mUserPhoneNumber, mUserCity, showAllPortfolioPhotos, mUserPortfolioDescription, logoutButton;
     LinearLayout firstImagesLayout;
 
     ImageView profileImage;
@@ -67,6 +79,8 @@ public class UserProfile extends Fragment {
 
         myActivity = getActivity();
 
+        setHasOptionsMenu(true);
+
         dataLoadingDialog = new LoadingDialog(getActivity());
         imageLoadingDialog = new LoadingDialog(getActivity());
         dataLoadingDialog.StartLoadingDialog();
@@ -84,17 +98,11 @@ public class UserProfile extends Fragment {
                 .setGuidelines(CropImageView.Guidelines.ON).setCropShape(CropImageView.CropShape.OVAL)
                 .start(getActivity()));
 
-        editButton = view.findViewById(R.id.user_edit_button);
-        editButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), UserDataChange.class);
-            startActivity(intent);
-        });
-
         logoutButton = view.findViewById(R.id.user_logout_button);
         logoutButton.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             UserDatabase.ClearInstance();
-            Database.ClearInstance();
+            UserPortfolioImagesDatabase.ClearInstance();
             startActivity(new Intent(myContext, LoginActivity.class));
             myActivity.finish();
         });
@@ -108,12 +116,36 @@ public class UserProfile extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.user_profile_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == R.id.user_menu_edit){
+            Intent intent = new Intent(getContext(), UserDataChangeActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         myActivity = getActivity();
         myContext = myActivity.getApplicationContext();
 
         fragmentManager = getChildFragmentManager();
+
+        Toolbar myToolbar = myActivity.findViewById(R.id.my_toolbar);
+        ((MainActivity)myActivity).setSupportActionBar(myToolbar);
+        ((MainActivity)myActivity).getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     @Override
@@ -131,7 +163,7 @@ public class UserProfile extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        database = Database.getInstance(myActivity);
+        userPortfolioImagesDatabase = UserPortfolioImagesDatabase.getInstance(myActivity);
 
         imageLoadingDialog.StartLoadingDialog();
 
@@ -143,8 +175,8 @@ public class UserProfile extends Fragment {
                     PortfolioImage portfolioImage = new PortfolioImage(DocumentFile.fromSingleUri(myContext,
                             clipData.getItemAt(i).getUri()).getName(), clipData.getItemAt(i).getUri());
 
-                    database.AddNewImage(portfolioImage);
-                    database.LoadPortfolioImageToDatabase(portfolioImage);
+                    userPortfolioImagesDatabase.AddNewImage(portfolioImage);
+                    userPortfolioImagesDatabase.LoadPortfolioImageToDatabase(portfolioImage);
                 }
             }
         }
@@ -175,12 +207,12 @@ public class UserProfile extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(Database.instance == null){
-            database = Database.getInstance(myActivity);
-            database.arrayChangedListener = this::LoadUserPortfolioPhotos;
-            database.Initialize();
+        if(UserPortfolioImagesDatabase.instance == null){
+            userPortfolioImagesDatabase = UserPortfolioImagesDatabase.getInstance(myActivity);
+            userPortfolioImagesDatabase.arrayChangedListener = this::LoadUserPortfolioPhotos;
+            userPortfolioImagesDatabase.Initialize();
         }else{
-            database = Database.getInstance(myActivity);
+            userPortfolioImagesDatabase = UserPortfolioImagesDatabase.getInstance(myActivity);
             LoadUserPortfolioPhotos();
         }
 
@@ -201,7 +233,7 @@ public class UserProfile extends Fragment {
         ImageView imageView = null;
         firstImagesLayout.removeAllViews();
 
-        for (int i = 0; i < database.GetPortfolioImagesCount() && i < 3; i++) {
+        for (int i = 0; i < userPortfolioImagesDatabase.GetPortfolioImagesCount() && i < 3; i++) {
 
             @SuppressLint("InflateParams")
             View view = LayoutInflater.from(getContext()).inflate(R.layout.portfolio_image_card, null);
@@ -210,7 +242,7 @@ public class UserProfile extends Fragment {
             layoutParams.setMargins(0, 10, 5, 5);
             view.setLayoutParams(layoutParams);
             firstImagesLayout.addView(view);
-            Glide.with(getActivity()).load(database.GetImage(i).getImageUri()).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
+            Glide.with(getActivity()).load(userPortfolioImagesDatabase.GetImage(i).getImageUri()).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
                     .into(imageView);
             int finalI = i;
             imageView.setOnLongClickListener(c -> {
@@ -219,7 +251,7 @@ public class UserProfile extends Fragment {
             });
         }
 
-        if (database.GetPortfolioImagesCount() > 3) {
+        if (userPortfolioImagesDatabase.GetPortfolioImagesCount() > 3) {
 
             showAllPortfolioPhotos.setVisibility(View.VISIBLE);
 
@@ -273,7 +305,7 @@ public class UserProfile extends Fragment {
 
         Button deletePhoto = view.findViewById(R.id.delete_portfolio_photo);
         deletePhoto.setOnClickListener(c -> {
-            database.DeletePortfolioImageFromFirebase(database.GetImage(position));
+            userPortfolioImagesDatabase.DeletePortfolioImageFromFirebase(userPortfolioImagesDatabase.GetImage(position));
             LoadUserPortfolioPhotos();
             dialog.dismiss();
         });

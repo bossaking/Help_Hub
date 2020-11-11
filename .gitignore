@@ -12,3 +12,8 @@
 /captures
 .externalNativeBuild
 .cxx
+.idea/codeStyles/codeStyleConfig.xml
+.idea/codeStyles/codeStyleConfig.xml
+.idea/uiDesigner.xml
+build.gradle
+gradle/wrapper/gradle-wrapper.properties

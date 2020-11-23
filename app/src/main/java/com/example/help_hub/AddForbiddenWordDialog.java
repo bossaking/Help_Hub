@@ -12,15 +12,9 @@ import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firestore.v1.WriteResult;
 
 import java.util.HashMap;
@@ -52,25 +46,12 @@ public class AddForbiddenWordDialog implements TextWatcher {
         dialog.show();
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
-            FirebaseFirestore.getInstance().collection("forbiddenWords").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) { //sprawdzamy czy słowa nie ma już w bazie
-                            if (document.get("word".toString()).equals(mWord.getText().toString())) {
-                                dialog.dismiss();
-                                return;
-                            }
-                        }
-                        Map<String, String> docData = new HashMap<>();
-                        docData.put("word", mWord.getText().toString());
-                        FirebaseFirestore.getInstance().collection("forbiddenWords").add(docData);
-                        myActivity.recreate();
-                        dialog.dismiss();
-                    }
-                }
-            });
+            Map<String, String> docData = new HashMap<>();
+            docData.put("word", mWord.getText().toString());
+            FirebaseFirestore.getInstance().collection("forbiddenWords").add(docData);
+            dialog.dismiss();
         });
+
     }
 
     @Override

@@ -27,6 +27,7 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     Database database;
 
@@ -49,7 +50,7 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
         };
         recyclerView = findViewById(R.id.portfolio_images_recycler_view);
         recyclerView.setHasFixedSize(true);
-
+        layoutManager = new LinearLayoutManager(this);
 
 
         recyclerView.setAdapter(adapter);
@@ -70,10 +71,9 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
                     database.AddNewImage(portfolioImage);
                     database.LoadPortfolioImageToDatabase(portfolioImage);
                 }
-                adapter.notifyDataSetChanged();
             }
         }
-
+        adapter.notifyDataSetChanged();
     }
 
     private void AddNewPortfolioPhotos(){

@@ -23,6 +23,8 @@ public class Orders extends Fragment {
     Activity myActivity;
     Context myContext;
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,8 @@ public class Orders extends Fragment {
         super.onActivityCreated(savedInstanceState);
         myActivity = getActivity();
         myContext = myActivity.getApplicationContext();
+
+
     }
 
     @Override
@@ -41,13 +45,14 @@ public class Orders extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
-
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
 
     }
 

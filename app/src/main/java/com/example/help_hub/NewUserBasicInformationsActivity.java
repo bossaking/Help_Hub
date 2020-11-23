@@ -62,7 +62,14 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
         mUserPhoneNumber.addTextChangedListener(this);
         mUserCity.addTextChangedListener(this);
 
-        mUserSaveButton.setOnClickListener(v -> Registration(email, password));
+        mUserSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Registration(email, password);
+
+            }
+        });
     }
 
     private boolean ValidateUserName(String userName){
@@ -108,19 +115,27 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
 
         loadingDialog.StartLoadingDialog();
 
-        //Jeżeli udało się
-        //Jeżeli się nie udało
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                Toast.makeText(NewUserBasicInformationsActivity.this, "User created", Toast.LENGTH_SHORT).show();
-                SaveUserData(name, phoneNumber, city);
-            }else{
-                Toast.makeText(NewUserBasicInformationsActivity.this, "Error: " + task.getException(), Toast.LENGTH_SHORT).show();
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+            //Jeżeli udało się
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(NewUserBasicInformationsActivity.this, "User created", Toast.LENGTH_SHORT).show();
+                    SaveUserData(name, phoneNumber, city);
+                }else{
+                    Toast.makeText(NewUserBasicInformationsActivity.this, "Error: " + task.getException(), Toast.LENGTH_SHORT).show();
+                    loadingDialog.DismissDialog();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+
+            //Jeżeli się nie udało
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(NewUserBasicInformationsActivity.this, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                 loadingDialog.DismissDialog();
             }
-        }).addOnFailureListener(e -> {
-            Toast.makeText(NewUserBasicInformationsActivity.this, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-            loadingDialog.DismissDialog();
         });
 
     }

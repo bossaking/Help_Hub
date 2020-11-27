@@ -1,8 +1,11 @@
-package com.example.help_hub;
+package com.example.help_hub.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.help_hub.AlertDialogues.LoadingDialog;
+import com.example.help_hub.R;
+import com.example.help_hub.Singletones.UserDatabase;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.Nullable;

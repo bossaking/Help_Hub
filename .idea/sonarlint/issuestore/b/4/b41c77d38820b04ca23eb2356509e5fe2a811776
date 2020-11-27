@@ -1,0 +1,14 @@
+
+J
+java:S3740"/Provide the parametrized type for this generic.(ÒõÆÛıÿÿÿÿ
+V	java:S110"<This class has 9 parents which is greater than 5 authorized.(ù‰ííÿÿÿÿÿ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Œí´È
+X
+java:S2259@"BA "NullPointerException" could be thrown; "data" is nullable here.(ã²»
+h
+java:S1128"MRemove this unused import 'androidx.recyclerview.widget.LinearLayoutManager'.(ôœ¹ºıÿÿÿÿ
+v
+java:S1450"[Remove the "recyclerView" field and declare it as a local variable in the relevant methods.(¿á© ıÿÿÿÿ
+B
+java:S16020",Remove useless curly braces around statement(üÑ
+h	java:S100P"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(„‘•ûûÿÿÿÿ

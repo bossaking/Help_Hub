@@ -1,0 +1,8 @@
+
+c	java:S1004"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡Š³Ö
+b
+java:S1128"GRemove this unused import 'androidx.navigation.ui.AppBarConfiguration'.(È¸›şÿÿÿÿ
+Q	java:S110"<This class has 9 parents which is greater than 5 authorized.(²Ú±
+Q
+java:S1117";Rename "navView" which hides the field declared at line 22.(‹Å´Í
+v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Œí´È8“ÁËà.

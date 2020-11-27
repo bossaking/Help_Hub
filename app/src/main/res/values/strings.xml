@@ -15,7 +15,7 @@
     <string name="email_validate_error">Not valid E-mail address</string>
     <string name="email_exists_error">User with the given e-mail already exists</string>
     <string name="password_length_error">Password must contain at least 8 characters</string>
-    <string name="password_match_error">Passwords do not match</string>
+    <string name="password_match_error" translatable="false">Passwords do not match</string>
 
     <!--LOGIN ACTIVITY-->
     <string name="login_title" translatable="false">Login</string>
@@ -79,7 +79,22 @@
     <string name="edit_forbidden_word_message" translatable="false">Enter edited word</string>
     <string name="edit_forbidden_word_button_edit" translatable="false">Edit</string>
     <string name="edit_forbidden_word_button_delete" translatable="false">Delete</string>
-    <string name="add_new_word">Add new word</string>
+    <string name="add_new_word" translatable="false">Add new word</string>
 
+    <!--ADD OFFER-->
+    <string name="add_new_offer_header">ADD NEW OFFER</string>
+    <string name="new_offer_title" translatable="false">Title of the offer</string>
+    <string name="new_offer_category" translatable="false">Category</string>
+    <string name="new_offer_select_category" translatable="false">Select category</string>
+    <string name="new_offer_description_title" translatable="false">Description</string>
+    <string name="new_offer_add_offer_button" translatable="false">Add offer</string>
+
+    <!--ADD NOTICE-->
+    <string name="add_new_notice_header" translatable="false">ADD NEW NOTICE</string>
+    <string name="new_notice_title" translatable="false">Title of the notice</string>
+    <string name="new_notice_category" translatable="false">Category</string>
+    <string name="new_notice_select_category" translatable="false">Select category</string>
+    <string name="new_notice_description_title" translatable="false">Description</string>
+    <string name="new_notice_add_offer_button" translatable="false">Add offer</string>
 
 </resources>

@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.AddNewNoticeActivity"></activity>
+        <activity android:name=".Activities.SelectCategoryActivity"></activity>
+        <activity android:name=".Activities.AddNewNoticeActivity" />
         <activity android:name=".Activities.AddTheOfferActivity" />
         <activity
             android:name=".Activities.UserPortfolioPhotosActivity"

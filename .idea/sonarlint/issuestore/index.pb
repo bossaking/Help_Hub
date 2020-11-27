@@ -21,3 +21,5 @@ z
 Japp/src/main/java/com/example/help_hub/Activities/AddTheOfferActivity.java,1\b\1bef695a3cdbf9568f0cbba20f7d34ba608509e3
 {
 Kapp/src/main/java/com/example/help_hub/Activities/AddNewNoticeActivity.java,0\e\0e9243b214bc89337ce1a5d6ed9922735a25aa26
+}
+Mapp/src/main/java/com/example/help_hub/Activities/SelectCategoryActivity.java,4\a\4a2856e2ba8af67ce9d788aa45985dcfccc1bef8

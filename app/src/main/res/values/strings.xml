@@ -69,6 +69,17 @@
     <string name="title_user_profile" translatable="false">Profile</string>
     <string name="title_administration_panel" translatable="false">Administration</string>
 
+    <!--ADD FORBIDDEN WORD DIALOG-->
+    <string name="add_forbidden_word_title" translatable="false">Add forbidden word</string>
+    <string name="add_forbidden_word_message" translatable="false">Enter new word</string>
+    <string name="add_forbidden_word_button" translatable="false">Add</string>
+
+    <!--EDIT FORBIDDEN WORD DIALOG-->
+    <string name="edit_forbidden_word_title" translatable="false">Edit forbidden word</string>
+    <string name="edit_forbidden_word_message" translatable="false">Enter edited word</string>
+    <string name="edit_forbidden_word_button_edit" translatable="false">Edit</string>
+    <string name="edit_forbidden_word_button_delete" translatable="false">Delete</string>
+    <string name="add_new_word">Add new word</string>
 
 
 </resources>

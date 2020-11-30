@@ -1,8 +1,9 @@
-package com.example.help_hub;
+package com.example.help_hub.AlertDialogues;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.view.LayoutInflater;
+import com.example.help_hub.R;
 
 public class LoadingDialog {
 
@@ -13,7 +14,7 @@ public class LoadingDialog {
         this.myActivity = myActivity;
     }
 
-    void StartLoadingDialog(){
+    public void StartLoadingDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
         LayoutInflater inflater = myActivity.getLayoutInflater();
 
@@ -24,7 +25,7 @@ public class LoadingDialog {
         dialog.show();
     }
 
-    void DismissDialog(){
+    public void DismissDialog(){
         dialog.dismiss();
     }
 

@@ -1,4 +1,4 @@
-package com.example.help_hub;
+package com.example.help_hub.AlertDialogues;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.help_hub.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;

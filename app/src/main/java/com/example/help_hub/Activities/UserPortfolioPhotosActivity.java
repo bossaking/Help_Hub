@@ -1,13 +1,10 @@
-package com.example.help_hub;
+package com.example.help_hub.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,13 +19,17 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import com.example.help_hub.OtherClasses.PortfolioImage;
+import com.example.help_hub.Adapters.PortfolioImagesRecyclerAdapter;
+import com.example.help_hub.R;
+import com.example.help_hub.Singletones.UserPortfolioImagesDatabase;
 
 public class UserPortfolioPhotosActivity extends AppCompatActivity implements PortfolioImagesRecyclerAdapter.OnClickListener, PortfolioImagesRecyclerAdapter.OnLongClickListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
-    Database database;
+    UserPortfolioImagesDatabase userPortfolioImagesDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +43,9 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
 
 
 
-        database = Database.getInstance(this);
-        adapter = new PortfolioImagesRecyclerAdapter(database.GetPortfolioImages(), this, this);
-        database.arrayChangedListener = () -> {
+        userPortfolioImagesDatabase = UserPortfolioImagesDatabase.getInstance(this);
+        adapter = new PortfolioImagesRecyclerAdapter(userPortfolioImagesDatabase.GetPortfolioImages(), this, this);
+        userPortfolioImagesDatabase.arrayChangedListener = () -> {
             adapter.notifyDataSetChanged();
         };
         recyclerView = findViewById(R.id.portfolio_images_recycler_view);
@@ -67,8 +68,8 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
                     PortfolioImage portfolioImage = new PortfolioImage(DocumentFile.fromSingleUri(getApplicationContext(),
                             clipData.getItemAt(i).getUri()).getName(), clipData.getItemAt(i).getUri());
 
-                    database.AddNewImage(portfolioImage);
-                    database.LoadPortfolioImageToDatabase(portfolioImage);
+                    userPortfolioImagesDatabase.AddNewImage(portfolioImage);
+                    userPortfolioImagesDatabase.LoadPortfolioImageToDatabase(portfolioImage);
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -92,13 +93,13 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
 
     @Override
     public void onImageClick(int position) {
-        if(position == database.GetPortfolioImagesCount() - 1)
+        if(position == userPortfolioImagesDatabase.GetPortfolioImagesCount() - 1)
             AddNewPortfolioPhotos();
     }
 
     @Override
     public void onImageLongClick(int position) {
-        if(position == database.GetPortfolioImagesCount() - 1)
+        if(position == userPortfolioImagesDatabase.GetPortfolioImagesCount() - 1)
             return;
 
         LayoutInflater layoutInflater = getLayoutInflater();
@@ -110,7 +111,7 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
 
         Button deletePhoto = view.findViewById(R.id.delete_portfolio_photo);
         deletePhoto.setOnClickListener(c->{
-            database.DeletePortfolioImageFromFirebase(database.GetImage(position));
+            userPortfolioImagesDatabase.DeletePortfolioImageFromFirebase(userPortfolioImagesDatabase.GetImage(position));
             adapter.notifyDataSetChanged();
             dialog.dismiss();
         });

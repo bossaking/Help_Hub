@@ -6,17 +6,17 @@
     app:startDestination="@id/orders">
     <fragment
         android:id="@+id/user_profile"
-        android:name="com.example.help_hub.UserProfile"
+        android:name="com.example.help_hub.Fragments.UserProfile"
         android:label="fragment_user_profile"
         tools:layout="@layout/fragment_user_profile" />
     <fragment
         android:id="@+id/orders"
-        android:name="com.example.help_hub.Orders"
+        android:name="com.example.help_hub.Fragments.Orders"
         android:label="fragment_orders"
         tools:layout="@layout/fragment_orders" />
     <fragment
         android:id="@+id/administration"
-        android:name="com.example.help_hub.Administration"
+        android:name="com.example.help_hub.Fragments.Administration"
         android:label="fragment_administration"
         tools:layout="@layout/fragment_administration" />
 </navigation>

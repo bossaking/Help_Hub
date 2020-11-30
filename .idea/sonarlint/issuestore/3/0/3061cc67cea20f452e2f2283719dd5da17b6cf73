@@ -1,0 +1,16 @@
+
+Q	java:S110"<This class has 9 parents which is greater than 5 authorized.(Ñ¯‹™
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Œí´È
+v
+java:S1450"[Remove the "applyChanges" field and declare it as a local variable in the relevant methods.(™¿÷ˆøÿÿÿÿ
+x
+java:S1450"]Remove the "changePassword" field and declare it as a local variable in the relevant methods.(™¿÷ˆøÿÿÿÿ
+E
+java:S1659"*Declare "applyChanges" on a separate line.(™¿÷ˆøÿÿÿÿ
+@
+java:S1659"*Declare "mChangedName" on a separate line.(…÷Œé
+G
+java:S1659"1Declare "mChangedPhoneNumber" on a separate line.(…÷Œé
+@
+java:S1659"*Declare "mChangedCity" on a separate line.(…÷Œé
+h	java:S100A"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‘ìšûÿÿÿÿ

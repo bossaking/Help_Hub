@@ -21,4 +21,14 @@
     <string name="save_button">Zapisz</string>
     <string name="edit_button">Edytuj</string>
     <string name="user_data_change_new_password_button">Zmień hasło</string>
+    <string name="add_new_offer_header">Dodaj nową ofertę</string>
+    <string name="new_offer_title" translatable="false">Tytuł oferty</string>
+    <string name="new_offer_category" translatable="false">Wybierz kategorię</string>
+    <string name="new_offer_select_category" translatable="false">Wybierz kategorię</string>
+    <string name="new_offer_description_title" translatable="false">Opis</string>
+    <string name="new_offer_add_offer_button" translatable="false">Dodaj ofertę</string>
+    <string name="new_offer_title_hint">np. Przepcham każdą zatkaną dziurę</string>
+    <string name="new_offer_description_hint">Napisz, w czym jesteś dobry i co oferujesz.</string>
+    <string name="new_notice_add_notice_button" translatable="false">Dodaj ofertę</string>
+    <string name="add_new_notice_header" translatable="false">Dodaj nowe ogłoszenie</string>
 </resources>

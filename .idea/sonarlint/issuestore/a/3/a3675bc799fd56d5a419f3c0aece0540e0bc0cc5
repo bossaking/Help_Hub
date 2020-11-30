@@ -1,0 +1,30 @@
+
+c
+java:S1192w"HDefine a constant instead of duplicating this literal "Error: " 3 times.(˜”Ë°ùÿÿÿÿ
+Q	java:S110"<This class has 9 parents which is greater than 5 authorized.(Äëú²
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Œí´È
+N
+java:S1128"8Remove this unused import 'androidx.annotation.NonNull'.(ˆÛúÜ
+g
+java:S1128"LRemove this unused import 'com.google.android.gms.tasks.OnCompleteListener'.(Çğ¸Òÿÿÿÿÿ
+T
+java:S1128">Remove this unused import 'com.google.android.gms.tasks.Task'.(¦âÏô
+f
+java:S1128"KRemove this unused import 'com.google.android.gms.tasks.OnFailureListener'.(ï¿ŞŞúÿÿÿÿ
+I
+java:S1128".Remove this unused import 'android.view.View'.(Ø½­äşÿÿÿÿ
+U
+java:S1128"@Remove this unused import 'com.google.firebase.auth.AuthResult'.(âÂ
+˜
+java:S1186–"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(«û³±
+˜
+java:S1186¢"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(±¾ê
+I
+java:S1659".Declare "mUserPhoneNumber" on a separate line.(ÎÓ…¶ıÿÿÿÿ
+B
+java:S1659"'Declare "mUserCity" on a separate line.(ÎÓ…¶ıÿÿÿÿ
+h	java:S100E"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(„Ü¬×øÿÿÿÿ
+c	java:S100O"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¨Ñ–Ø
+h	java:S100Y"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‡•’øÿÿÿÿ
+h	java:S100d"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(öË‡úÿÿÿÿ
+i	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ê­Ïùÿÿÿÿ

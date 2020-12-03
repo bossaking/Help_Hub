@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.help_hub.AlertDialogues.LoadingDialog;
+import com.example.help_hub.AlertDialogues.SelectTypeOfAdvertisement;
 import com.example.help_hub.R;
 import com.example.help_hub.Singletones.UserDatabase;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
             userDatabase = UserDatabase.getInstance(this);
             userDatabase.profileDataLoaded = this::CheckRole;
         }
+
+        FloatingActionButton add = findViewById(R.id.floatingActionButton);
+        add.setOnClickListener(v -> {
+            SelectTypeOfAdvertisement selectTypeOfAdvertisement = new SelectTypeOfAdvertisement(this);
+            selectTypeOfAdvertisement.startSelectTypeOfAdvertisement();
+        });
     }
 
     @Override

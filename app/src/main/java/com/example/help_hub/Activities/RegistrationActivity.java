@@ -72,23 +72,26 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
             loadingDialog.StartLoadingDialog();
 
             //Sprawdzamy, czy podany E-mail nie jest już zarejestrowany
-            firebaseAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
-                    List<String> methods = task.getResult().getSignInMethods();
-                    if(!methods.isEmpty()){
+            firebaseAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                @Override
+                public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                    if(task.isSuccessful()){
+                        List<String> methods = task.getResult().getSignInMethods();
+                        if(!methods.isEmpty()){
 
-                        mEmail.setError(getString(R.string.email_exists_error));
-                        mEmail.setBackgroundResource(R.drawable.edit_error_border);
-                        mEmail.requestFocus();
-                    }else{
-                        Intent intent = new Intent(getApplicationContext(), NewUserBasicInformationsActivity.class);
-                        intent.putExtra("USER_EMAIL", email);
-                        intent.putExtra("USER_PASSWORD", password);
-                        startActivity(intent);
-                        finish();
+                            mEmail.setError(getString(R.string.email_exists_error));
+                            mEmail.setBackgroundResource(R.drawable.edit_error_border);
+                            mEmail.requestFocus();
+                        }else{
+                            Intent intent = new Intent(getApplicationContext(), NewUserBasicInformationsActivity.class);
+                            intent.putExtra("USER_EMAIL", email);
+                            intent.putExtra("USER_PASSWORD", password);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
+                    loadingDialog.DismissDialog();
                 }
-                loadingDialog.DismissDialog();
             });
         });
 

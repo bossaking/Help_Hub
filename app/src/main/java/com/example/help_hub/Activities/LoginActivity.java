@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         if(firebaseAuth.getCurrentUser() != null){
@@ -50,7 +51,6 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
             startActivity(new Intent(getApplicationContext(), RegistrationActivity.class));
             finish();
         });
-
 
         mEmail.addTextChangedListener(this);
         mPassword.addTextChangedListener(this);
@@ -130,6 +130,6 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
             return false;
         }
 
-        return true;
+        return  true;
     }
 }

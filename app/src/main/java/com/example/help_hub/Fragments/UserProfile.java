@@ -48,7 +48,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class UserProfile extends Fragment {
 
-
+    FragmentManager fragmentManager;
 
     Activity myActivity;
     Context myContext;
@@ -141,9 +141,16 @@ public class UserProfile extends Fragment {
         myActivity = getActivity();
         myContext = myActivity.getApplicationContext();
 
+        fragmentManager = getChildFragmentManager();
+
         Toolbar myToolbar = myActivity.findViewById(R.id.my_toolbar);
         ((MainActivity)myActivity).setSupportActionBar(myToolbar);
         ((MainActivity)myActivity).getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     public void ShowAllPortfolioPhotos(){
@@ -171,8 +178,6 @@ public class UserProfile extends Fragment {
                     userPortfolioImagesDatabase.AddNewImage(portfolioImage);
                     userPortfolioImagesDatabase.LoadPortfolioImageToDatabase(portfolioImage);
                 }
-                LoadUserPortfolioPhotos();
-                imageLoadingDialog.DismissDialog();
             }
         }
 
@@ -188,6 +193,13 @@ public class UserProfile extends Fragment {
             } else {
                 imageLoadingDialog.DismissDialog();
             }
+        } else if (requestCode == 100 && resultCode == RESULT_OK) {
+
+            LoadUserPortfolioPhotos();
+            imageLoadingDialog.DismissDialog();
+
+        } else {
+            imageLoadingDialog.DismissDialog();
         }
     }
 

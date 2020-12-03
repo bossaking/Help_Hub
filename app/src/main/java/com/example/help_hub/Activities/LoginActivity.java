@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
         }
 
         mEmail = findViewById(R.id.login_email);
-        mPassword = findViewById(R.id.login_password);
+        mPassword = findViewById(R.id.login_password_text);
         mLoginButton = findViewById(R.id.login_button);
         goToRegistration = findViewById(R.id.go_to_registration);
         forgotPassword = findViewById(R.id.forgot_password);

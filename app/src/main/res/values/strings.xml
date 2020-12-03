@@ -15,7 +15,7 @@
     <string name="email_validate_error">Not valid E-mail address</string>
     <string name="email_exists_error">User with the given e-mail already exists</string>
     <string name="password_length_error">Password must contain at least 8 characters</string>
-    <string name="password_match_error">Passwords do not match</string>
+    <string name="password_match_error" translatable="false">Passwords do not match</string>
 
     <!--LOGIN ACTIVITY-->
     <string name="login_title" translatable="false">Login</string>
@@ -35,7 +35,7 @@
     <string name="reset_password_message" translatable="false">Enter your e-mail address</string>
     <string name="reset_positive_button" translatable="false">Reset</string>
 
-    <!--Change PASSWORD DIALOG-->
+    <!--CHANGE PASSWORD DIALOG-->
     <string name="change_password_title" translatable="false">Change password</string>
     <string name="change_password_message" translatable="false">Enter your old password</string>
     <string name="change_positive_button" translatable="false">Change</string>
@@ -69,6 +69,36 @@
     <string name="title_user_profile" translatable="false">Profile</string>
     <string name="title_administration_panel" translatable="false">Administration</string>
 
+    <!--ADD FORBIDDEN WORD DIALOG-->
+    <string name="add_forbidden_word_title" translatable="false">Add forbidden word</string>
+    <string name="add_forbidden_word_message" translatable="false">Enter new word</string>
+    <string name="add_forbidden_word_button" translatable="false">Add</string>
 
+    <!--EDIT FORBIDDEN WORD DIALOG-->
+    <string name="edit_forbidden_word_title" translatable="false">Edit forbidden word</string>
+    <string name="edit_forbidden_word_message" translatable="false">Enter edited word</string>
+    <string name="edit_forbidden_word_button_edit" translatable="false">Edit</string>
+    <string name="edit_forbidden_word_button_delete" translatable="false">Delete</string>
+    <string name="add_new_word" translatable="false">Add new word</string>
+
+    <!--ADD OFFER-->
+    <string name="add_new_offer_header">Add new offer</string>
+    <string name="new_offer_title" translatable="false">Title of the offer</string>
+    <string name="new_offer_category" translatable="false">Select category</string>
+    <string name="new_offer_select_category" translatable="false">Select category</string>
+    <string name="new_offer_description_title" translatable="false">Description</string>
+    <string name="new_offer_add_offer_button" translatable="false">Add offer</string>
+    <string name="new_offer_title_hint" translatable="false">e.g. I push every clogged hole</string>
+    <string name="new_offer_description_hint" translatable="false">Write what you are good at and what you offer.</string>
+
+    <!--ADD NOTICE-->
+    <string name="add_new_notice_header" translatable="false">Add new notice</string>
+    <string name="new_notice_title" translatable="false">Title of the notice</string>
+    <string name="new_notice_category" translatable="false">Category</string>
+    <string name="new_notice_select_category" translatable="false">Select category</string>
+    <string name="new_notice_description_title" translatable="false">Description</string>
+    <string name="new_notice_add_notice_button" translatable="false">Add offer</string>
+    <string name="new_notice_title_hint" translatable="false">e.g. Washing machine broken</string>
+    <string name="new_notice_description_hint" translatable="false">Write what your problem is. Adding photos is a very good idea. Take this opportunity and you will certainly not regret it.</string>
 
 </resources>

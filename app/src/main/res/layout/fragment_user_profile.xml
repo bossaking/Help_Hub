@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".UserProfile"
+    tools:context=".Fragments.UserProfile"
     android:id="@+id/user_fragment_container">
 
     <androidx.appcompat.widget.Toolbar

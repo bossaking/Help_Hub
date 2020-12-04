@@ -20,25 +20,24 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="24dp" />
 
-    <ImageView
-        android:id="@+id/add_new_notice_exit"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/ic_baseline_close_24"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/add_new_notice_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/add_new_notice_header"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/add_new_notice_exit" />
+        app:layout_constraintTop_toBottomOf="@id/my_toolbar"/>
 
     <TextView
         android:id="@+id/new_notice_title_text_view"
@@ -120,15 +119,22 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/new_notice_description_text_view" />
 
-    <ImageView
-        android:id="@+id/new_offer_add_photos"
-        android:layout_width="65dp"
-        android:layout_height="61dp"
-        android:layout_marginTop="24dp"
-        android:src="@drawable/add_a_photo_24"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/new_notice_images"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layoutDirection="ltr"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/new_notice_description_edit_text" />
+        app:layout_constraintTop_toBottomOf="@+id/new_notice_description_edit_text"
+        app:layout_constraintBottom_toTopOf="@+id/new_offer_add_offer_button"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
 
     <Button
         android:id="@+id/new_offer_add_offer_button"

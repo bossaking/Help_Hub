@@ -20,25 +20,24 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="24dp" />
 
-    <ImageView
-        android:id="@+id/add_new_offer_exit"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/ic_baseline_close_24"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/add_new_offer_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/add_new_offer_header"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/add_new_offer_exit" />
+        app:layout_constraintTop_toBottomOf="@id/my_toolbar"/>
 
     <TextView
         android:id="@+id/new_offer_title_text_view"

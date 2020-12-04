@@ -15,8 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.help_hub.AlertDialogues.SelectTypeOfAdvertisement;
 import com.example.help_hub.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Orders extends Fragment {
@@ -46,6 +48,13 @@ public class Orders extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
+
+        FloatingActionButton add = view.findViewById(R.id.floatingActionButton);
+        add.setOnClickListener(v -> {
+            SelectTypeOfAdvertisement selectTypeOfAdvertisement = new SelectTypeOfAdvertisement(getActivity());
+            selectTypeOfAdvertisement.startSelectTypeOfAdvertisement();
+        });
+
         return view;
     }
 

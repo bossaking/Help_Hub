@@ -41,12 +41,6 @@ public class MainActivity extends AppCompatActivity {
             userDatabase = UserDatabase.getInstance(this);
             userDatabase.profileDataLoaded = this::CheckRole;
         }
-
-        FloatingActionButton add = findViewById(R.id.floatingActionButton);
-        add.setOnClickListener(v -> {
-            SelectTypeOfAdvertisement selectTypeOfAdvertisement = new SelectTypeOfAdvertisement(this);
-            selectTypeOfAdvertisement.startSelectTypeOfAdvertisement();
-        });
     }
 
     @Override

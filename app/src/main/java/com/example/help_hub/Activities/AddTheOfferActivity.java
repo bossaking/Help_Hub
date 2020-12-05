@@ -23,6 +23,7 @@ import java.util.Map;
 public class AddTheOfferActivity extends AppCompatActivity implements TextWatcher {
 
     private EditText mNewOfferTitle;
+    private EditText mNewOfferDescription;
     private Button addNewOfferButton;
 
     private FirebaseFirestore firebaseFirestore;
@@ -42,22 +43,24 @@ public class AddTheOfferActivity extends AppCompatActivity implements TextWatche
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         mNewOfferTitle = findViewById(R.id.new_offer_title_edit_text);
+        mNewOfferDescription = findViewById(R.id.new_offer_description_edit_text);
 
         defaultBackground = mNewOfferTitle.getBackground();
         mNewOfferTitle.addTextChangedListener(this);
 
         addNewOfferButton = findViewById(R.id.new_offer_add_offer_button);
         addNewOfferButton.setOnClickListener(v -> {
-            addNewOffer(mNewOfferTitle.getText().toString().trim());
+            addNewOffer(mNewOfferTitle.getText().toString().trim(), mNewOfferDescription.getText().toString().trim());
         });
     }
 
-    private void addNewOffer(String offerTitle) {
+    private void addNewOffer(String offerTitle, String offerDescription) {
         if (!validateTitle(offerTitle)) {
             return;
         }
         Map<String, Object> offerMap = new HashMap<>();
         offerMap.put("Title", offerTitle);
+        offerMap.put("Description", offerDescription);
 
         firebaseFirestore.collection("offers").document().set(offerMap).addOnSuccessListener(v -> {
             Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();

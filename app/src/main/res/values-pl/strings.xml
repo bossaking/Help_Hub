@@ -5,4 +5,36 @@
     <string name="email_hint">E-mail</string>
     <string name="password_hint">Hasło</string>
     <string name="repeat_password_hint">Powtórz hasło</string>
+    <string name="email_empty_error">Pole nie może być puste</string>
+    <string name="loading_dialog_title">Ładowanie...</string>
+    <string name="go_to_login_text"><u>Zaloguj się</u></string>
+    <string name="email_validate_error">Nieprawidłowy e-mail</string>
+    <string name="password_length_error">Hasło musi zawierać co najmniej 8 znaków</string>
+    <string name="email_exists_error">Użytkownik z podanym e-mail już istnieje</string>
+    <string name="have_account_question">Masz już konto?</string>
+    <string name="registration_button" translatable="false">Zarejestruj</string>
+    <string name="password_match_error">Hasła są różne</string>
+    <string name="new_user_header">Wprawadź niezbędne dane</string>
+    <string name="new_user_user_name">Nazwa użytkownika</string>
+    <string name="new_user_phone_number">Numer telefonu</string>
+    <string name="new_user_city">Miasto</string>
+    <string name="save_button">Zapisz</string>
+    <string name="edit_button">Edytuj</string>
+    <string name="user_data_change_new_password_button">Zmień hasło</string>
+    <string name="add_new_offer_header">Dodaj nową ofertę</string>
+    <string name="new_offer_title" translatable="false">Tytuł oferty</string>
+    <string name="new_offer_category" translatable="false">Wybierz kategorię</string>
+    <string name="new_offer_select_category" translatable="false">Wybierz kategorię</string>
+    <string name="new_offer_description_title" translatable="false">Opis</string>
+    <string name="new_offer_add_offer_button" translatable="false">Dodaj ofertę</string>
+    <string name="new_offer_title_hint">np. Przepcham każdą zatkaną dziurę</string>
+    <string name="new_offer_description_hint">Napisz, w czym jesteś dobry i co oferujesz.</string>
+    <string name="new_notice_add_notice_button" translatable="false">Dodaj ofertę</string>
+    <string name="add_new_notice_header" translatable="false">Dodaj nowe ogłoszenie</string>
+    <string name="new_notice_description_title" translatable="false">Opis</string>
+    <string name="new_notice_title" translatable="false">Tytuł ogłoszenia</string>
+    <string name="new_notice_category" translatable="false">Kategoria</string>
+    <string name="new_notice_select_category" translatable="false">Wybierz kategorię</string>
+    <string name="new_notice_title_hint" translatable="false">np Zepsuła się pralka</string>
+    <string name="new_notice_description_hint" translatable="false">Napisz, jaki masz problem. Dodanie zdjęć to bardzo dobry pomysł. Skorzystaj z okazji, a na pewno nie pożałujesz</string>
 </resources>

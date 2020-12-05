@@ -5,4 +5,21 @@
     <string name="email_hint">Адрес E-mail</string>
     <string name="password_hint">Пароль</string>
     <string name="repeat_password_hint">Повторите пароль</string>
+    <string name="email_empty_error">Поле не может быть пустым</string>
+    <string name="loading_dialog_title">Загрузка...</string>
+    <string name="password_match_error" translatable="false">Пароли не совпадают</string>
+    <string name="password_length_error" translatable="false">Пароль должен состоять минимум из 8 знаков</string>
+    <string name="email_exists_error" translatable="false">Пользователь с таким e-mail уже существует</string>
+    <string name="email_validate_error" translatable="false">Недействительный e-mail</string>
+    <string name="have_account_question">Уже есть аккаунт?</string>
+    <string name="go_to_login_text"><u>Войти</u></string>
+    <string name="registration_button">Зарегистрироваться</string>
+    <string name="new_user_header">Введите необходимые данные</string>
+    <string name="new_user_user_name">Имя пользователя</string>
+    <string name="new_user_phone_number">Телефонный номер</string>
+    <string name="new_user_city">город</string>
+    <string name="save_button">Сохранить</string>
+    <string name="edit_button">редактировать</string>
+    <string name="user_data_change_new_password_button">Сменить пароль</string>
+    <string name="add_new_offer_header">Добавить новое предложение</string>
 </resources>

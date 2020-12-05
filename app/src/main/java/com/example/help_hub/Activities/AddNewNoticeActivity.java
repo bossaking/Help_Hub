@@ -40,6 +40,7 @@ import java.util.Map;
 public class AddNewNoticeActivity extends AppCompatActivity implements TextWatcher, PortfolioImagesRecyclerAdapter.OnClickListener, PortfolioImagesRecyclerAdapter.OnLongClickListener {
 
     private EditText mNewNoticeTitle;
+    private EditText mNewNoticeDescription;
     private Button addNewNoticeButton;
 
     private FirebaseFirestore firebaseFirestore;
@@ -67,13 +68,13 @@ public class AddNewNoticeActivity extends AppCompatActivity implements TextWatch
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         mNewNoticeTitle = findViewById(R.id.new_notice_title_edit_text);
-
+        mNewNoticeDescription = findViewById(R.id.new_notice_description_edit_text);
         defaultBackground = mNewNoticeTitle.getBackground();
         mNewNoticeTitle.addTextChangedListener(this);
 
         addNewNoticeButton = findViewById(R.id.new_offer_add_offer_button);
         addNewNoticeButton.setOnClickListener(v -> {
-            addNewNotice(mNewNoticeTitle.getText().toString().trim());
+            addNewNotice(mNewNoticeTitle.getText().toString().trim(), mNewNoticeDescription.getText().toString().trim());
         });
 
         context = getApplicationContext();
@@ -89,13 +90,13 @@ public class AddNewNoticeActivity extends AppCompatActivity implements TextWatch
         recyclerView.setAdapter(adapter);
     }
 
-    private void addNewNotice(String noticeTitle) {
+    private void addNewNotice(String noticeTitle, String noticeDescription) {
         if (!validateTitle(noticeTitle)) {
             return;
         }
         Map<String, Object> noticeMap = new HashMap<>();
         noticeMap.put("Title", noticeTitle);
-
+        noticeMap.put("Description", noticeDescription);
         firebaseFirestore.collection("notices").document().set(noticeMap).addOnSuccessListener(v -> {
             Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
             finish();

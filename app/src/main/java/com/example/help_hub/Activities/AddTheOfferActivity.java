@@ -20,11 +20,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddTheOfferActivity extends AppCompatActivity implements TextWatcher {
+public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextWatcher {
 
     private EditText mNewOfferTitle;
     private EditText mNewOfferDescription;
-    private Button addNewOfferButton;
+    private Button addNewOfferButton, categoriesButton;
 
     private FirebaseFirestore firebaseFirestore;
 
@@ -48,6 +48,12 @@ public class AddTheOfferActivity extends AppCompatActivity implements TextWatche
         defaultBackground = mNewOfferTitle.getBackground();
         mNewOfferTitle.addTextChangedListener(this);
 
+        categoriesButton = findViewById(R.id.new_offer_select_category_button);
+        categoriesButton.setOnClickListener(v -> SelectCategory());
+        SetOnTitleChangedListener(() -> {
+            categoriesButton.setText(categoryTitle + " / " + subCategoryTitle);
+        });
+
         addNewOfferButton = findViewById(R.id.new_offer_add_offer_button);
         addNewOfferButton.setOnClickListener(v -> {
             addNewOffer(mNewOfferTitle.getText().toString().trim(), mNewOfferDescription.getText().toString().trim());
@@ -55,7 +61,7 @@ public class AddTheOfferActivity extends AppCompatActivity implements TextWatche
     }
 
     private void addNewOffer(String offerTitle, String offerDescription) {
-        if (!validateTitle(offerTitle)) {
+        if (!validateData(offerTitle)) {
             return;
         }
         Map<String, Object> offerMap = new HashMap<>();
@@ -68,10 +74,14 @@ public class AddTheOfferActivity extends AppCompatActivity implements TextWatche
         }).addOnFailureListener(v -> Toast.makeText(getApplicationContext(), "Error: " + v.getLocalizedMessage(), Toast.LENGTH_LONG).show());
     }
 
-    private boolean validateTitle(String offerTitle) {
+    private boolean validateData(String offerTitle) {
         if (offerTitle.isEmpty()) {
             mNewOfferTitle.setBackgroundResource(R.drawable.edit_error_border);
             mNewOfferTitle.setError(getString(R.string.empty_field_error));
+            return false;
+        }
+        if(categoryTitle.isEmpty()){
+            Toast.makeText(this, getString(R.string.empty_field_error), Toast.LENGTH_LONG).show();
             return false;
         }
         return true;

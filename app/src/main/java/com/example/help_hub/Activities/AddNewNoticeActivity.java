@@ -37,11 +37,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AddNewNoticeActivity extends AppCompatActivity implements TextWatcher, PortfolioImagesRecyclerAdapter.OnClickListener, PortfolioImagesRecyclerAdapter.OnLongClickListener {
+public class AddNewNoticeActivity extends NewOfferNoticeCategory implements TextWatcher, PortfolioImagesRecyclerAdapter.OnClickListener, PortfolioImagesRecyclerAdapter.OnLongClickListener {
 
     private EditText mNewNoticeTitle;
     private EditText mNewNoticeDescription;
-    private Button addNewNoticeButton;
+    private Button addNewNoticeButton, categoriesButton;
 
     private FirebaseFirestore firebaseFirestore;
 
@@ -77,6 +77,12 @@ public class AddNewNoticeActivity extends AppCompatActivity implements TextWatch
             addNewNotice(mNewNoticeTitle.getText().toString().trim(), mNewNoticeDescription.getText().toString().trim());
         });
 
+        categoriesButton = findViewById(R.id.new_notice_select_category_button);
+        categoriesButton.setOnClickListener(v -> SelectCategory());
+        SetOnTitleChangedListener(() -> {
+            categoriesButton.setText(categoryTitle + " / " + subCategoryTitle);
+        });
+
         context = getApplicationContext();
 
         noticeImages = new ArrayList<>();
@@ -91,22 +97,28 @@ public class AddNewNoticeActivity extends AppCompatActivity implements TextWatch
     }
 
     private void addNewNotice(String noticeTitle, String noticeDescription) {
-        if (!validateTitle(noticeTitle)) {
+        if (!validateData(noticeTitle)) {
             return;
         }
         Map<String, Object> noticeMap = new HashMap<>();
         noticeMap.put("Title", noticeTitle);
         noticeMap.put("Description", noticeDescription);
+        noticeMap.put("Category", categoryTitle);
+        noticeMap.put("Subcategory", subCategoryTitle);
         firebaseFirestore.collection("notices").document().set(noticeMap).addOnSuccessListener(v -> {
             Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
             finish();
         }).addOnFailureListener(v -> Toast.makeText(getApplicationContext(), "Error: " + v.getLocalizedMessage(), Toast.LENGTH_LONG).show());
     }
 
-    private boolean validateTitle(String offerTitle) {
+    private boolean validateData(String offerTitle) {
         if (offerTitle.isEmpty()) {
             mNewNoticeTitle.setBackgroundResource(R.drawable.edit_error_border);
             mNewNoticeTitle.setError(getString(R.string.empty_field_error));
+            return false;
+        }
+        if(categoryTitle.isEmpty()){
+            Toast.makeText(this, getString(R.string.empty_field_error), Toast.LENGTH_LONG).show();
             return false;
         }
         return true;

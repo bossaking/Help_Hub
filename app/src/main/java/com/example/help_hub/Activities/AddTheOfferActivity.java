@@ -56,17 +56,19 @@ public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextW
 
         addNewOfferButton = findViewById(R.id.new_offer_add_offer_button);
         addNewOfferButton.setOnClickListener(v -> {
-            addNewOffer(mNewOfferTitle.getText().toString().trim(), mNewOfferDescription.getText().toString().trim());
+            title = mNewOfferTitle.getText().toString().trim();
+            description = mNewOfferDescription.getText().toString().trim();
+            addNewOffer();
         });
     }
 
-    private void addNewOffer(String offerTitle, String offerDescription) {
-        if (!validateData(offerTitle)) {
+    private void addNewOffer() {
+        if (!validateData() || !CheckForbiddenWords()) {
             return;
         }
         Map<String, Object> offerMap = new HashMap<>();
-        offerMap.put("Title", offerTitle);
-        offerMap.put("Description", offerDescription);
+        offerMap.put("Title", title);
+        offerMap.put("Description", description);
 
         firebaseFirestore.collection("offers").document().set(offerMap).addOnSuccessListener(v -> {
             Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
@@ -74,8 +76,8 @@ public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextW
         }).addOnFailureListener(v -> Toast.makeText(getApplicationContext(), "Error: " + v.getLocalizedMessage(), Toast.LENGTH_LONG).show());
     }
 
-    private boolean validateData(String offerTitle) {
-        if (offerTitle.isEmpty()) {
+    private boolean validateData() {
+        if (title.isEmpty()) {
             mNewOfferTitle.setBackgroundResource(R.drawable.edit_error_border);
             mNewOfferTitle.setError(getString(R.string.empty_field_error));
             return false;

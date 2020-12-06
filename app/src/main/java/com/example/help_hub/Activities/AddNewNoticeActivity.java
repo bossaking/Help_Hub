@@ -76,7 +76,9 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
 
         addNewNoticeButton = findViewById(R.id.new_offer_add_offer_button);
         addNewNoticeButton.setOnClickListener(v -> {
-            addNewNotice(mNewNoticeTitle.getText().toString().trim(), mNewNoticeDescription.getText().toString().trim());
+            title = mNewNoticeTitle.getText().toString().trim();
+            description = mNewNoticeDescription.getText().toString().trim();
+            addNewNotice();
         });
 
         categoriesButton = findViewById(R.id.new_notice_select_category_button);
@@ -98,13 +100,13 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         recyclerView.setAdapter(adapter);
     }
 
-    private void addNewNotice(String noticeTitle, String noticeDescription) {
-        if (!validateData(noticeTitle)) {
+    private void addNewNotice() {
+        if (!validateData() || !CheckForbiddenWords()) {
             return;
         }
         Map<String, Object> noticeMap = new HashMap<>();
-        noticeMap.put("Title", noticeTitle);
-        noticeMap.put("Description", noticeDescription);
+        noticeMap.put("Title", title);
+        noticeMap.put("Description", description);
         noticeMap.put("Category", categoryTitle);
         noticeMap.put("Subcategory", subCategoryTitle);
         String id = firebaseFirestore.collection("notices").document().getId();
@@ -124,8 +126,8 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         }
     }
 
-    private boolean validateData(String offerTitle) {
-        if (offerTitle.isEmpty()) {
+    private boolean validateData() {
+        if (title.isEmpty()) {
             mNewNoticeTitle.setBackgroundResource(R.drawable.edit_error_border);
             mNewNoticeTitle.setError(getString(R.string.empty_field_error));
             return false;

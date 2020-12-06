@@ -36,13 +36,13 @@ public class NewOfferNoticeCategory extends AppCompatActivity {
 
     protected void SelectCategory(){
         Intent intent = new Intent(getApplicationContext(), SelectCategoryActivity.class);
-        startActivityForResult(intent ,100);
+        startActivityForResult(intent ,1011);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == RESULT_OK) {
+        if (requestCode == 1011 && resultCode == RESULT_OK) {
             categoryTitle = data.getStringExtra("CAT_TITLE");
             subCategoryTitle = data.getStringExtra("SUBCAT_TITLE");
             titleChanged();

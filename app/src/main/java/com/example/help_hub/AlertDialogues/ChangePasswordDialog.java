@@ -22,7 +22,9 @@ public class ChangePasswordDialog implements TextWatcher {
     private EditText mPassword;
     private Drawable defaultBackground;
 
-    public ChangePasswordDialog(Activity myActivity) {this.myActivity = myActivity;}
+    public ChangePasswordDialog(Activity myActivity) {
+        this.myActivity = myActivity;
+    }
 
     public void StartChangePasswordDialog() {
 

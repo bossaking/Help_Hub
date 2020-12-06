@@ -2,6 +2,7 @@ package com.example.help_hub.Activities;
 
 import android.content.Intent;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,12 +10,14 @@ import android.os.Bundle;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.help_hub.Adapters.CategoriesAdapter;
 import com.example.help_hub.OtherClasses.Category;
 import com.example.help_hub.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.*;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

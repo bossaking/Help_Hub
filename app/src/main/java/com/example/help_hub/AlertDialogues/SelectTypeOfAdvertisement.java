@@ -14,12 +14,14 @@ public class SelectTypeOfAdvertisement {
 
     private AlertDialog dialog;
 
-    public SelectTypeOfAdvertisement(Activity myActivity) {this.myActivity = myActivity;}
+    public SelectTypeOfAdvertisement(Activity myActivity) {
+        this.myActivity = myActivity;
+    }
 
     public void startSelectTypeOfAdvertisement() {
         AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
         builder.setPositiveButton("Offer", null);
-        builder.setNegativeButton("Notice", null);
+        builder.setNegativeButton("Announcement", null);
 
         dialog = builder.create();
         dialog.setCancelable(true);

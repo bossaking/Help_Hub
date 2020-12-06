@@ -76,18 +76,18 @@
     <string name="new_offer_select_category" translatable="false">Select category</string>
     <string name="new_offer_description_title" translatable="false">Description</string>
     <string name="new_offer_add_offer_button" translatable="false">Add offer</string>
-    <string name="new_offer_title_hint" translatable="false">e.g. I push every clogged hole</string>
+    <string name="new_offer_title_hint" translatable="false">e.g. I will fix your washing machine</string>
     <string name="new_offer_description_hint" translatable="false">Write what you are good at and what you offer.</string>
 
     <!--ADD NOTICE-->
-    <string name="add_new_notice_header" translatable="false">Add new notice</string>
-    <string name="new_notice_title" translatable="false">Title of the notice</string>
+    <string name="add_new_notice_header" translatable="false">Add new announcement</string>
+    <string name="new_notice_title" translatable="false">Title of the announcement</string>
     <string name="new_notice_category" translatable="false">Category</string>
     <string name="new_notice_select_category" translatable="false">Select category</string>
     <string name="new_notice_description_title" translatable="false">Description</string>
-    <string name="new_notice_add_notice_button" translatable="false">Add offer</string>
+    <string name="new_notice_add_notice_button" translatable="false">Add announcement</string>
     <string name="new_notice_title_hint" translatable="false">e.g. Washing machine broken</string>
     <string name="new_notice_description_hint" translatable="false">Write what your problem is. Adding photos is a very good idea. Take this opportunity and you will certainly not regret it.</string>
-    <string name="example_category_title">Example Category Title</string>
+    <string name="example_category_title" translatable="false">Example Category Title</string>
 
 </resources>

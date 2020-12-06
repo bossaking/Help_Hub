@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
 import com.example.help_hub.OtherClasses.PortfolioImage;
 import com.example.help_hub.Adapters.PortfolioImagesRecyclerAdapter;
 import com.example.help_hub.R;
@@ -43,7 +44,6 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-
         userPortfolioImagesDatabase = UserPortfolioImagesDatabase.getInstance(this);
         adapter = new PortfolioImagesRecyclerAdapter(userPortfolioImagesDatabase.GetPortfolioImages(), this, this);
         userPortfolioImagesDatabase.arrayChangedListener = () -> {
@@ -61,10 +61,10 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 100 && resultCode == Activity.RESULT_OK){
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             ClipData clipData = data.getClipData();
-            if(clipData != null){
-                for(int i = 0; i < clipData.getItemCount(); i++){
+            if (clipData != null) {
+                for (int i = 0; i < clipData.getItemCount(); i++) {
 
                     PortfolioImage portfolioImage = new PortfolioImage(DocumentFile.fromSingleUri(getApplicationContext(),
                             clipData.getItemAt(i).getUri()).getName(), clipData.getItemAt(i).getUri());
@@ -77,13 +77,13 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
         adapter.notifyDataSetChanged();
     }
 
-    private void AddNewPortfolioPhotos(){
+    private void AddNewPortfolioPhotos() {
 
         Intent intent;
 
-        try{
+        try {
             intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        }catch (Exception e){
+        } catch (Exception e) {
             intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         }
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
@@ -93,13 +93,13 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
 
     @Override
     public void onImageClick(int position) {
-        if(position == userPortfolioImagesDatabase.GetPortfolioImagesCount() - 1)
+        if (position == userPortfolioImagesDatabase.GetPortfolioImagesCount() - 1)
             AddNewPortfolioPhotos();
     }
 
     @Override
     public void onImageLongClick(int position) {
-        if(position == userPortfolioImagesDatabase.GetPortfolioImagesCount() - 1)
+        if (position == userPortfolioImagesDatabase.GetPortfolioImagesCount() - 1)
             return;
 
         LayoutInflater layoutInflater = getLayoutInflater();
@@ -110,7 +110,7 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
         AlertDialog dialog = builder.create();
 
         Button deletePhoto = view.findViewById(R.id.delete_portfolio_photo);
-        deletePhoto.setOnClickListener(c->{
+        deletePhoto.setOnClickListener(c -> {
             userPortfolioImagesDatabase.DeletePortfolioImageFromFirebase(userPortfolioImagesDatabase.GetImage(position));
             adapter.notifyDataSetChanged();
             dialog.dismiss();
@@ -125,7 +125,7 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
 
         int id = item.getItemId();
 
-        if(id == android.R.id.home){
+        if (id == android.R.id.home) {
             onBackPressed();
             return true;
         }

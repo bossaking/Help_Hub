@@ -26,18 +26,19 @@
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <TextView
         android:id="@+id/add_new_notice_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_new_notice_header"
+        android:textColor="@color/black"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/my_toolbar"/>
+        app:layout_constraintTop_toBottomOf="@id/my_toolbar" />
 
     <TextView
         android:id="@+id/new_notice_title_text_view"
@@ -45,6 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/new_notice_title"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
@@ -71,6 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/new_offer_category"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
@@ -98,6 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/new_offer_description_title"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
@@ -111,10 +115,11 @@
         android:layout_height="120dp"
         android:layout_marginTop="4dp"
         android:background="@drawable/login_edit_text"
-        android:padding="10dp"
+        android:gravity="top"
         android:hint="@string/new_notice_description_hint"
         android:inputType="textMultiLine"
-        android:gravity="top"
+        android:padding="10dp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/new_notice_description_text_view" />
@@ -123,14 +128,14 @@
         android:id="@+id/new_notice_images"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:orientation="vertical"
         android:gravity="center"
         android:layoutDirection="ltr"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/new_offer_add_offer_button"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/new_notice_description_edit_text"
-        app:layout_constraintBottom_toTopOf="@+id/new_offer_add_offer_button"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2">
 
     </androidx.recyclerview.widget.RecyclerView>

@@ -14,10 +14,11 @@ import com.google.firebase.storage.StorageReference;
 
 public class UserDatabase {
 
-    public interface ProfileDataLoaded{
+    public interface ProfileDataLoaded {
         void ProfileDataLoaded();
     }
-    public interface ProfileImageLoaded{
+
+    public interface ProfileImageLoaded {
         void ProfileImageLoaded(Uri uri);
     }
 
@@ -54,21 +55,21 @@ public class UserDatabase {
         return instance;
     }
 
-    public static void ClearInstance(){
+    public static void ClearInstance() {
         instance = null;
     }
 
-    public void getUserFromFirebase(){
+    public void getUserFromFirebase() {
 
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
         user = new User(userId);
-            documentReference.addSnapshotListener((documentSnapshot, e) -> {
+        documentReference.addSnapshotListener((documentSnapshot, e) -> {
             user.setName(documentSnapshot.getString("Name"));
             user.setPhoneNumber(documentSnapshot.getString("Phone number"));
             user.setCity(documentSnapshot.getString("City"));
             user.setDescription(documentSnapshot.getString("Description"));
             user.setRole(documentSnapshot.getString("Role"));
-            if(profileDataLoaded != null){
+            if (profileDataLoaded != null) {
                 profileDataLoaded.ProfileDataLoaded();
             }
 
@@ -78,12 +79,12 @@ public class UserDatabase {
         StorageReference profileRef = storageReference.child("users/" + userId + "/profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(uri -> {
             user.setProfileImage(uri);
-            if(profileImageLoaded != null){
+            if (profileImageLoaded != null) {
                 profileImageLoaded.ProfileImageLoaded(uri);
             }
         }).addOnFailureListener(e -> {
             user.setProfileImage(Uri.parse("android.resource://" + context.getPackageName() + "/drawable/default_user_image"));
-            if(profileImageLoaded != null){
+            if (profileImageLoaded != null) {
                 profileImageLoaded.ProfileImageLoaded(user.getProfileImage());
             }
             Toast.makeText(context, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
@@ -91,7 +92,7 @@ public class UserDatabase {
 
     }
 
-    public void SetUserProfileImage(Uri imageUri){
+    public void SetUserProfileImage(Uri imageUri) {
         user.setProfileImage(imageUri);
         LoadUserProfileImageToFirebase();
     }
@@ -106,7 +107,7 @@ public class UserDatabase {
         });
     }
 
-    public User getUser(){
+    public User getUser() {
         return user;
     }
 }

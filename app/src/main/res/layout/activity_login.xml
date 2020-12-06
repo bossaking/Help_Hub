@@ -59,28 +59,29 @@
         app:layout_constraintTop_toBottomOf="@+id/login_logo" />
 
     <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/login_password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textColorHint="@color/login_form_details"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/white"
-            app:hintEnabled="false"
-            app:layout_constraintEnd_toStartOf="@id/guideline_right"
-            app:layout_constraintStart_toStartOf="@id/guideline_left"
-            app:layout_constraintTop_toBottomOf="@id/login_email">
+        android:id="@+id/login_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColorHint="@color/login_form_details"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/login_email"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/white">
 
-    <com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/login_password_text"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_edit_text"
             android:hint="@string/password_hint"
             android:inputType="textPassword"
-            android:background="@drawable/login_edit_text"
             android:padding="16dp"
             android:textColorHint="@color/login_form_details"
 
-    />
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 

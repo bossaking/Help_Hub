@@ -1,0 +1,24 @@
+
+S
+java:S1128	"=Remove this unused import 'android.renderscript.ScriptGroup'.(Äã‹°
+c	java:S100P"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Å®Ñ¡
+>
+java:S1604?"(Make this anonymous inner class a lambda(žÔÐÎ
+c	java:S100&"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‚ûÛ
+M
+java:S1128"2Remove this unused import 'android.widget.Button'.(²òžýÿÿÿÿ
+—
+java:S1186m"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(±¾ê
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ßµÂ¨
+S
+java:S1128"8Remove this unused import 'android.widget.LinearLayout'.(çîšçúÿÿÿÿ
+C
+java:S1604D"(Make this anonymous inner class a lambda(œÁÈÌþÿÿÿÿ
+>
+java:S16047"(Make this anonymous inner class a lambda(ŸÏ¡Ž
+T
+java:S1128">Remove this unused import 'android.provider.ContactsContract'.(üç§±
+H
+java:S1128"2Remove this unused import 'android.app.ActionBar'.(Åêñª
+—
+java:S1186c"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(«û³±

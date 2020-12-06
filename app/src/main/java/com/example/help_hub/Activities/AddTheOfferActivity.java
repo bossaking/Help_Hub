@@ -82,7 +82,7 @@ public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextW
             mNewOfferTitle.setError(getString(R.string.empty_field_error));
             return false;
         }
-        if(categoryTitle.isEmpty()){
+        if (categoryTitle.isEmpty()) {
             Toast.makeText(this, getString(R.string.empty_field_error), Toast.LENGTH_LONG).show();
             return false;
         }
@@ -108,7 +108,7 @@ public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextW
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if(id == android.R.id.home){
+        if (id == android.R.id.home) {
             onBackPressed();
             return true;
         }

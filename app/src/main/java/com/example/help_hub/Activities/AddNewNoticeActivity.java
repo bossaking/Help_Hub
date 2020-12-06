@@ -31,6 +31,8 @@ import com.example.help_hub.OtherClasses.PortfolioImage;
 import com.example.help_hub.R;
 import com.example.help_hub.Singletones.UserPortfolioImagesDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,10 +107,21 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         noticeMap.put("Description", noticeDescription);
         noticeMap.put("Category", categoryTitle);
         noticeMap.put("Subcategory", subCategoryTitle);
-        firebaseFirestore.collection("notices").document().set(noticeMap).addOnSuccessListener(v -> {
+        String id = firebaseFirestore.collection("notices").document().getId();
+        firebaseFirestore.collection("notices").document(id).set(noticeMap).addOnSuccessListener(v -> {
             Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
             finish();
         }).addOnFailureListener(v -> Toast.makeText(getApplicationContext(), "Error: " + v.getLocalizedMessage(), Toast.LENGTH_LONG).show());
+
+        for(int i = 0; i < noticeImages.size() - 1; i++) {
+            PortfolioImage portfolioImage = noticeImages.get(i);
+            StorageReference imgRef = FirebaseStorage.getInstance().getReference().child("notices/" + id + "/images/" + portfolioImage.getImageTitle());
+            imgRef.putFile(portfolioImage.getImageUri()).addOnSuccessListener(taskSnapshot -> {
+                Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+            }).addOnFailureListener(e -> {
+                Toast.makeText(context, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            });
+        }
     }
 
     private boolean validateData(String offerTitle) {

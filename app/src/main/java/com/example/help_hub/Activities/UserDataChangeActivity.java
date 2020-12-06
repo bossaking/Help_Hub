@@ -62,7 +62,7 @@ public class UserDataChangeActivity extends AppCompatActivity {
         });
     }
 
-    public void UpdateUserDataFirebase(){
+    public void UpdateUserDataFirebase() {
 
         DocumentReference documentReference = FirebaseFirestore.getInstance().collection("users").document(user.getId());
 

@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
 
         final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-        if(firebaseAuth.getCurrentUser() != null){
+        if (firebaseAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }
@@ -61,18 +61,18 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
             final LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
             loadingDialog.StartLoadingDialog();
 
-            if(!ValidateEmail(email) || !ValidatePassword(password)){
+            if (!ValidateEmail(email) || !ValidatePassword(password)) {
                 loadingDialog.DismissDialog();
                 return;
             }
 
 
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
-                }else{
+                } else {
                     Toast.makeText(LoginActivity.this, "Error: " + task.getException(), Toast.LENGTH_LONG).show();
                     loadingDialog.DismissDialog();
                 }
@@ -105,15 +105,15 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
 
     }
 
-    private boolean ValidateEmail(String email){
+    private boolean ValidateEmail(String email) {
 
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             mEmail.setError(getString(R.string.email_empty_error));
             mEmail.setBackgroundResource(R.drawable.edit_error_border);
             return false;
         }
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             mEmail.setError(getString(R.string.email_validate_error));
             mEmail.setBackgroundResource(R.drawable.edit_error_border);
             return false;
@@ -122,14 +122,14 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
         return true;
     }
 
-    private boolean ValidatePassword(String password){
+    private boolean ValidatePassword(String password) {
 
-        if(password.length() < 8){
+        if (password.length() < 8) {
             mPassword.setError(getString(R.string.password_length_error));
             mPassword.setBackgroundResource(R.drawable.edit_error_border);
             return false;
         }
 
-        return  true;
+        return true;
     }
 }

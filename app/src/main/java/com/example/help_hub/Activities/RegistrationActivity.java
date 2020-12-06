@@ -64,7 +64,7 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
             final String password = mPassword.getText().toString().trim();
             String repeatPassword = mRepeatPassword.getText().toString().trim();
 
-            if(!ValidateEmail(email) || !ValidatePassword(password, repeatPassword)) {
+            if (!ValidateEmail(email) || !ValidatePassword(password, repeatPassword)) {
                 return;
             }
 
@@ -75,14 +75,14 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
             firebaseAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                 @Override
                 public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         List<String> methods = task.getResult().getSignInMethods();
-                        if(!methods.isEmpty()){
+                        if (!methods.isEmpty()) {
 
                             mEmail.setError(getString(R.string.email_exists_error));
                             mEmail.setBackgroundResource(R.drawable.edit_error_border);
                             mEmail.requestFocus();
-                        }else{
+                        } else {
                             Intent intent = new Intent(getApplicationContext(), NewUserBasicInformationsActivity.class);
                             intent.putExtra("USER_EMAIL", email);
                             intent.putExtra("USER_PASSWORD", password);
@@ -97,15 +97,15 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
 
     }
 
-    private boolean ValidateEmail(String email){
+    private boolean ValidateEmail(String email) {
 
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             mEmail.setError(getString(R.string.email_empty_error));
             mEmail.setBackgroundResource(R.drawable.edit_error_border);
             return false;
         }
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             mEmail.setError(getString(R.string.email_validate_error));
             mEmail.setBackgroundResource(R.drawable.edit_error_border);
             return false;
@@ -114,21 +114,21 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
         return true;
     }
 
-    private boolean ValidatePassword(String password, String repeatPassword){
+    private boolean ValidatePassword(String password, String repeatPassword) {
 
-        if(password.length() < 8){
+        if (password.length() < 8) {
             mPassword.setError(getString(R.string.password_length_error));
             mPassword.setBackgroundResource(R.drawable.edit_error_border);
             return false;
         }
 
-        if(!password.equals(repeatPassword)){
+        if (!password.equals(repeatPassword)) {
             mRepeatPassword.setError(getString(R.string.password_match_error));
             mRepeatPassword.setBackgroundResource(R.drawable.edit_error_border);
             return false;
         }
 
-        return  true;
+        return true;
     }
 
     @Override

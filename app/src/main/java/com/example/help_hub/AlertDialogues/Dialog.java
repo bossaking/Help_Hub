@@ -1,7 +1,6 @@
 package com.example.help_hub.AlertDialogues;
 
 
-
 public class Dialog {
 
     public interface onDialogDismissedListener {
@@ -10,12 +9,12 @@ public class Dialog {
 
     public onDialogDismissedListener onDialogDismissedListener;
 
-    public void setOnDialogDismissedListener(onDialogDismissedListener dismissedListener){
+    public void setOnDialogDismissedListener(onDialogDismissedListener dismissedListener) {
         onDialogDismissedListener = dismissedListener;
     }
 
-    public void dismissDialog(){
-        if(onDialogDismissedListener != null){
+    public void dismissDialog() {
+        if (onDialogDismissedListener != null) {
             onDialogDismissedListener.onDismissed();
         }
     }

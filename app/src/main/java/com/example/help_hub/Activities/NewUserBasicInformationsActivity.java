@@ -73,9 +73,9 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
         });
     }
 
-    private boolean ValidateUserName(String userName){
+    private boolean ValidateUserName(String userName) {
 
-        if(userName.isEmpty()){
+        if (userName.isEmpty()) {
             mUserName.setBackgroundResource(R.drawable.edit_error_border);
             mUserName.setError(getString(R.string.empty_field_error));
             return false;
@@ -83,9 +83,10 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
 
         return true;
     }
-    private boolean ValidatePhoneNumber(String phoneNumber){
 
-        if(phoneNumber.isEmpty()){
+    private boolean ValidatePhoneNumber(String phoneNumber) {
+
+        if (phoneNumber.isEmpty()) {
             mUserPhoneNumber.setBackgroundResource(R.drawable.edit_error_border);
             mUserPhoneNumber.setError(getString(R.string.empty_field_error));
             return false;
@@ -93,9 +94,10 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
 
         return true;
     }
-    private boolean ValidateCity(String city){
 
-        if(city.isEmpty()){
+    private boolean ValidateCity(String city) {
+
+        if (city.isEmpty()) {
             mUserCity.setBackgroundResource(R.drawable.edit_error_border);
             mUserCity.setError(getString(R.string.empty_field_error));
             return false;
@@ -104,13 +106,13 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
         return true;
     }
 
-    private void Registration(String email, String password){
+    private void Registration(String email, String password) {
 
         final String name = mUserName.getText().toString().trim();
         final String phoneNumber = mUserPhoneNumber.getText().toString().trim();
         final String city = mUserCity.getText().toString().trim();
 
-        if(!ValidateUserName(name) || !ValidatePhoneNumber(phoneNumber) || !ValidateCity(city)){
+        if (!ValidateUserName(name) || !ValidatePhoneNumber(phoneNumber) || !ValidateCity(city)) {
             return;
         }
 
@@ -121,10 +123,10 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
             //Jeżeli udało się
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Toast.makeText(NewUserBasicInformationsActivity.this, "User created", Toast.LENGTH_SHORT).show();
                     SaveUserData(name, phoneNumber, city);
-                }else{
+                } else {
                     Toast.makeText(NewUserBasicInformationsActivity.this, "Error: " + task.getException(), Toast.LENGTH_SHORT).show();
                     loadingDialog.DismissDialog();
                 }
@@ -141,7 +143,7 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
 
     }
 
-    private void SaveUserData(String name, String phoneNumber, String city){
+    private void SaveUserData(String name, String phoneNumber, String city) {
 
         String userId = firebaseAuth.getUid();
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);

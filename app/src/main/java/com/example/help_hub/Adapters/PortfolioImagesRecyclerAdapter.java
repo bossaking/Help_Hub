@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,10 +20,11 @@ import java.util.List;
 public class PortfolioImagesRecyclerAdapter extends RecyclerView.Adapter {
 
 
-    public interface OnClickListener{
+    public interface OnClickListener {
         void onImageClick(int position);
     }
-    public interface  OnLongClickListener{
+
+    public interface OnLongClickListener {
         void onImageLongClick(int position);
     }
 
@@ -58,7 +60,7 @@ public class PortfolioImagesRecyclerAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public PortfolioImagesRecyclerAdapter(List<PortfolioImage> images, OnClickListener onClickListener, OnLongClickListener onLongClickListener){
+    public PortfolioImagesRecyclerAdapter(List<PortfolioImage> images, OnClickListener onClickListener, OnLongClickListener onLongClickListener) {
         this.images = images;
         this.onClickListener = onClickListener;
         this.onLongClickListener = onLongClickListener;
@@ -76,7 +78,7 @@ public class PortfolioImagesRecyclerAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Uri currentUri = images.get(position).getImageUri();
-        ImageView imageView = ((AdapterViewHolder)holder).imageView;
+        ImageView imageView = ((AdapterViewHolder) holder).imageView;
         Glide.with(holder.itemView).load(currentUri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24).into(imageView);
     }
 

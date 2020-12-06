@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         loadingDialog = new LoadingDialog(this);
         loadingDialog.StartLoadingDialog();
 
-        if(UserDatabase.instance == null){
+        if (UserDatabase.instance == null) {
             userDatabase = UserDatabase.getInstance(this);
             userDatabase.profileDataLoaded = this::CheckRole;
         }
@@ -51,13 +51,13 @@ public class MainActivity extends AppCompatActivity {
         fragment.getChildFragmentManager().getFragments().get(0).onActivityResult(requestCode, resultCode, data);
     }
 
-    public void CheckRole(){
+    public void CheckRole() {
         navView = findViewById(R.id.nav_view);
-        if(userDatabase.getUser().getRole() != null){
-            if(userDatabase.getUser().getRole().equals("Administrator")) {
+        if (userDatabase.getUser().getRole() != null) {
+            if (userDatabase.getUser().getRole().equals("Administrator")) {
                 navView.getMenu().findItem(R.id.administration).setVisible(true);
             }
-        }else{
+        } else {
             userDatabase.getUser().setRole("User");
         }
 

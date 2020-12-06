@@ -56,11 +56,11 @@ public class UserPortfolioImagesDatabase {
         return instance;
     }
 
-    public static void ClearInstance(){
+    public static void ClearInstance() {
         instance = null;
     }
 
-    public void Initialize(){
+    public void Initialize() {
         GetAllPhotosFromFirebase();
     }
 
@@ -106,9 +106,9 @@ public class UserPortfolioImagesDatabase {
     }
 
     public void AddNewImage(PortfolioImage portfolioImage) {
-        if(GetPortfolioImagesCount() == 0){
+        if (GetPortfolioImagesCount() == 0) {
             portfolioImages.add(portfolioImages.size(), portfolioImage);
-        }else{
+        } else {
             portfolioImages.add(portfolioImages.size() - 1, portfolioImage);
         }
         if (arrayChangedListener != null) {

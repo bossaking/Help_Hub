@@ -31,11 +31,11 @@ public class ResetPasswordDialog implements TextWatcher {
     Drawable defaultBackground;
     AlertDialog dialog;
 
-    public ResetPasswordDialog(Activity myActivity){
+    public ResetPasswordDialog(Activity myActivity) {
         this.myActivity = myActivity;
     }
 
-    public void StartResetPasswordDialog(){
+    public void StartResetPasswordDialog() {
 
         mEmail = new EditText(myActivity.getApplicationContext());
         defaultBackground = mEmail.getBackground();
@@ -57,7 +57,7 @@ public class ResetPasswordDialog implements TextWatcher {
             public void onClick(View v) {
                 String email = mEmail.getText().toString().trim();
 
-                if(!ValidateEmail(email)){
+                if (!ValidateEmail(email)) {
                     return;
                 }
                 FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -77,16 +77,16 @@ public class ResetPasswordDialog implements TextWatcher {
         });
     }
 
-    private boolean ValidateEmail(String email){
+    private boolean ValidateEmail(String email) {
 
 
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             mEmail.setError(myActivity.getString(R.string.email_empty_error));
             mEmail.setBackgroundResource(R.drawable.edit_error_border);
             return false;
         }
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             mEmail.setError(myActivity.getString(R.string.email_validate_error));
             mEmail.setBackgroundResource(R.drawable.edit_error_border);
             return false;

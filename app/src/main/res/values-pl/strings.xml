@@ -27,7 +27,7 @@
     <string name="new_offer_select_category" translatable="false">Wybierz kategorię</string>
     <string name="new_offer_description_title" translatable="false">Opis</string>
     <string name="new_offer_add_offer_button" translatable="false">Dodaj ofertę</string>
-    <string name="new_offer_title_hint">np. Przepcham każdą zatkaną dziurę</string>
+    <string name="new_offer_title_hint">np. Naprawię Twoją pralkę</string>
     <string name="new_offer_description_hint">Napisz, w czym jesteś dobry i co oferujesz.</string>
     <string name="new_notice_add_notice_button" translatable="false">Dodaj ofertę</string>
     <string name="add_new_notice_header" translatable="false">Dodaj nowe ogłoszenie</string>
@@ -36,5 +36,5 @@
     <string name="new_notice_category" translatable="false">Kategoria</string>
     <string name="new_notice_select_category" translatable="false">Wybierz kategorię</string>
     <string name="new_notice_title_hint" translatable="false">np Zepsuła się pralka</string>
-    <string name="new_notice_description_hint" translatable="false">Napisz, jaki masz problem. Dodanie zdjęć to bardzo dobry pomysł. Skorzystaj z okazji, a na pewno nie pożałujesz</string>
+    <string name="new_notice_description_hint" translatable="false">Napisz, jaki masz problem. Dodanie zdjęć to bardzo dobry pomysł. Skorzystaj z okazji, a na pewno nie pożałujesz.</string>
 </resources>

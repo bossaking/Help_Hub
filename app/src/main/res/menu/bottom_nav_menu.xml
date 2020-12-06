@@ -15,6 +15,6 @@
         android:id="@+id/administration"
         android:icon="@drawable/ic_baseline_admin_panel_settings_24"
         android:title="@string/title_administration_panel"
-        android:visible="false"/>
+        android:visible="false" />
 
 </menu>

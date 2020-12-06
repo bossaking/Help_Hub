@@ -1,0 +1,21 @@
+
+?
+java:S1659")Declare "PhoneNumber" on a separate line.(æì—
+8
+java:S1659""Declare "City" on a separate line.(æì—
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ğ€¥È
+b	java:S116"MRename this field "Id" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(æì—
+6
+java:S1659" Declare "Id" on a separate line.(æì—
+d	java:S116"ORename this field "Role" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(æì—
+d	java:S116"ORename this field "Name" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(æì—
+k	java:S117
+"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(“¾ã®úÿÿÿÿ
+k	java:S116"VRename this field "PhoneNumber" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(æì—
+k	java:S116"VRename this field "Description" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(æì—
+?
+java:S1659")Declare "Description" on a separate line.(æì—
+8
+java:S1659""Declare "Role" on a separate line.(æì—
+d	java:S116"ORename this field "City" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(æì—
+q	java:S116"WRename this field "ProfileImage" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÇÛ—ùÿÿÿÿ

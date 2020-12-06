@@ -109,15 +109,15 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         noticeMap.put("Description", description);
         noticeMap.put("Category", categoryTitle);
         noticeMap.put("Subcategory", subCategoryTitle);
-        String id = firebaseFirestore.collection("notices").document().getId();
-        firebaseFirestore.collection("notices").document(id).set(noticeMap).addOnSuccessListener(v -> {
+        String id = firebaseFirestore.collection("announcement").document().getId();
+        firebaseFirestore.collection("announcement").document(id).set(noticeMap).addOnSuccessListener(v -> {
             Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
             finish();
         }).addOnFailureListener(v -> Toast.makeText(getApplicationContext(), "Error: " + v.getLocalizedMessage(), Toast.LENGTH_LONG).show());
 
-        for(int i = 0; i < noticeImages.size() - 1; i++) {
+        for (int i = 0; i < noticeImages.size() - 1; i++) {
             PortfolioImage portfolioImage = noticeImages.get(i);
-            StorageReference imgRef = FirebaseStorage.getInstance().getReference().child("notices/" + id + "/images/" + portfolioImage.getImageTitle());
+            StorageReference imgRef = FirebaseStorage.getInstance().getReference().child("announcement/" + id + "/images/" + portfolioImage.getImageTitle());
             imgRef.putFile(portfolioImage.getImageUri()).addOnSuccessListener(taskSnapshot -> {
                 Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
             }).addOnFailureListener(e -> {
@@ -132,7 +132,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
             mNewNoticeTitle.setError(getString(R.string.empty_field_error));
             return false;
         }
-        if(categoryTitle.isEmpty()){
+        if (categoryTitle.isEmpty()) {
             Toast.makeText(this, getString(R.string.empty_field_error), Toast.LENGTH_LONG).show();
             return false;
         }
@@ -159,10 +159,10 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 100 && resultCode == Activity.RESULT_OK){
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             ClipData clipData = data.getClipData();
-            if(clipData != null){
-                for(int i = 0; i < clipData.getItemCount(); i++){
+            if (clipData != null) {
+                for (int i = 0; i < clipData.getItemCount(); i++) {
 
                     PortfolioImage noticeImage = new PortfolioImage(DocumentFile.fromSingleUri(getApplicationContext(),
                             clipData.getItemAt(i).getUri()).getName(), clipData.getItemAt(i).getUri());
@@ -177,9 +177,9 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
     private void addNewNoticePhotos() {
         Intent intent;
 
-        try{
+        try {
             intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        }catch (Exception e){
+        } catch (Exception e) {
             intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         }
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
@@ -188,13 +188,13 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
 
     @Override
     public void onImageClick(int position) {
-        if(position == getNoticeImagesCount() - 1)
+        if (position == getNoticeImagesCount() - 1)
             addNewNoticePhotos();
     }
 
     @Override
     public void onImageLongClick(int position) {
-        if(position == getNoticeImagesCount() - 1)
+        if (position == getNoticeImagesCount() - 1)
             return;
 
         LayoutInflater layoutInflater = getLayoutInflater();
@@ -205,7 +205,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         AlertDialog dialog = builder.create();
 
         Button deletePhoto = view.findViewById(R.id.delete_portfolio_photo);
-        deletePhoto.setOnClickListener(c->{
+        deletePhoto.setOnClickListener(c -> {
             noticeImages.remove(getImage(position));
             adapter.notifyDataSetChanged();
             dialog.dismiss();
@@ -227,7 +227,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if(id == android.R.id.home){
+        if (id == android.R.id.home) {
             onBackPressed();
             return true;
         }

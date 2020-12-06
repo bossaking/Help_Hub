@@ -1,8 +1,12 @@
 
-c	java:S1004"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡Š³Ö
-b
-java:S1128"GRemove this unused import 'androidx.navigation.ui.AppBarConfiguration'.(È¸›şÿÿÿÿ
-Q	java:S110"<This class has 9 parents which is greater than 5 authorized.(²Ú±
-Q
-java:S1117";Rename "navView" which hides the field declared at line 22.(‹Å´Í
+Q	java:S110"<This class has 9 parents which is greater than 5 authorized.(²Ú±
 v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Œí´È8“ÁËà.
+b
+java:S1128"GRemove this unused import 'androidx.navigation.ui.AppBarConfiguration'.(È¸›şÿÿÿÿ
+Q
+java:S1117!";Rename "navView" which hides the field declared at line 24.(‹Å´Í
+w
+java:S1128"ZRemove this unused import 'com.example.help_hub.AlertDialogues.SelectTypeOfAdvertisement'.(°ã˜Ç8àçŒÈã.
+c	java:S1006"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡Š³Ö
+„
+java:S1128"bRemove this unused import 'com.google.android.material.floatingactionbutton.FloatingActionButton'.(ôˆêãÿÿÿÿÿ8àçŒÈã.

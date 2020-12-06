@@ -88,5 +88,6 @@
     <string name="new_notice_add_notice_button" translatable="false">Add offer</string>
     <string name="new_notice_title_hint" translatable="false">e.g. Washing machine broken</string>
     <string name="new_notice_description_hint" translatable="false">Write what your problem is. Adding photos is a very good idea. Take this opportunity and you will certainly not regret it.</string>
+    <string name="example_category_title">Example Category Title</string>
 
 </resources>

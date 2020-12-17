@@ -16,7 +16,7 @@
         tools:layout="@layout/fragment_orders"/>
     <fragment
         android:id="@+id/want_to_help"
-        android:name="com.example.help_hub.Fragments.NeedHelpFragment"
+        android:name="com.example.help_hub.Fragments.WantToHelpFragment"
         android:label="fragment_orders"
         tools:layout="@layout/fragment_orders"/>
 </navigation>

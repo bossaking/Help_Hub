@@ -1,12 +1,10 @@
 package com.example.help_hub.OtherClasses;
 
-import android.net.Uri;
+public class WantToHelp {
 
-public class Order {
+    private String Title, Price = "30", Description, Id, UserId;
 
-    private String Title, Price = "30", Description, Id;
-
-    public Order() {
+    public WantToHelp() {
     }
 
     public String getTitle() {
@@ -39,5 +37,13 @@ public class Order {
 
     public void setId(String id) {
         Id = id;
+    }
+
+    public String getUserId() {
+        return UserId;
+    }
+
+    public void setUserId(String userId) {
+        UserId = userId;
     }
 }

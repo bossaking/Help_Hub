@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.help_hub.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -27,6 +28,9 @@ public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextW
     private Button addNewOfferButton, categoriesButton;
 
     private FirebaseFirestore firebaseFirestore;
+    FirebaseAuth firebaseAuth;
+
+    String userId;
 
     private Drawable defaultBackground;
 
@@ -41,6 +45,9 @@ public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextW
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        userId = firebaseAuth.getUid();
 
         mNewOfferTitle = findViewById(R.id.new_offer_title_edit_text);
         mNewOfferDescription = findViewById(R.id.new_offer_description_edit_text);
@@ -71,6 +78,7 @@ public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextW
         offerMap.put("Description", description);
         offerMap.put("Category", categoryTitle);
         offerMap.put("Subcategory", subCategoryTitle);
+        offerMap.put("UserId", userId);
 
         firebaseFirestore.collection("offers").document().set(offerMap).addOnSuccessListener(v -> {
             Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();

@@ -7,7 +7,7 @@
     tools:context=".Fragments.NeedHelpFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/need_help_recyclerview"
+        android:id="@+id/order_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">

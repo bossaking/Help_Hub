@@ -96,8 +96,10 @@
     <string name="write_button">Write</string>
     <string name="example_user_name" translatable="false">Tomasz Kwasigroch</string>
     <string name="example_user_phone_number" translatable="false">123456789</string>
+    <string name="title_placeholder" translatable="false">Title</string>
+    <string name="description_placeholder" translatable="false">Description</string>
 
-    <!--NEED HELP LIST-->
-    <string name="price" translatable="false">Price:\u0020</string>
+    <!--WANT TO HELP DETAILS-->
+    <string name="cost" translatable="false">Cost:</string>
 
 </resources>

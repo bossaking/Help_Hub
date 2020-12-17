@@ -39,5 +39,7 @@
     <string name="title">Tytuł:</string>
     <string name="budget">Budżet:</string>
     <string name="write_button">Napisz</string>
-    <string name="price">"Cena: "</string>
+    <string name="title_placeholder" translatable="false">Tytuł</string>
+    <string name="description_placeholder" translatable="false">Opis</string>
+    <string name="cost">Koszt:</string>
 </resources>

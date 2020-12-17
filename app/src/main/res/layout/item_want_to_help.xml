@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="5dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginHorizontal="3dp">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/want_to_help_image"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginVertical="5dp"
+            tools:srcCompat="@drawable/ic_baseline_missing_image_24"
+            android:src="@drawable/ic_baseline_missing_image_24"/>
+
+        <TextView
+            android:id="@+id/want_to_help_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/want_to_help_image"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="15dp"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:text="@string/title_placeholder"/>
+
+        <TextView
+            android:id="@+id/want_to_help_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/want_to_help_image"
+            android:layout_below="@id/want_to_help_title"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:text="@string/budget"/>
+
+        <TextView
+            android:id="@+id/want_to_help_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/want_to_help_image"
+            android:layout_below="@id/want_to_help_price"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="6dp"
+            android:text="@string/description_placeholder"/>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

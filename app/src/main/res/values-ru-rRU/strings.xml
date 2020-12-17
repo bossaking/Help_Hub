@@ -37,4 +37,7 @@
     <string name="new_notice_description_title" translatable="false">Описание</string>
     <string name="new_notice_add_notice_button" translatable="false">Добавить предложение</string>
     <string name="new_notice_description_hint" translatable="false">Запишите, в чем ваша проблема. Добавление фотографий - очень хорошая идея. Используй эту возможность, и ты не пожалеешь об этом.</string>
+    <string name="title_placeholder" translatable="false">Название</string>
+    <string name="description_placeholder" translatable="false">Описание</string>
+    <string name="cost">Стоимость:</string>
 </resources>

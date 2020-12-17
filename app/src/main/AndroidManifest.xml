@@ -15,9 +15,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.SelectCategoryActivity"></activity>
-        <activity android:name=".Activities.AddNewNoticeActivity" android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".Activities.AddTheOfferActivity" android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".Activities.NeedHelpDetails"></activity>
+        <activity android:name=".Activities.SelectCategoryActivity" />
+        <activity
+            android:name=".Activities.AddNewNoticeActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activities.AddTheOfferActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activities.UserPortfolioPhotosActivity"
             android:parentActivityName=".Activities.MainActivity" />

@@ -64,7 +64,8 @@
 
     <!--BOTTOM NAVIGATION BAR-->
     <string name="title_activity_main" translatable="false">MainActivity</string>
-    <string name="title_orders" translatable="false">Orders</string>
+    <string name="title_need_help" translatable="false">I need help</string>
+    <string name="title_want_to_help" translatable="false">I want to help</string>
     <string name="title_user_profile" translatable="false">Profile</string>
     <string name="title_administration_panel" translatable="false">Administration</string>
 
@@ -95,5 +96,8 @@
     <string name="write_button">Write</string>
     <string name="example_user_name" translatable="false">Tomasz Kwasigroch</string>
     <string name="example_user_phone_number" translatable="false">123456789</string>
+
+    <!--NEED HELP LIST-->
+    <string name="price" translatable="false">Price:\u0020</string>
 
 </resources>

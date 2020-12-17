@@ -69,6 +69,8 @@ public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextW
         Map<String, Object> offerMap = new HashMap<>();
         offerMap.put("Title", title);
         offerMap.put("Description", description);
+        offerMap.put("Category", categoryTitle);
+        offerMap.put("Subcategory", subCategoryTitle);
 
         firebaseFirestore.collection("offers").document().set(offerMap).addOnSuccessListener(v -> {
             Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();

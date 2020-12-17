@@ -117,7 +117,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
 
         for (int i = 0; i < noticeImages.size() - 1; i++) {
             PortfolioImage portfolioImage = noticeImages.get(i);
-            StorageReference imgRef = FirebaseStorage.getInstance().getReference().child("announcement/" + id + "/images/" + portfolioImage.getImageTitle());
+            StorageReference imgRef = FirebaseStorage.getInstance().getReference().child("announcement/" + id + "/images/photo" + i);
             imgRef.putFile(portfolioImage.getImageUri()).addOnSuccessListener(taskSnapshot -> {
                 Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
             }).addOnFailureListener(e -> {

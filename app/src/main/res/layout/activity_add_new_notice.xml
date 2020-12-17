@@ -89,7 +89,7 @@
         android:background="@color/login_form_details_medium"
         android:drawableEnd="@drawable/ic_baseline_chevron_right_24"
         android:paddingStart="12dp"
-        android:text="@string/new_offer_select_category"
+        android:text="@string/new_offer_category"
         android:textAlignment="textStart"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"

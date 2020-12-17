@@ -1,33 +1,33 @@
 
-b
-java:S1128"ERemove this unused import 'androidx.appcompat.app.AppCompatActivity'.(€¶£î8ö„ŒÈã.
-}
-java:S14504"[Remove the "recyclerView" field and declare it as a local variable in the relevant methods.(¿á© ıÿÿÿÿ8ö„ŒÈã.
-K
-java:S1659.".Declare "categoriesButton" on a separate line.(ØÏš8ö„ŒÈã.
-N
-java:S1602V",Remove useless curly braces around statement(çŠ÷Åûÿÿÿÿ8ö„ŒÈã.
 Q
 java:S37405"/Provide the parametrized type for this generic.(ÒõÆÛıÿÿÿÿ8ö„ŒÈã.
 o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Œí´È
-{
-java:S1128 "YRemove this unused import 'com.example.help_hub.Singletones.UserPortfolioImagesDatabase'.(‰·½¹úÿÿÿÿ8ö„ŒÈã.
-~
-java:S1450."aRemove the "addNewNoticeButton" field and declare it as a local variable in the relevant methods.(ØÏš8ö„ŒÈã.
+K
+java:S1659.".Declare "categoriesButton" on a separate line.(ØÏš8ö„ŒÈã.
+b
+java:S1128"ERemove this unused import 'androidx.appcompat.app.AppCompatActivity'.(€¶£î8ö„ŒÈã.
 |
 java:S1450."_Remove the "categoriesButton" field and declare it as a local variable in the relevant methods.(ØÏš8ö„ŒÈã.
-I
-java:S1602{",Remove useless curly braces around statement(úÌä 8ö„ŒÈã.
+N
+java:S1602V",Remove useless curly braces around statement(çŠ÷Åûÿÿÿÿ8ö„ŒÈã.
+~
+java:S1450."aRemove the "addNewNoticeButton" field and declare it as a local variable in the relevant methods.(ØÏš8ö„ŒÈã.
+¤
+java:S1186™"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(×åó«øÿÿÿÿ8ö„ŒÈã.
+{
+java:S1128 "YRemove this unused import 'com.example.help_hub.Singletones.UserPortfolioImagesDatabase'.(‰·½¹úÿÿÿÿ8ö„ŒÈã.
 o
 java:S1128"MRemove this unused import 'androidx.recyclerview.widget.LinearLayoutManager'.(ôœ¹ºıÿÿÿÿ8ö„ŒÈã.
+Ÿ
+java:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(á¬‡İ8ö„ŒÈã.
 Y	java:S110*"=This class has 10 parents which is greater than 5 authorized.(¿³ÏŠ8ö„ŒÈã.
 †
 java:S1450-"dRemove the "mNewNoticeDescription" field and declare it as a local variable in the relevant methods.(»§ÑËùÿÿÿÿ8ö„ŒÈã.
-N
-java:S1602y",Remove useless curly braces around statement(¦ìŒĞşÿÿÿÿ8ö„ŒÈã.
 `
 java:S2259£"BA "NullPointerException" could be thrown; "data" is nullable here.(ã²»8ö„ŒÈã.
-Ÿ
-java:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(á¬‡İ8ö„ŒÈã.
-¤
-java:S1186™"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(×åó«øÿÿÿÿ8ö„ŒÈã.
+}
+java:S14504"[Remove the "recyclerView" field and declare it as a local variable in the relevant methods.(¿á© ıÿÿÿÿ8ö„ŒÈã.
+I
+java:S1602{",Remove useless curly braces around statement(úÌä 8ö„ŒÈã.
+N
+java:S1602y",Remove useless curly braces around statement(¦ìŒĞşÿÿÿÿ8ö„ŒÈã.

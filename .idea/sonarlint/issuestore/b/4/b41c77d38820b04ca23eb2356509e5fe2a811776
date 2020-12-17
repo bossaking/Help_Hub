@@ -1,16 +1,16 @@
 
-y
-java:S1450 "\Remove the "layoutManager" field and declare it as a local variable in the relevant methods.(üÉÙ¼8äîÈã.
-V	java:S110"<This class has 9 parents which is greater than 5 authorized.(ù‰ííÿÿÿÿÿ
+v
+java:S1450"[Remove the "recyclerView" field and declare it as a local variable in the relevant methods.(¿á© ıÿÿÿÿ
 J
 java:S3740"/Provide the parametrized type for this generic.(ÒõÆÛıÿÿÿÿ
 h	java:S100P"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(„‘•ûûÿÿÿÿ
-X
-java:S2259A"BA "NullPointerException" could be thrown; "data" is nullable here.(ã²»
 B
 java:S16021",Remove useless curly braces around statement(üÑ
-v
-java:S1450"[Remove the "recyclerView" field and declare it as a local variable in the relevant methods.(¿á© ıÿÿÿÿ
+y
+java:S1450 "\Remove the "layoutManager" field and declare it as a local variable in the relevant methods.(üÉÙ¼8äîÈã.
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Œí´È
 N
 java:S1068 "1Remove this unused "layoutManager" private field.(üÉÙ¼8äîÈã.
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Œí´È
+X
+java:S2259A"BA "NullPointerException" could be thrown; "data" is nullable here.(ã²»
+V	java:S110"<This class has 9 parents which is greater than 5 authorized.(ù‰ííÿÿÿÿÿ

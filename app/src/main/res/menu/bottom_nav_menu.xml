@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/orders"
+        android:id="@+id/need_help"
         android:icon="@drawable/ic_baseline_format_list_bulleted_24"
-        android:title="@string/title_orders" />
+        android:title="@string/title_need_help" />
+
+    <item
+        android:id="@+id/want_to_help"
+        android:icon="@drawable/ic_baseline_format_list_bulleted_24"
+        android:title="@string/title_want_to_help" />
 
     <item
         android:id="@+id/user_profile"
         android:icon="@drawable/ic_baseline_account_circle_24"
         android:title="@string/title_user_profile" />
 
-    <item
-        android:id="@+id/administration"
-        android:icon="@drawable/ic_baseline_admin_panel_settings_24"
-        android:title="@string/title_administration_panel"
-        android:visible="false" />
 
 </menu>

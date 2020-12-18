@@ -50,6 +50,7 @@ public class NewOfferNoticeCategory extends AppCompatActivity {
     }
 
     protected String title;
+    protected String price;
     protected String description;
 
     protected String categoryTitle = "";

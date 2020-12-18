@@ -4,7 +4,7 @@ import android.net.Uri;
 
 public class NeedHelp {
 
-    private String Title, Price = "30", Description, Id;
+    private String Title, Price, Description, Id;
 
     public NeedHelp() {
     }

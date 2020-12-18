@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.example.help_hub.Activities.AddNewNoticeActivity;
 import com.example.help_hub.Activities.AddTheOfferActivity;
+import com.example.help_hub.R;
 
 public class SelectTypeOfAdvertisement {
 
@@ -23,8 +24,8 @@ public class SelectTypeOfAdvertisement {
 
     public void startSelectTypeOfAdvertisement() {
         AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
-        builder.setPositiveButton("I WANT TO HELP", null);
-        builder.setNegativeButton("I NEED HELP", null);
+        builder.setPositiveButton(R.string.want_to_help_dialog, null);
+        builder.setNegativeButton(R.string.need_help_dialog, null);
 
         dialog = builder.create();
         dialog.setCancelable(true);

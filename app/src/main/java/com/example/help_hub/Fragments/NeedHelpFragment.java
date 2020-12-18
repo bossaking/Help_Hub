@@ -2,6 +2,7 @@ package com.example.help_hub.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,27 +18,37 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.help_hub.Activities.NeedHelpDetails;
 import com.example.help_hub.AlertDialogues.SelectTypeOfAdvertisement;
 import com.example.help_hub.OtherClasses.NeedHelp;
 import com.example.help_hub.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firestore.v1.Document;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class NeedHelpFragment extends Fragment {
 
+    public static final int NEED_HELP_DETAILS_REQUEST_CODE = 1;
+
     Activity myActivity;
     Context myContext;
-    private List<NeedHelp> needHelpList = new LinkedList<>();
+    private List<NeedHelp> needHelpList;
     private RecyclerView recyclerView;
     private FirebaseFirestore firebaseFirestore;
     private StorageReference storageReference;
 
+    NeedHelpAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +71,7 @@ public class NeedHelpFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
+        needHelpList = new ArrayList<>();
 
         FloatingActionButton add = view.findViewById(R.id.floatingActionButton);
         add.setOnClickListener(v -> {
@@ -67,18 +79,25 @@ public class NeedHelpFragment extends Fragment {
             selectTypeOfAdvertisement.startSelectTypeOfAdvertisement();
         });
 
-        firebaseFirestore.collection("announcement").get().addOnSuccessListener(v -> {
-            List<DocumentSnapshot> documents = v.getDocuments();
-            for (DocumentSnapshot document : documents) {
-                NeedHelp needHelp = document.toObject(NeedHelp.class);
-                needHelp.setId(document.getId());
-                needHelpList.add(needHelp);
-            }
-            recyclerView = view.findViewById(R.id.order_recycler_view);
-            recyclerView.setLayoutManager(new LinearLayoutManager(myContext));
+        recyclerView = view.findViewById(R.id.order_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(myContext));
 
-            NeedHelpAdapter adapter = new NeedHelpAdapter();
-            recyclerView.setAdapter(adapter);
+        adapter = new NeedHelpAdapter();
+        recyclerView.setAdapter(adapter);
+
+        firebaseFirestore.collection("announcement").addSnapshotListener((queryDocumentSnapshots, e) -> {
+
+            for(DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()){
+                switch (dc.getType()){
+                    case ADDED:
+                        NeedHelp needHelp = dc.getDocument().toObject(NeedHelp.class);
+                        needHelp.setId(dc.getDocument().getId());
+                        needHelpList.add(needHelp);
+                        break;
+                }
+            }
+
+            adapter.notifyDataSetChanged();
         });
 
         return view;
@@ -123,7 +142,7 @@ public class NeedHelpFragment extends Fragment {
             if (desc.length() > 30)
                 desc = desc.substring(0, 30) + "...";
             needHelpTitle.setText(title);
-            needHelpPrice.setText(getResources().getString(R.string.budget) + " " + needHelp.getPrice());
+            needHelpPrice.setText(getResources().getString(R.string.budget) + " " + needHelp.getPrice() + " " + getString(R.string.new_notice_currency));
             needHelpDescription.setText(desc);
             StorageReference imgRef = storageReference.child("announcement/" + needHelp.getId() + "/images/photo0");
             imgRef.getDownloadUrl().addOnSuccessListener(v -> {
@@ -135,7 +154,13 @@ public class NeedHelpFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-
+            Intent intent = new Intent(view.getContext(), NeedHelpDetails.class);
+            intent.putExtra(NeedHelpDetails.EXTRA_NEED_HELP_ID, needHelp.getId());
+            intent.putExtra(NeedHelpDetails.EXTRA_NEED_HELP_TITLE, needHelp.getTitle());
+            intent.putExtra(NeedHelpDetails.EXTRA_NEED_HELP_PRICE, needHelp.getPrice());
+            intent.putExtra(NeedHelpDetails.EXTRA_NEED_HELP_DESCRIPTION, needHelp.getDescription());
+            intent.putExtra(NeedHelpDetails.EXTRA_NEED_HELP_USER_ID, needHelp.getUserId());
+            startActivityForResult(intent, NEED_HELP_DETAILS_REQUEST_CODE);
         }
     }
 
@@ -164,5 +189,4 @@ public class NeedHelpFragment extends Fragment {
             holder.bind(needHelp);
         }
     }
-
 }

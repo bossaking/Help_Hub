@@ -18,14 +18,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.AlertDialogues.SelectTypeOfAdvertisement;
+import com.example.help_hub.OtherClasses.NeedHelp;
 import com.example.help_hub.OtherClasses.WantToHelp;
 import com.example.help_hub.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,10 +36,12 @@ public class WantToHelpFragment extends Fragment {
 
     Activity myActivity;
     Context myContext;
-    private List<WantToHelp> wantToHelpList = new LinkedList<>();
+    private List<WantToHelp> wantToHelpList;
     private RecyclerView recyclerView;
     private FirebaseFirestore firebaseFirestore;
     private StorageReference storageReference;
+
+    WantToHelpAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +74,7 @@ public class WantToHelpFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
+        wantToHelpList = new ArrayList<>();
 
         FloatingActionButton add = view.findViewById(R.id.floatingActionButton);
         add.setOnClickListener(v -> {
@@ -76,18 +82,25 @@ public class WantToHelpFragment extends Fragment {
             selectTypeOfAdvertisement.startSelectTypeOfAdvertisement();
         });
 
-        firebaseFirestore.collection("offers").get().addOnSuccessListener(v -> {
-            List<DocumentSnapshot> documents = v.getDocuments();
-            for (DocumentSnapshot document : documents) {
-                WantToHelp wantToHelp = document.toObject(WantToHelp.class);
-                wantToHelp.setId(document.getId());
-                wantToHelpList.add(wantToHelp);
-            }
-            recyclerView = view.findViewById(R.id.order_recycler_view);
-            recyclerView.setLayoutManager(new LinearLayoutManager(myContext));
+        recyclerView = view.findViewById(R.id.order_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(myContext));
 
-            WantToHelpFragment.WantToHelpAdapter adapter = new WantToHelpFragment.WantToHelpAdapter();
-            recyclerView.setAdapter(adapter);
+        adapter = new WantToHelpAdapter();
+        recyclerView.setAdapter(adapter);
+
+        firebaseFirestore.collection("offers").addSnapshotListener((queryDocumentSnapshots, e) -> {
+
+            for(DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()){
+                switch (dc.getType()){
+                    case ADDED:
+                        WantToHelp wantToHelp = dc.getDocument().toObject(WantToHelp.class);
+                        wantToHelp.setId(dc.getDocument().getId());
+                        wantToHelpList.add(wantToHelp);
+                        break;
+                }
+            }
+
+            adapter.notifyDataSetChanged();
         });
 
         return view;
@@ -120,7 +133,7 @@ public class WantToHelpFragment extends Fragment {
             if (desc.length() > 30)
                 desc = desc.substring(0, 30) + "...";
             wantToHelpTitle.setText(title);
-            wantToHelpPrice.setText(getResources().getString(R.string.budget) + " " + wantToHelp.getPrice());
+            wantToHelpPrice.setText(getResources().getString(R.string.cost) + " " + wantToHelp.getPrice() + " " + getString(R.string.new_offer_currency));
             wantToHelpDescription.setText(desc);
             StorageReference imgRef = storageReference.child("users/" + wantToHelp.getUserId() + "/profile.jpg");
             imgRef.getDownloadUrl().addOnSuccessListener(v -> {

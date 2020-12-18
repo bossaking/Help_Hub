@@ -40,4 +40,10 @@
     <string name="title_placeholder" translatable="false">Название</string>
     <string name="description_placeholder" translatable="false">Описание</string>
     <string name="cost">Стоимость:</string>
+    <string name="new_notice_currency" translatable="false">руб</string>
+    <string name="new_notice_budget_placeholder" translatable="false">0 руб</string>
+    <string name="new_notice_budget" translatable="false">Бюджет:</string>
+    <string name="new_offer_cost_placeholder" translatable="false">0 руб</string>
+    <string name="new_offer_cost" translatable="false">Стоимость:</string>
+    <string name="new_offer_currency" translatable="false">руб</string>
 </resources>

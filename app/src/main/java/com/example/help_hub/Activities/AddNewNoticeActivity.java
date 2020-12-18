@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.example.help_hub.Adapters.PortfolioImagesRecyclerAdapter;
 import com.example.help_hub.OtherClasses.PortfolioImage;
 import com.example.help_hub.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -44,12 +45,14 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
     private Button addNewNoticeButton, categoriesButton;
 
     private FirebaseFirestore firebaseFirestore;
+    FirebaseAuth firebaseAuth;
 
     private Drawable defaultBackground;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
+    String userId;
 
     private List<PortfolioImage> noticeImages;
 
@@ -66,6 +69,9 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        userId = firebaseAuth.getUid();
 
         mNewNoticeTitle = findViewById(R.id.new_notice_title_edit_text);
         mNewNoticePrice = findViewById(R.id.new_notice_budget);
@@ -110,6 +116,8 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         noticeMap.put("Description", description);
         noticeMap.put("Category", categoryTitle);
         noticeMap.put("Subcategory", subCategoryTitle);
+        noticeMap.put("UserId", userId);
+
         String id = firebaseFirestore.collection("announcement").document().getId();
         firebaseFirestore.collection("announcement").document(id).set(noticeMap).addOnSuccessListener(v -> {
             Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();

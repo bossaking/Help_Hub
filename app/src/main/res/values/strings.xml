@@ -80,6 +80,7 @@
     <string name="new_offer_add_offer_button">Offer</string>
     <string name="new_offer_title_hint" translatable="false">e.g. I will fix your washing machine</string>
     <string name="new_offer_description_hint">Write what you are good at and what you offer.</string>
+    <string name="new_offer_currency" translatable="false">€</string>
 
     <!--ADD NOTICE-->
     <string name="add_new_notice_header">Ask for help</string>
@@ -93,6 +94,7 @@
     <string name="new_notice_title_hint" translatable="false">e.g. Washing machine broken</string>
     <string name="new_notice_description_hint">Write what your problem is. Adding photos is a very good idea. Take this opportunity and you will certainly not regret it.</string>
     <string name="example_category_title" translatable="false">Example Category Title</string>
+    <string name="new_notice_currency" translatable="false">€</string>
 
     <!--NEED HELP DETAILS-->
     <string name="title">Title:</string>
@@ -106,5 +108,9 @@
 
     <!--WANT TO HELP DETAILS-->
     <string name="cost" translatable="false">Cost:</string>
+
+    <!--TYPE DIALOG-->
+    <string name="need_help_dialog" translatable="false">I NEED HELP</string>
+    <string name="want_to_help_dialog" translatable="false">I WANT TO HELP</string>
 
 </resources>

@@ -2,10 +2,8 @@ package com.example.help_hub.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
@@ -29,7 +27,6 @@ import android.widget.Toast;
 import com.example.help_hub.Adapters.PortfolioImagesRecyclerAdapter;
 import com.example.help_hub.OtherClasses.PortfolioImage;
 import com.example.help_hub.R;
-import com.example.help_hub.Singletones.UserPortfolioImagesDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -60,7 +57,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_new_notice);
+        setContentView(R.layout.activity_add_need_help);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);

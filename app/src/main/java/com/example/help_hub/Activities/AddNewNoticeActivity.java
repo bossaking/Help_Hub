@@ -40,6 +40,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
 
     private EditText mNewNoticeTitle;
     private EditText mNewNoticeDescription;
+    private EditText mNewNoticePrice;
     private Button addNewNoticeButton, categoriesButton;
 
     private FirebaseFirestore firebaseFirestore;
@@ -67,6 +68,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         mNewNoticeTitle = findViewById(R.id.new_notice_title_edit_text);
+        mNewNoticePrice = findViewById(R.id.new_notice_budget);
         mNewNoticeDescription = findViewById(R.id.new_notice_description_edit_text);
         defaultBackground = mNewNoticeTitle.getBackground();
         mNewNoticeTitle.addTextChangedListener(this);
@@ -74,6 +76,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         addNewNoticeButton = findViewById(R.id.new_offer_add_offer_button);
         addNewNoticeButton.setOnClickListener(v -> {
             title = mNewNoticeTitle.getText().toString().trim();
+            price = mNewNoticePrice.getText().toString().trim();
             description = mNewNoticeDescription.getText().toString().trim();
             addNewNotice();
         });
@@ -103,6 +106,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         }
         Map<String, Object> noticeMap = new HashMap<>();
         noticeMap.put("Title", title);
+        noticeMap.put("Price", price);
         noticeMap.put("Description", description);
         noticeMap.put("Category", categoryTitle);
         noticeMap.put("Subcategory", subCategoryTitle);
@@ -127,6 +131,11 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         if (title.isEmpty()) {
             mNewNoticeTitle.setBackgroundResource(R.drawable.edit_error_border);
             mNewNoticeTitle.setError(getString(R.string.empty_field_error));
+            return false;
+        }
+        if (price.isEmpty()) {
+            mNewNoticePrice.setBackgroundResource(R.drawable.edit_error_border);
+            mNewNoticePrice.setError(getString(R.string.empty_field_error));
             return false;
         }
         if (categoryTitle.isEmpty()) {

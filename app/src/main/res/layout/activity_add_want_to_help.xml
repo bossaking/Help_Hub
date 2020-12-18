@@ -68,7 +68,7 @@
         app:layout_constraintTop_toBottomOf="@+id/new_offer_title_text_view" />
 
     <EditText
-        android:id="@+id/new_offer_title_edit_text2"
+        android:id="@+id/new_offer_cost"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

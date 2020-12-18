@@ -2,7 +2,7 @@ package com.example.help_hub.OtherClasses;
 
 public class WantToHelp {
 
-    private String Title, Price = "30", Description, Id, UserId;
+    private String Title, Price, Description, Id, UserId;
 
     public WantToHelp() {
     }

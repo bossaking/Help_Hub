@@ -70,21 +70,26 @@
     <string name="title_administration_panel" translatable="false">Administration</string>
 
     <!--ADD OFFER-->
-    <string name="add_new_offer_header">Add new offer</string>
+    <string name="add_new_offer_header">Offer help</string>
     <string name="new_offer_title">Title of the offer</string>
-    <string name="new_offer_category">Select category</string>
+    <string name="new_offer_category">Category</string>
+    <string name="new_offer_select_category" translatable="false">Select category</string>
+    <string name="new_offer_cost" translatable="false">Cost:</string>
+    <string name="new_offer_cost_placeholder" translatable="false">40 €</string>
     <string name="new_offer_description_title">Description</string>
-    <string name="new_offer_add_offer_button">Add offer</string>
+    <string name="new_offer_add_offer_button">Offer</string>
     <string name="new_offer_title_hint" translatable="false">e.g. I will fix your washing machine</string>
     <string name="new_offer_description_hint">Write what you are good at and what you offer.</string>
 
     <!--ADD NOTICE-->
-    <string name="add_new_notice_header">Add new announcement</string>
-    <string name="new_notice_title">Title of the announcement</string>
+    <string name="add_new_notice_header">Ask for help</string>
+    <string name="new_notice_title">Title of the problem</string>
     <string name="new_notice_category">Category</string>
     <string name="new_notice_select_category">Select category</string>
+    <string name="new_notice_budget" translatable="false">Budget:</string>
+    <string name="new_notice_budget_placeholder" translatable="false">20 €</string>
     <string name="new_notice_description_title">Description</string>
-    <string name="new_notice_add_notice_button">Add announcement</string>
+    <string name="new_notice_add_notice_button">Ask</string>
     <string name="new_notice_title_hint" translatable="false">e.g. Washing machine broken</string>
     <string name="new_notice_description_hint">Write what your problem is. Adding photos is a very good idea. Take this opportunity and you will certainly not regret it.</string>
     <string name="example_category_title" translatable="false">Example Category Title</string>

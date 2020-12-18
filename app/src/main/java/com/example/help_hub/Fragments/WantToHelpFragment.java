@@ -38,8 +38,6 @@ public class WantToHelpFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore;
     private StorageReference storageReference;
 
-    int screenWidth;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

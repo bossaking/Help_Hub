@@ -146,7 +146,7 @@ public class NeedHelpFragment extends Fragment {
         public NeedHelpHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(myContext);
             return new NeedHelpHolder(layoutInflater, parent);
-            }
+        }
 
         @Override
         public void onBindViewHolder(@NonNull NeedHelpHolder holder, int position) {

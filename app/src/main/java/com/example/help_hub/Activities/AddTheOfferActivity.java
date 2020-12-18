@@ -1,10 +1,8 @@
 package com.example.help_hub.Activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -37,7 +35,7 @@ public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextW
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_the_offer);
+        setContentView(R.layout.activity_add_want_to_help);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);

@@ -25,4 +25,5 @@
             android:text="Delete" />
 
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

@@ -88,7 +88,7 @@ public class UserPortfolioImagesDatabase {
 
         imagesRef.listAll().addOnSuccessListener(listResult -> {
             for (StorageReference fileRef : listResult.getItems()) {
-                fileRef.getMetadata().addOnSuccessListener((OnSuccessListener<StorageMetadata>) storageMetadata -> {
+                fileRef.getMetadata().addOnSuccessListener(storageMetadata -> {
                     String name = storageMetadata.getName();
                     fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
                         AddNewImage(new PortfolioImage(name, uri));

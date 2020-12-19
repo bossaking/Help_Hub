@@ -144,11 +144,17 @@ public class NeedHelpFragment extends Fragment {
             needHelpTitle.setText(title);
             needHelpPrice.setText(getResources().getString(R.string.budget) + " " + needHelp.getPrice() + " " + getString(R.string.new_notice_currency));
             needHelpDescription.setText(desc);
+            getImage();
+        }
+
+        private void getImage(){
+            //TODO Dodać ograniczenie liczby wywołań
             StorageReference imgRef = storageReference.child("announcement/" + needHelp.getId() + "/images/photo0");
             imgRef.getDownloadUrl().addOnSuccessListener(v -> {
-                Glide.with(myContext).load(v).into(needHelpImage);
+                Glide.with(myContext).load(v).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24).into(needHelpImage);
             }).addOnFailureListener(v -> {
                 needHelpImage.setImageResource(R.drawable.ic_baseline_missing_image_24);
+                getImage();
             });
         }
 

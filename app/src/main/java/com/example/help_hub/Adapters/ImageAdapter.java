@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+
 import com.example.help_hub.R;
 
 public class ImageAdapter extends BaseAdapter {
@@ -14,7 +15,7 @@ public class ImageAdapter extends BaseAdapter {
     Context context;
     ClipData clipData;
 
-    public ImageAdapter(Context context, ClipData clipData){
+    public ImageAdapter(Context context, ClipData clipData) {
         this.context = context;
         this.clipData = clipData;
     }
@@ -40,8 +41,8 @@ public class ImageAdapter extends BaseAdapter {
 
         View gridView = convertView;
 
-        if(gridView == null){
-            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (gridView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             gridView = inflater.inflate(R.layout.portfolio_photo_layout, null);
         }
 

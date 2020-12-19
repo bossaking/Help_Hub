@@ -12,10 +12,10 @@
 
     <!--REGISTRATION ERRORS-->
     <string name="email_empty_error">The field cannot be empty</string>
-    <string name="email_validate_error">Not valid E-mail address</string>
+    <string name="email_validate_error">Not valid e-mail address</string>
     <string name="email_exists_error">User with the given e-mail already exists</string>
     <string name="password_length_error">Password must contain at least 8 characters</string>
-    <string name="password_match_error" translatable="false">Passwords do not match</string>
+    <string name="password_match_error">Passwords do not match</string>
 
     <!--LOGIN ACTIVITY-->
     <string name="login_title" translatable="false">Login</string>
@@ -40,7 +40,7 @@
     <string name="change_password_message" translatable="false">Enter your old password</string>
     <string name="change_positive_button" translatable="false">Change</string>
 
-    <!-- NEW USER BASIC INFORMATIONS ACTIVITY-->
+    <!-- NEW USER BASIC INFORMATION ACTIVITY-->
     <string name="new_user_header">Input necessary data</string>
     <string name="new_user_user_name">User name</string>
     <string name="new_user_phone_number">Phone number</string>
@@ -48,7 +48,6 @@
 
     <!--EMPTY FIELD ERROR-->
     <string name="empty_field_error" translatable="false">The field cannot be empty</string>
-
 
     <!-- SAVE AND EDIT BUTTONS-->
     <string name="edit_button">Edit</string>
@@ -65,29 +64,53 @@
 
     <!--BOTTOM NAVIGATION BAR-->
     <string name="title_activity_main" translatable="false">MainActivity</string>
-    <string name="title_orders" translatable="false">Orders</string>
+    <string name="title_need_help" translatable="false">I need help</string>
+    <string name="title_want_to_help" translatable="false">I want to help</string>
     <string name="title_user_profile" translatable="false">Profile</string>
     <string name="title_administration_panel" translatable="false">Administration</string>
 
     <!--ADD OFFER-->
-    <string name="add_new_offer_header">Add new offer</string>
-    <string name="new_offer_title" translatable="false">Title of the offer</string>
-    <string name="new_offer_category" translatable="false">Select category</string>
+    <string name="add_new_offer_header">Offer help</string>
+    <string name="new_offer_title">Title of the offer</string>
+    <string name="new_offer_category">Category</string>
     <string name="new_offer_select_category" translatable="false">Select category</string>
-    <string name="new_offer_description_title" translatable="false">Description</string>
-    <string name="new_offer_add_offer_button" translatable="false">Add offer</string>
-    <string name="new_offer_title_hint" translatable="false">e.g. I push every clogged hole</string>
-    <string name="new_offer_description_hint" translatable="false">Write what you are good at and what you offer.</string>
+    <string name="new_offer_cost" translatable="false">Cost:</string>
+    <string name="new_offer_cost_placeholder" translatable="false">0 €</string>
+    <string name="new_offer_description_title">Description</string>
+    <string name="new_offer_add_offer_button">Offer</string>
+    <string name="new_offer_title_hint" translatable="false">e.g. I will fix your washing machine</string>
+    <string name="new_offer_description_hint">Write what you are good at and what you offer.</string>
+    <string name="new_offer_currency" translatable="false">€</string>
 
     <!--ADD NOTICE-->
-    <string name="add_new_notice_header" translatable="false">Add new notice</string>
-    <string name="new_notice_title" translatable="false">Title of the notice</string>
-    <string name="new_notice_category" translatable="false">Category</string>
-    <string name="new_notice_select_category" translatable="false">Select category</string>
-    <string name="new_notice_description_title" translatable="false">Description</string>
-    <string name="new_notice_add_notice_button" translatable="false">Add offer</string>
+    <string name="add_new_notice_header">Ask for help</string>
+    <string name="new_notice_title">Title of the problem</string>
+    <string name="new_notice_category">Category</string>
+    <string name="new_notice_select_category">Select category</string>
+    <string name="new_notice_budget" translatable="false">Budget:</string>
+    <string name="new_notice_budget_placeholder" translatable="false">0 €</string>
+    <string name="new_notice_description_title">Description</string>
+    <string name="new_notice_add_notice_button">Ask</string>
     <string name="new_notice_title_hint" translatable="false">e.g. Washing machine broken</string>
-    <string name="new_notice_description_hint" translatable="false">Write what your problem is. Adding photos is a very good idea. Take this opportunity and you will certainly not regret it.</string>
-    <string name="example_category_title">Example Category Title</string>
+    <string name="new_notice_description_hint">Write what your problem is. Adding photos is a very good idea. Take this opportunity and you will certainly not regret it.</string>
+    <string name="example_category_title" translatable="false">Example Category Title</string>
+    <string name="new_notice_currency" translatable="false">€</string>
+
+    <!--NEED HELP DETAILS-->
+    <string name="title">Title:</string>
+    <string name="placeholder" translatable="false">Placeholder</string>
+    <string name="budget">Budget:</string>
+    <string name="write_button">Write</string>
+    <string name="example_user_name" translatable="false">Tomasz Kwasigroch</string>
+    <string name="example_user_phone_number" translatable="false">123456789</string>
+    <string name="title_placeholder" translatable="false">Title</string>
+    <string name="description_placeholder" translatable="false">Description</string>
+
+    <!--WANT TO HELP DETAILS-->
+    <string name="cost" translatable="false">Cost:</string>
+
+    <!--TYPE DIALOG-->
+    <string name="need_help_dialog" translatable="false">I NEED HELP</string>
+    <string name="want_to_help_dialog" translatable="false">I WANT TO HELP</string>
 
 </resources>

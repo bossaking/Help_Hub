@@ -1,0 +1,10 @@
+
+p
+java:S1104&"UMake imageView a static final constant or non-public and provide accessors if needed.(Ž…Çªúÿÿÿÿ
+
+java:S1488J"iImmediately return this expression instead of assigning it to the temporary variable "adapterViewHolder".(“íÛõ
+O
+java:S1128	"4Remove this unused import 'android.widget.TextView'.(„Ë‚ˆÿÿÿÿÿ
+J
+java:S3740"/Provide the parametrized type for this generic.(˜Ê¼®ûÿÿÿÿ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(øÃÃ¾

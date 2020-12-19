@@ -3,8 +3,10 @@ package com.example.help_hub.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.OtherClasses.Category;
 import com.google.firebase.firestore.CollectionReference;
@@ -48,6 +50,7 @@ public class NewOfferNoticeCategory extends AppCompatActivity {
     }
 
     protected String title;
+    protected String price;
     protected String description;
 
     protected String categoryTitle = "";

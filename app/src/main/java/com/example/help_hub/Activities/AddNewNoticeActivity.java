@@ -2,10 +2,8 @@ package com.example.help_hub.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
@@ -29,7 +27,7 @@ import android.widget.Toast;
 import com.example.help_hub.Adapters.PortfolioImagesRecyclerAdapter;
 import com.example.help_hub.OtherClasses.PortfolioImage;
 import com.example.help_hub.R;
-import com.example.help_hub.Singletones.UserPortfolioImagesDatabase;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -43,15 +41,18 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
 
     private EditText mNewNoticeTitle;
     private EditText mNewNoticeDescription;
+    private EditText mNewNoticePrice;
     private Button addNewNoticeButton, categoriesButton;
 
     private FirebaseFirestore firebaseFirestore;
+    FirebaseAuth firebaseAuth;
 
     private Drawable defaultBackground;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
+    String userId;
 
     private List<PortfolioImage> noticeImages;
 
@@ -60,7 +61,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_new_notice);
+        setContentView(R.layout.activity_add_need_help);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -68,8 +69,12 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        userId = firebaseAuth.getUid();
 
         mNewNoticeTitle = findViewById(R.id.new_notice_title_edit_text);
+        mNewNoticePrice = findViewById(R.id.new_notice_budget);
         mNewNoticeDescription = findViewById(R.id.new_notice_description_edit_text);
         defaultBackground = mNewNoticeTitle.getBackground();
         mNewNoticeTitle.addTextChangedListener(this);
@@ -77,6 +82,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         addNewNoticeButton = findViewById(R.id.new_offer_add_offer_button);
         addNewNoticeButton.setOnClickListener(v -> {
             title = mNewNoticeTitle.getText().toString().trim();
+            price = mNewNoticePrice.getText().toString().trim();
             description = mNewNoticeDescription.getText().toString().trim();
             addNewNotice();
         });
@@ -106,18 +112,21 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         }
         Map<String, Object> noticeMap = new HashMap<>();
         noticeMap.put("Title", title);
+        noticeMap.put("Price", price);
         noticeMap.put("Description", description);
         noticeMap.put("Category", categoryTitle);
         noticeMap.put("Subcategory", subCategoryTitle);
-        String id = firebaseFirestore.collection("notices").document().getId();
-        firebaseFirestore.collection("notices").document(id).set(noticeMap).addOnSuccessListener(v -> {
+        noticeMap.put("UserId", userId);
+
+        String id = firebaseFirestore.collection("announcement").document().getId();
+        firebaseFirestore.collection("announcement").document(id).set(noticeMap).addOnSuccessListener(v -> {
             Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
             finish();
         }).addOnFailureListener(v -> Toast.makeText(getApplicationContext(), "Error: " + v.getLocalizedMessage(), Toast.LENGTH_LONG).show());
 
-        for(int i = 0; i < noticeImages.size() - 1; i++) {
+        for (int i = 0; i < noticeImages.size() - 1; i++) {
             PortfolioImage portfolioImage = noticeImages.get(i);
-            StorageReference imgRef = FirebaseStorage.getInstance().getReference().child("notices/" + id + "/images/" + portfolioImage.getImageTitle());
+            StorageReference imgRef = FirebaseStorage.getInstance().getReference().child("announcement/" + id + "/images/photo" + i);
             imgRef.putFile(portfolioImage.getImageUri()).addOnSuccessListener(taskSnapshot -> {
                 Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
             }).addOnFailureListener(e -> {
@@ -132,7 +141,12 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
             mNewNoticeTitle.setError(getString(R.string.empty_field_error));
             return false;
         }
-        if(categoryTitle.isEmpty()){
+        if (price.isEmpty()) {
+            mNewNoticePrice.setBackgroundResource(R.drawable.edit_error_border);
+            mNewNoticePrice.setError(getString(R.string.empty_field_error));
+            return false;
+        }
+        if (categoryTitle.isEmpty()) {
             Toast.makeText(this, getString(R.string.empty_field_error), Toast.LENGTH_LONG).show();
             return false;
         }
@@ -159,10 +173,10 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 100 && resultCode == Activity.RESULT_OK){
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             ClipData clipData = data.getClipData();
-            if(clipData != null){
-                for(int i = 0; i < clipData.getItemCount(); i++){
+            if (clipData != null) {
+                for (int i = 0; i < clipData.getItemCount(); i++) {
 
                     PortfolioImage noticeImage = new PortfolioImage(DocumentFile.fromSingleUri(getApplicationContext(),
                             clipData.getItemAt(i).getUri()).getName(), clipData.getItemAt(i).getUri());
@@ -177,9 +191,9 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
     private void addNewNoticePhotos() {
         Intent intent;
 
-        try{
+        try {
             intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        }catch (Exception e){
+        } catch (Exception e) {
             intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         }
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
@@ -188,13 +202,13 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
 
     @Override
     public void onImageClick(int position) {
-        if(position == getNoticeImagesCount() - 1)
+        if (position == getNoticeImagesCount() - 1)
             addNewNoticePhotos();
     }
 
     @Override
     public void onImageLongClick(int position) {
-        if(position == getNoticeImagesCount() - 1)
+        if (position == getNoticeImagesCount() - 1)
             return;
 
         LayoutInflater layoutInflater = getLayoutInflater();
@@ -205,7 +219,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         AlertDialog dialog = builder.create();
 
         Button deletePhoto = view.findViewById(R.id.delete_portfolio_photo);
-        deletePhoto.setOnClickListener(c->{
+        deletePhoto.setOnClickListener(c -> {
             noticeImages.remove(getImage(position));
             adapter.notifyDataSetChanged();
             dialog.dismiss();
@@ -227,7 +241,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if(id == android.R.id.home){
+        if (id == android.R.id.home) {
             onBackPressed();
             return true;
         }

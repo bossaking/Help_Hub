@@ -11,7 +11,7 @@ public class Category {
     public String title;
     public List<Category> subcategories;
 
-    public Category(){
+    public Category() {
         parentCategoryId = "";
         subcategories = new ArrayList<>();
     }

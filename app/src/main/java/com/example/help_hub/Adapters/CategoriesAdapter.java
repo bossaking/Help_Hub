@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.help_hub.OtherClasses.Category;
 import com.example.help_hub.R;
@@ -19,10 +21,11 @@ public class CategoriesAdapter extends RecyclerView.Adapter {
     private static final int TYPE_SUBCATEGORY = 0;
     private static final int TYPE_CATEGORY = 1;
 
-    public interface OnClickListener{
+    public interface OnClickListener {
         void onCategoryClick(int position);
     }
-    public interface  OnLongClickListener{
+
+    public interface OnLongClickListener {
         void onCategoryLongClick(int position);
     }
 
@@ -54,7 +57,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public CategoriesAdapter(List<Category> categories, OnClickListener onClickListener){
+    public CategoriesAdapter(List<Category> categories, OnClickListener onClickListener) {
         this.categories = categories;
         this.onClickListener = onClickListener;
     }
@@ -64,9 +67,9 @@ public class CategoriesAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        if(viewType == TYPE_CATEGORY) {
+        if (viewType == TYPE_CATEGORY) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_with_subcategories_card, parent, false);
-        }else{
+        } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_without_subcategories_card, parent, false);
         }
         CategoriesAdapter.AdapterViewHolder adapterViewHolder = new CategoriesAdapter.AdapterViewHolder(view, onClickListener);
@@ -76,15 +79,15 @@ public class CategoriesAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         String title = categories.get(position).getTitle();
-        TextView textView = ((CategoriesAdapter.AdapterViewHolder)holder).textView;
+        TextView textView = ((CategoriesAdapter.AdapterViewHolder) holder).textView;
         textView.setText(title);
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(categories.get(position).parentCategoryId.isEmpty()){
+        if (categories.get(position).parentCategoryId.isEmpty()) {
             return TYPE_CATEGORY;
-        }else{
+        } else {
             return TYPE_SUBCATEGORY;
         }
     }

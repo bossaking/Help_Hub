@@ -7,7 +7,7 @@ public class PortfolioImage {
     private String imageTitle;
     private Uri imageUri;
 
-    public PortfolioImage(String imageTitle, Uri uri){
+    public PortfolioImage(String imageTitle, Uri uri) {
         this.imageTitle = imageTitle;
         this.imageUri = uri;
     }

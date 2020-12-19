@@ -7,7 +7,7 @@ public class User {
     private String Name, PhoneNumber, City, Description, Id, Role;
     private Uri ProfileImage;
 
-    public User(String Id){
+    public User(String Id) {
         this.Id = Id;
     }
 

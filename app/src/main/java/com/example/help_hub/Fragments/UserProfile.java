@@ -126,7 +126,7 @@ public class UserProfile extends Fragment {
 
         int id = item.getItemId();
 
-        if(id == R.id.user_menu_edit){
+        if (id == R.id.user_menu_edit) {
             Intent intent = new Intent(getContext(), UserDataChangeActivity.class);
             startActivity(intent);
             return true;
@@ -144,8 +144,8 @@ public class UserProfile extends Fragment {
         fragmentManager = getChildFragmentManager();
 
         Toolbar myToolbar = myActivity.findViewById(R.id.my_toolbar);
-        ((MainActivity)myActivity).setSupportActionBar(myToolbar);
-        ((MainActivity)myActivity).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        ((MainActivity) myActivity).setSupportActionBar(myToolbar);
+        ((MainActivity) myActivity).getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class UserProfile extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void ShowAllPortfolioPhotos(){
+    public void ShowAllPortfolioPhotos() {
 
         Intent intent = new Intent(getContext(), UserPortfolioPhotosActivity.class);
         startActivity(intent);
@@ -167,10 +167,10 @@ public class UserProfile extends Fragment {
 
         imageLoadingDialog.StartLoadingDialog();
 
-        if(requestCode == 100 && resultCode == Activity.RESULT_OK){
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             ClipData clipData = data.getClipData();
-            if(clipData != null){
-                for(int i = 0; i < clipData.getItemCount(); i++){
+            if (clipData != null) {
+                for (int i = 0; i < clipData.getItemCount(); i++) {
 
                     PortfolioImage portfolioImage = new PortfolioImage(DocumentFile.fromSingleUri(myContext,
                             clipData.getItemAt(i).getUri()).getName(), clipData.getItemAt(i).getUri());
@@ -207,20 +207,20 @@ public class UserProfile extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(UserPortfolioImagesDatabase.instance == null){
+        if (UserPortfolioImagesDatabase.instance == null) {
             userPortfolioImagesDatabase = UserPortfolioImagesDatabase.getInstance(myActivity);
             userPortfolioImagesDatabase.arrayChangedListener = this::LoadUserPortfolioPhotos;
             userPortfolioImagesDatabase.Initialize();
-        }else{
+        } else {
             userPortfolioImagesDatabase = UserPortfolioImagesDatabase.getInstance(myActivity);
             LoadUserPortfolioPhotos();
         }
 
-        if(UserDatabase.instance == null){
+        if (UserDatabase.instance == null) {
             userDatabase = UserDatabase.getInstance(myActivity);
             userDatabase.profileDataLoaded = this::GetUserInformation;
             userDatabase.profileImageLoaded = this::SetProfileImage;
-        }else{
+        } else {
             userDatabase = UserDatabase.getInstance(myActivity);
             GetUserInformation();
             SetProfileImage(userDatabase.getUser().getProfileImage());

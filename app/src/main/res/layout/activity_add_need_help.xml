@@ -26,25 +26,29 @@
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <TextView
         android:id="@+id/add_new_notice_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_new_notice_header"
+        android:textColor="@color/black"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/my_toolbar"/>
+        app:layout_constraintTop_toBottomOf="@id/my_toolbar" />
 
     <TextView
         android:id="@+id/new_notice_title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/new_notice_title"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
@@ -56,8 +60,8 @@
         android:id="@+id/new_notice_title_edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/login_edit_text"
+        android:layout_marginTop="2dp"
+        android:background="@color/text_input_background"
         android:hint="@string/new_notice_title_hint"
         android:inputType="text"
         android:padding="10dp"
@@ -65,12 +69,27 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/new_notice_title_text_view" />
 
+    <EditText
+        android:id="@+id/new_notice_budget"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/text_input_background"
+        android:hint="@string/new_notice_budget_placeholder"
+        android:inputType="number"
+        android:padding="2dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/new_notice_select_category_button" />
+
     <TextView
         android:id="@+id/new_notice_category_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/new_offer_category"
+        android:layout_marginTop="16dp"
+        android:text="@string/new_notice_category"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
@@ -81,40 +100,54 @@
     <Button
         android:id="@+id/new_notice_select_category_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="2dp"
         android:background="@color/login_form_details_medium"
         android:drawableEnd="@drawable/ic_baseline_chevron_right_24"
         android:paddingStart="12dp"
-        android:text="@string/new_offer_select_category"
+        android:text="@string/new_notice_select_category"
         android:textAlignment="textStart"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/new_notice_category_text_view" />
 
     <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/new_notice_budget"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/new_notice_select_category_button" />
+
+    <TextView
         android:id="@+id/new_notice_description_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="@string/new_offer_description_title"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/new_notice_select_category_button" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <EditText
         android:id="@+id/new_notice_description_edit_text"
         android:layout_width="0dp"
         android:layout_height="120dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/login_edit_text"
-        android:padding="10dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/text_input_background"
+        android:gravity="top"
         android:hint="@string/new_notice_description_hint"
         android:inputType="textMultiLine"
-        android:gravity="top"
+        android:padding="10dp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/new_notice_description_text_view" />
@@ -123,18 +156,18 @@
         android:id="@+id/new_notice_images"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:orientation="vertical"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:layoutDirection="ltr"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/new_offer_add_offer_button"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/new_notice_description_edit_text"
-        app:layout_constraintBottom_toTopOf="@+id/new_offer_add_offer_button"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2">
 
     </androidx.recyclerview.widget.RecyclerView>
-
 
     <Button
         android:id="@+id/new_offer_add_offer_button"

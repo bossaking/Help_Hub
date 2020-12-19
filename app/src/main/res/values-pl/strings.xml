@@ -21,20 +21,41 @@
     <string name="save_button">Zapisz</string>
     <string name="edit_button">Edytuj</string>
     <string name="user_data_change_new_password_button">Zmień hasło</string>
-    <string name="add_new_offer_header">Dodaj nową ofertę</string>
+    <string name="add_new_offer_header">Zaoferuj pomoc</string>
     <string name="new_offer_title" translatable="false">Tytuł oferty</string>
-    <string name="new_offer_category" translatable="false">Wybierz kategorię</string>
-    <string name="new_offer_select_category" translatable="false">Wybierz kategorię</string>
+    <string name="new_offer_category" translatable="false">Kategoria</string>
     <string name="new_offer_description_title" translatable="false">Opis</string>
-    <string name="new_offer_add_offer_button" translatable="false">Dodaj ofertę</string>
-    <string name="new_offer_title_hint">np. Przepcham każdą zatkaną dziurę</string>
+    <string name="new_offer_add_offer_button" translatable="false">Dodaj</string>
+    <string name="new_offer_title_hint">np. Naprawię Twoją pralkę</string>
     <string name="new_offer_description_hint">Napisz, w czym jesteś dobry i co oferujesz.</string>
-    <string name="new_notice_add_notice_button" translatable="false">Dodaj ofertę</string>
-    <string name="add_new_notice_header" translatable="false">Dodaj nowe ogłoszenie</string>
+    <string name="new_notice_add_notice_button" translatable="false">Dodaj</string>
+    <string name="add_new_notice_header" translatable="false">Poproś o pomoc</string>
     <string name="new_notice_description_title" translatable="false">Opis</string>
-    <string name="new_notice_title" translatable="false">Tytuł ogłoszenia</string>
+    <string name="new_notice_title" translatable="false">Tytuł problemu</string>
     <string name="new_notice_category" translatable="false">Kategoria</string>
     <string name="new_notice_select_category" translatable="false">Wybierz kategorię</string>
     <string name="new_notice_title_hint" translatable="false">np Zepsuła się pralka</string>
-    <string name="new_notice_description_hint" translatable="false">Napisz, jaki masz problem. Dodanie zdjęć to bardzo dobry pomysł. Skorzystaj z okazji, a na pewno nie pożałujesz</string>
+    <string name="new_notice_description_hint" translatable="false">Napisz, jaki masz problem. Dodanie zdjęć to bardzo dobry pomysł. Skorzystaj z okazji, a na pewno nie pożałujesz.</string>
+    <string name="title">Tytuł:</string>
+    <string name="budget">Budżet:</string>
+    <string name="write_button">Napisz</string>
+    <string name="title_placeholder" translatable="false">Tytuł</string>
+    <string name="description_placeholder" translatable="false">Opis</string>
+    <string name="cost">Koszt:</string>
+    <string name="new_notice_currency" translatable="false">zł</string>
+    <string name="new_notice_budget_placeholder" translatable="false">0 zł</string>
+    <string name="new_notice_budget" translatable="false">Budżet:</string>
+    <string name="new_offer_cost_placeholder" translatable="false">0 zł</string>
+    <string name="new_offer_cost" translatable="false">Koszt:</string>
+    <string name="title_need_help" translatable="false">Potrzeba pomocy</string>
+    <string name="title_want_to_help" translatable="false">Oferuję pomoc</string>
+    <string name="title_user_profile" translatable="false">Profil</string>
+    <string name="show_all_portfolio_photos" translatable="false">Pokaż wszystkie</string>
+    <string name="add_new_portfolio_photo" translatable="false">Dodaj nowe zdjęcia</string>
+    <string name="logout_title" translatable="false"><u>Wyloguj</u></string>
+    <string name="portfolio_title" translatable="false"><u>Portfolio</u></string>
+    <string name="new_offer_select_category" translatable="false">Wybierz kategorię</string>
+    <string name="need_help_dialog" translatable="false">POTRZEBUJĘ POMOCY</string>
+    <string name="want_to_help_dialog" translatable="false">OFERUJĘ POMOC</string>
+    <string name="new_offer_currency" translatable="false">zł</string>
 </resources>

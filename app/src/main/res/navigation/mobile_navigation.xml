@@ -3,20 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/orders">
+    app:startDestination="@id/need_help">
+
     <fragment
         android:id="@+id/user_profile"
         android:name="com.example.help_hub.Fragments.UserProfile"
         android:label="fragment_user_profile"
         tools:layout="@layout/fragment_user_profile" />
+
     <fragment
-        android:id="@+id/orders"
-        android:name="com.example.help_hub.Fragments.Orders"
+        android:id="@+id/need_help"
+        android:name="com.example.help_hub.Fragments.NeedHelpFragment"
         android:label="fragment_orders"
         tools:layout="@layout/fragment_orders" />
+
     <fragment
-        android:id="@+id/administration"
-        android:name="com.example.help_hub.Fragments.Administration"
-        android:label="fragment_administration"
-        tools:layout="@layout/fragment_administration" />
+        android:id="@+id/want_to_help"
+        android:name="com.example.help_hub.Fragments.WantToHelpFragment"
+        android:label="fragment_orders"
+        tools:layout="@layout/fragment_orders" />
+
 </navigation>

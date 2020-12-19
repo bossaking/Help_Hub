@@ -15,7 +15,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Fragments.NeedHelpFragment;
+import com.example.help_hub.OtherClasses.User;
 import com.example.help_hub.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -34,9 +38,15 @@ public class NeedHelpDetails extends AppCompatActivity {
     private TextView priceTextView;
     private TextView descriptionTextView;
 
+    private TextView userNameTextView;
+    private TextView phoneNumberTextView;
+
     Context myContext;
 
-    private StorageReference storageReference;
+    String userId;
+
+    FirebaseFirestore firebaseFirestore;
+    StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +59,7 @@ public class NeedHelpDetails extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         storageReference = FirebaseStorage.getInstance().getReference();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         myContext = getApplicationContext();
 
@@ -58,11 +69,16 @@ public class NeedHelpDetails extends AppCompatActivity {
         descriptionTextView = findViewById(R.id.need_help_description);
         needHelpUserImage = findViewById(R.id.need_help_user_photo);
 
+        userNameTextView = findViewById(R.id.need_help_user_name);
+        phoneNumberTextView = findViewById(R.id.need_help_user_phone_number);
+
         Bundle bundle = getIntent().getExtras();
 
         titleTextView.setText(bundle.getString(EXTRA_NEED_HELP_TITLE));
         priceTextView.setText(bundle.getString(EXTRA_NEED_HELP_PRICE) + " " + getString(R.string.new_notice_currency));
         descriptionTextView.setText(bundle.getString(EXTRA_NEED_HELP_DESCRIPTION));
+
+        userId = bundle.getString(EXTRA_NEED_HELP_USER_ID);
 
         StorageReference imgRef = storageReference.child("announcement/" + bundle.getString(EXTRA_NEED_HELP_ID) + "/images/photo0");
         imgRef.getDownloadUrl().addOnSuccessListener(v -> {
@@ -71,7 +87,7 @@ public class NeedHelpDetails extends AppCompatActivity {
             needHelpImage.setImageResource(R.drawable.ic_baseline_missing_image_24);
         });
 
-        StorageReference imgUserRef = storageReference.child("users/" + bundle.getString(EXTRA_NEED_HELP_USER_ID) + "/profile.jpg");
+        StorageReference imgUserRef = storageReference.child("users/" + userId + "/profile.jpg");
         imgUserRef.getDownloadUrl().addOnSuccessListener(v -> {
             Glide.with(myContext).load(v).into(needHelpUserImage);
         }).addOnFailureListener(v -> {
@@ -90,4 +106,6 @@ public class NeedHelpDetails extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

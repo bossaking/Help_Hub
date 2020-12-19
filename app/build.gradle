@@ -64,4 +64,9 @@ dependencies {
 
     //For portfolio description
     implementation'com.borjabravo:readmoretextview:2.0.1'
+
+    implementation 'com.github.smarteist:autoimageslider:1.4.0'
+
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 }

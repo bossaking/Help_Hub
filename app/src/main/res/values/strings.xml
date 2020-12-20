@@ -129,4 +129,6 @@
     <string name="added_to_bookmarks" translatable="false">Added to bookmarks</string>
     <string name="removed_from_bookmarks" translatable="false">Removed from bookmarks</string>
 
+    <string name="added_to_observed" translatable="false">Added to observed</string>
+    <string name="removed_from_observed" translatable="false">Removed from observed</string>
 </resources>

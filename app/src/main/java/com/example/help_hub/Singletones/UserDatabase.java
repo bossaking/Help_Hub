@@ -37,20 +37,20 @@ public class UserDatabase {
     public ProfileDataLoaded profileDataLoaded;
     public ProfileImageLoaded profileImageLoaded;
 
-    private UserDatabase(Activity myActivity) {
+    private UserDatabase(Activity myActivity, String userId) {
 
         this.context = myActivity.getApplicationContext();
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        userId = firebaseAuth.getUid();
-        getUserFromFirebase();
+        this.userId = userId;
+        getUserFromFirebase(userId);
     }
 
-    public static UserDatabase getInstance(Activity activity) {
+    public static UserDatabase getInstance(Activity activity, String userId) {
 
         if (instance == null) {
-            instance = new UserDatabase(activity);
+            instance = new UserDatabase(activity, userId);
         }
         return instance;
     }
@@ -59,7 +59,41 @@ public class UserDatabase {
         instance = null;
     }
 
-    public void getUserFromFirebase() {
+    public User getOtherUserInformations(String userId){
+
+        DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
+        User user = new User(userId);
+        documentReference.addSnapshotListener((documentSnapshot, e) -> {
+            user.setName(documentSnapshot.getString("Name"));
+            user.setPhoneNumber(documentSnapshot.getString("Phone number"));
+            user.setCity(documentSnapshot.getString("City"));
+            user.setDescription(documentSnapshot.getString("Description"));
+            user.setRole(documentSnapshot.getString("Role"));
+            if (profileDataLoaded != null) {
+                profileDataLoaded.ProfileDataLoaded();
+            }
+
+        });
+
+        //PROFILE IMAGE
+        StorageReference profileRef = storageReference.child("users/" + userId + "/profile.jpg");
+        profileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            user.setProfileImage(uri);
+            if (profileImageLoaded != null) {
+                profileImageLoaded.ProfileImageLoaded(uri);
+            }
+        }).addOnFailureListener(e -> {
+            user.setProfileImage(Uri.parse("android.resource://" + context.getPackageName() + "/drawable/default_user_image"));
+            if (profileImageLoaded != null) {
+                profileImageLoaded.ProfileImageLoaded(user.getProfileImage());
+            }
+            Toast.makeText(context, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+        });
+
+        return user;
+    }
+
+    public void getUserFromFirebase(String userId) {
 
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
         user = new User(userId);

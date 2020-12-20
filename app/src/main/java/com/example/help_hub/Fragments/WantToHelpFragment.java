@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,19 +18,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.AddTheOfferActivity;
-import com.example.help_hub.AlertDialogues.SelectTypeOfAdvertisement;
-import com.example.help_hub.OtherClasses.NeedHelp;
 import com.example.help_hub.OtherClasses.WantToHelp;
 import com.example.help_hub.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class WantToHelpFragment extends Fragment {

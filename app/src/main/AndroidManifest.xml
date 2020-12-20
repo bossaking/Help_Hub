@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.NeedHelpDetails"></activity>
+        <activity android:name=".Activities.WantToHelpDetails"></activity>
+        <activity android:name=".Activities.NeedHelpDetails" />
         <activity android:name=".Activities.SelectCategoryActivity" />
         <activity
             android:name=".Activities.AddNewNoticeActivity"

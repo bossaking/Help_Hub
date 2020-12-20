@@ -24,6 +24,7 @@ import com.example.help_hub.OtherClasses.PortfolioImage;
 import com.example.help_hub.Adapters.PortfolioImagesRecyclerAdapter;
 import com.example.help_hub.R;
 import com.example.help_hub.Singletones.UserPortfolioImagesDatabase;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class UserPortfolioPhotosActivity extends AppCompatActivity implements PortfolioImagesRecyclerAdapter.OnClickListener, PortfolioImagesRecyclerAdapter.OnLongClickListener {
 

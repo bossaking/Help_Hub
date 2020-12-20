@@ -8,7 +8,9 @@
     <string name="repeat_password_hint">Repeat password</string>
     <string name="registration_button">Sign up</string>
     <string name="have_account_question">Already have an account?</string>
-    <string name="go_to_login_text"><u>Sign In</u></string>
+    <string name="go_to_login_text">
+        <u>Sign In</u>
+    </string>
 
     <!--REGISTRATION ERRORS-->
     <string name="email_empty_error">The field cannot be empty</string>
@@ -21,7 +23,9 @@
     <string name="login_title" translatable="false">Login</string>
     <string name="login_button" translatable="false">Sign In</string>
     <string name="no_account_question" translatable="false">Not registered yet?</string>
-    <string name="go_to_registration_text" translatable="false"><u>Sign Up</u></string>
+    <string name="go_to_registration_text" translatable="false">
+        <u>Sign Up</u>
+    </string>
     <string name="forgot_password_question" translatable="false">Forgot password?</string>
 
     <!--LOGIN ERRORS-->
@@ -57,10 +61,14 @@
     <string name="user_data_change_new_password_button">Change password</string>
 
     <!--USER PROFILE FRAGMENT-->
-    <string name="portfolio_title" translatable="false"><u>Portfolio</u></string>
+    <string name="portfolio_title" translatable="false">
+        <u>Portfolio</u>
+    </string>
     <string name="add_new_portfolio_photo" translatable="false">Add new photos</string>
     <string name="show_all_portfolio_photos" translatable="false">Show all</string>
-    <string name="logout_title" translatable="false"><u>Logout</u></string>
+    <string name="logout_title" translatable="false">
+        <u>Logout</u>
+    </string>
 
     <!--BOTTOM NAVIGATION BAR-->
     <string name="title_activity_main" translatable="false">MainActivity</string>
@@ -92,7 +100,9 @@
     <string name="new_notice_description_title">Description</string>
     <string name="new_notice_add_notice_button">Ask</string>
     <string name="new_notice_title_hint" translatable="false">e.g. Washing machine broken</string>
-    <string name="new_notice_description_hint">Write what your problem is. Adding photos is a very good idea. Take this opportunity and you will certainly not regret it.</string>
+    <string name="new_notice_description_hint">Write what your problem is. Adding photos is a very good idea. Take this
+        opportunity and you will certainly not regret it.
+    </string>
     <string name="example_category_title" translatable="false">Example Category Title</string>
     <string name="new_notice_currency" translatable="false">€</string>
 
@@ -112,5 +122,11 @@
     <!--TYPE DIALOG-->
     <string name="need_help_dialog" translatable="false">I NEED HELP</string>
     <string name="want_to_help_dialog" translatable="false">I WANT TO HELP</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="bookmark" translatable="false">Bookmark</string>
+
+    <string name="added_to_bookmarks" translatable="false">Added to bookmarks</string>
+    <string name="removed_from_bookmarks" translatable="false">Removed from bookmarks</string>
 
 </resources>

@@ -45,7 +45,6 @@ public class UserPortfolioImagesDatabase {
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        userId = firebaseAuth.getUid();
     }
 
     public static UserPortfolioImagesDatabase getInstance(Activity activity) {
@@ -60,7 +59,9 @@ public class UserPortfolioImagesDatabase {
         instance = null;
     }
 
-    public void Initialize() {
+    public void Initialize(String userId) {
+
+        this.userId = userId;
         GetAllPhotosFromFirebase();
     }
 

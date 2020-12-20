@@ -19,24 +19,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.AddNewNoticeActivity;
-import com.example.help_hub.Activities.AddTheOfferActivity;
 import com.example.help_hub.Activities.NeedHelpDetails;
-import com.example.help_hub.AlertDialogues.SelectTypeOfAdvertisement;
 import com.example.help_hub.OtherClasses.NeedHelp;
 import com.example.help_hub.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firestore.v1.Document;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class NeedHelpFragment extends Fragment {

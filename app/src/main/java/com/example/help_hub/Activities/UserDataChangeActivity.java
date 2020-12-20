@@ -11,6 +11,7 @@ import com.example.help_hub.AlertDialogues.ChangePasswordDialog;
 import com.example.help_hub.OtherClasses.User;
 import com.example.help_hub.R;
 import com.example.help_hub.Singletones.UserDatabase;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -30,7 +31,7 @@ public class UserDataChangeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_data_change);
 
-        userDatabase = UserDatabase.getInstance(this);
+        userDatabase = UserDatabase.getInstance(this, FirebaseAuth.getInstance().getUid());
         user = userDatabase.getUser();
 
         changePassword = findViewById(R.id.user_data_change_new_password_button);

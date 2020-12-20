@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
@@ -144,8 +145,8 @@ public class UserProfile extends Fragment {
         fragmentManager = getChildFragmentManager();
 
         Toolbar myToolbar = myActivity.findViewById(R.id.my_toolbar);
-        ((MainActivity) myActivity).setSupportActionBar(myToolbar);
-        ((MainActivity) myActivity).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        ((AppCompatActivity) myActivity).setSupportActionBar(myToolbar);
+        ((AppCompatActivity) myActivity).getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     @Override
@@ -210,18 +211,18 @@ public class UserProfile extends Fragment {
         if (UserPortfolioImagesDatabase.instance == null) {
             userPortfolioImagesDatabase = UserPortfolioImagesDatabase.getInstance(myActivity);
             userPortfolioImagesDatabase.arrayChangedListener = this::LoadUserPortfolioPhotos;
-            userPortfolioImagesDatabase.Initialize();
+            userPortfolioImagesDatabase.Initialize(FirebaseAuth.getInstance().getUid());
         } else {
             userPortfolioImagesDatabase = UserPortfolioImagesDatabase.getInstance(myActivity);
             LoadUserPortfolioPhotos();
         }
 
         if (UserDatabase.instance == null) {
-            userDatabase = UserDatabase.getInstance(myActivity);
+            userDatabase = UserDatabase.getInstance(myActivity, FirebaseAuth.getInstance().getUid());
             userDatabase.profileDataLoaded = this::GetUserInformation;
             userDatabase.profileImageLoaded = this::SetProfileImage;
         } else {
-            userDatabase = UserDatabase.getInstance(myActivity);
+            userDatabase = UserDatabase.getInstance(myActivity, FirebaseAuth.getInstance().getUid());
             GetUserInformation();
             SetProfileImage(userDatabase.getUser().getProfileImage());
         }

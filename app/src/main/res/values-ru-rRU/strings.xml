@@ -27,14 +27,14 @@
     <string name="write_button">Написать</string>
     <string name="new_offer_title" translatable="false">Заголовок предложения</string>
     <string name="new_offer_category" translatable="false">Выберите категорию</string>
-    <string name="new_offer_description_title" translatable="false">Описание</string>
+    <string name="new_offer_description_title" translatable="false">Описание:</string>
     <string name="new_offer_add_offer_button" translatable="false">Добавить предложение</string>
     <string name="new_offer_description_hint" translatable="false">Запишите, в чем вы хороши и что вы предлагаете.</string>
     <string name="add_new_notice_header" translatable="false">Добавить новое объявление</string>
     <string name="new_notice_title" translatable="false">Название уведомления</string>
     <string name="new_notice_category" translatable="false">Категория</string>
     <string name="new_notice_select_category" translatable="false">Выберите категорию</string>
-    <string name="new_notice_description_title" translatable="false">Описание</string>
+    <string name="new_notice_description_title" translatable="false">Описание:</string>
     <string name="new_notice_add_notice_button" translatable="false">Добавить предложение</string>
     <string name="new_notice_description_hint" translatable="false">Запишите, в чем ваша проблема. Добавление фотографий - очень хорошая идея. Используй эту возможность, и ты не пожалеешь об этом.</string>
     <string name="title_placeholder" translatable="false">Название</string>
@@ -46,4 +46,6 @@
     <string name="new_offer_cost_placeholder" translatable="false">0 руб</string>
     <string name="new_offer_cost" translatable="false">Стоимость:</string>
     <string name="new_offer_currency" translatable="false">руб</string>
+    <string name="cost_placeholder" translatable="false">Стоимость</string>
+    <string name="budget_placeholder" translatable="false">Бюджет</string>
 </resources>

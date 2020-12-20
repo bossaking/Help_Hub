@@ -89,8 +89,8 @@ public class WantToHelpFragment extends Fragment {
 
         firebaseFirestore.collection("offers").addSnapshotListener((queryDocumentSnapshots, e) -> {
 
-            for(DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()){
-                switch (dc.getType()){
+            for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+                switch (dc.getType()) {
                     case ADDED:
                         WantToHelp wantToHelp = dc.getDocument().toObject(WantToHelp.class);
                         wantToHelp.setId(dc.getDocument().getId());

@@ -2,6 +2,7 @@ package com.example.help_hub.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.help_hub.Activities.AddTheOfferActivity;
 import com.example.help_hub.AlertDialogues.SelectTypeOfAdvertisement;
 import com.example.help_hub.OtherClasses.NeedHelp;
 import com.example.help_hub.OtherClasses.WantToHelp;
@@ -78,8 +80,7 @@ public class WantToHelpFragment extends Fragment {
 
         FloatingActionButton add = view.findViewById(R.id.floatingActionButton);
         add.setOnClickListener(v -> {
-            SelectTypeOfAdvertisement selectTypeOfAdvertisement = new SelectTypeOfAdvertisement(getActivity());
-            selectTypeOfAdvertisement.startSelectTypeOfAdvertisement();
+            myActivity.startActivity(new Intent(myContext, AddTheOfferActivity.class));
         });
 
         recyclerView = view.findViewById(R.id.order_recycler_view);

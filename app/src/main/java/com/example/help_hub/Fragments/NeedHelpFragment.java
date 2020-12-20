@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.help_hub.Activities.AddNewNoticeActivity;
+import com.example.help_hub.Activities.AddTheOfferActivity;
 import com.example.help_hub.Activities.NeedHelpDetails;
 import com.example.help_hub.AlertDialogues.SelectTypeOfAdvertisement;
 import com.example.help_hub.OtherClasses.NeedHelp;
@@ -69,14 +71,12 @@ public class NeedHelpFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
         needHelpList = new ArrayList<>();
 
         FloatingActionButton add = view.findViewById(R.id.floatingActionButton);
         add.setOnClickListener(v -> {
-            SelectTypeOfAdvertisement selectTypeOfAdvertisement = new SelectTypeOfAdvertisement(getActivity());
-            selectTypeOfAdvertisement.startSelectTypeOfAdvertisement();
+            myActivity.startActivity(new Intent(myContext, AddNewNoticeActivity.class));
         });
 
         recyclerView = view.findViewById(R.id.order_recycler_view);

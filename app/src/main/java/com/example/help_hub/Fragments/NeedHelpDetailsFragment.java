@@ -3,8 +3,13 @@ package com.example.help_hub.Fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -16,7 +21,10 @@ import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.NeedHelpDetails;
 import com.example.help_hub.Adapters.SliderAdapter;
 import com.example.help_hub.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,6 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -54,6 +63,8 @@ public class NeedHelpDetailsFragment extends Fragment {
 
     SliderAdapter sliderAdapter;
 
+    private Boolean isObserved=false;
+
     public NeedHelpDetailsFragment() {
     }
 
@@ -75,6 +86,7 @@ public class NeedHelpDetailsFragment extends Fragment {
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         myContext = getContext();
+        setHasOptionsMenu(true);
 
         titleTextView = view.findViewById(R.id.need_help_title);
         priceTextView = view.findViewById(R.id.need_help_budget);
@@ -140,5 +152,65 @@ public class NeedHelpDetailsFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.other_user_profile_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+        if(userId.equals(FirebaseAuth.getInstance().getUid())){
+            menu.findItem(R.id.add_to_bookmark_button).setVisible(false);
+        }else{
+            checkOffers(menu);
+        }
+    }
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.add_to_bookmark_button) {
+
+            if (isObserved) {
+                removeOfferFromObserved();
+                item.setIcon(R.drawable.ic_baseline_star_border_24);
+            } else {
+                addOfferToObserved();
+                item.setIcon(R.drawable.ic_baseline_star_24);
+            }
+
+            isObserved = !isObserved;
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void addOfferToObserved() {
+        HashMap<String, Object> offert = new HashMap<>();
+        offert.put("offert id", announcementId);
+        FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getUid())
+                .collection("observed offers").document(announcementId).set(offert).addOnSuccessListener(unused -> {
+            Snackbar.make(getView(), getString(R.string.added_to_observed), Snackbar.LENGTH_SHORT).show();
+        });
+    }
+
+    private void removeOfferFromObserved() {
+        FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getUid())
+                .collection("observed offers").document(announcementId).delete().addOnSuccessListener(unused ->
+                Snackbar.make(getView(), getString(R.string.removed_from_observed), Snackbar.LENGTH_SHORT).show()
+        );
+    }
+
+    private void checkOffers(Menu menu) {
+        FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getUid())
+                .collection("observed offers").document(announcementId).get().addOnCompleteListener((OnCompleteListener<DocumentSnapshot>) task -> {
+            if(task.getResult().exists()) {
+                isObserved = true;
+                menu.findItem(R.id.add_to_bookmark_button).setIcon(R.drawable.ic_baseline_star_24);
+            }else{
+                isObserved = false;
+                menu.findItem(R.id.add_to_bookmark_button).setIcon(R.drawable.ic_baseline_star_border_24);
+            }
+        }).addOnFailureListener(e -> {
+        });
     }
 }

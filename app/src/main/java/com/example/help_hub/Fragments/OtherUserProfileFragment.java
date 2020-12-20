@@ -234,6 +234,5 @@ public class OtherUserProfileFragment extends Fragment {
                     }
         }).addOnFailureListener(e -> {
         });
-
     }
 }

@@ -84,7 +84,7 @@
     <string name="new_offer_select_category" translatable="false">Select category</string>
     <string name="new_offer_cost" translatable="false">Cost:</string>
     <string name="new_offer_cost_placeholder" translatable="false">0 €</string>
-    <string name="new_offer_description_title">Description</string>
+    <string name="new_offer_description_title">Description:</string>
     <string name="new_offer_add_offer_button">Offer</string>
     <string name="new_offer_title_hint" translatable="false">e.g. I will fix your washing machine</string>
     <string name="new_offer_description_hint">Write what you are good at and what you offer.</string>
@@ -97,7 +97,7 @@
     <string name="new_notice_select_category">Select category</string>
     <string name="new_notice_budget" translatable="false">Budget:</string>
     <string name="new_notice_budget_placeholder" translatable="false">0 €</string>
-    <string name="new_notice_description_title">Description</string>
+    <string name="new_notice_description_title">Description:</string>
     <string name="new_notice_add_notice_button">Ask</string>
     <string name="new_notice_title_hint" translatable="false">e.g. Washing machine broken</string>
     <string name="new_notice_description_hint">Write what your problem is. Adding photos is a very good idea. Take this
@@ -115,9 +115,11 @@
     <string name="example_user_phone_number" translatable="false">123456789</string>
     <string name="title_placeholder" translatable="false">Title</string>
     <string name="description_placeholder" translatable="false">Description</string>
+    <string name="budget_placeholder" translatable="false">Budget</string>
 
     <!--WANT TO HELP DETAILS-->
     <string name="cost" translatable="false">Cost:</string>
+    <string name="cost_placeholder" translatable="false">Cost</string>
 
     <!--TYPE DIALOG-->
     <string name="need_help_dialog" translatable="false">I NEED HELP</string>

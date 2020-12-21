@@ -208,24 +208,15 @@ public class UserProfile extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if (UserPortfolioImagesDatabase.instance == null) {
-            userPortfolioImagesDatabase = UserPortfolioImagesDatabase.getInstance(myActivity);
-            userPortfolioImagesDatabase.arrayChangedListener = this::LoadUserPortfolioPhotos;
-            userPortfolioImagesDatabase.Initialize(FirebaseAuth.getInstance().getUid());
-        } else {
-            userPortfolioImagesDatabase = UserPortfolioImagesDatabase.getInstance(myActivity);
-            LoadUserPortfolioPhotos();
-        }
+        userPortfolioImagesDatabase = UserPortfolioImagesDatabase.getInstance(myActivity);
+        userPortfolioImagesDatabase.arrayChangedListener = this::LoadUserPortfolioPhotos;
+        userPortfolioImagesDatabase.Initialize(FirebaseAuth.getInstance().getUid());
 
-        if (UserDatabase.instance == null) {
-            userDatabase = UserDatabase.getInstance(myActivity, FirebaseAuth.getInstance().getUid());
-            userDatabase.profileDataLoaded = this::GetUserInformation;
-            userDatabase.profileImageLoaded = this::SetProfileImage;
-        } else {
-            userDatabase = UserDatabase.getInstance(myActivity, FirebaseAuth.getInstance().getUid());
-            GetUserInformation();
-            SetProfileImage(userDatabase.getUser().getProfileImage());
-        }
+
+        userDatabase = UserDatabase.getInstance(myActivity, FirebaseAuth.getInstance().getUid());
+        userDatabase.getUserFromFirebase(FirebaseAuth.getInstance().getUid());
+        userDatabase.profileDataLoaded = this::GetUserInformation;
+        userDatabase.profileImageLoaded = this::SetProfileImage;
 
     }
 

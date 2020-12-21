@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -30,10 +31,12 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class NeedHelpFragment extends Fragment {
 
     public static final int NEED_HELP_DETAILS_REQUEST_CODE = 1;
+    public static final int MAX_PHOTO_LOADING_ATTEMPTS = 20;
 
     Activity myActivity;
     Context myContext;
@@ -43,6 +46,8 @@ public class NeedHelpFragment extends Fragment {
     private StorageReference storageReference;
 
     NeedHelpAdapter adapter;
+
+    int photoLoadingAttempts;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,8 +84,8 @@ public class NeedHelpFragment extends Fragment {
 
         firebaseFirestore.collection("announcement").addSnapshotListener((queryDocumentSnapshots, e) -> {
 
-            for(DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()){
-                switch (dc.getType()){
+            for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+                switch (dc.getType()) {
                     case ADDED:
                         NeedHelp needHelp = dc.getDocument().toObject(NeedHelp.class);
                         needHelp.setId(dc.getDocument().getId());
@@ -136,18 +141,22 @@ public class NeedHelpFragment extends Fragment {
             needHelpTitle.setText(title);
             needHelpPrice.setText(getResources().getString(R.string.budget) + " " + needHelp.getPrice() + " " + getString(R.string.new_notice_currency));
             needHelpDescription.setText(desc);
+
+            photoLoadingAttempts = 0;
             getImage();
         }
 
-        private void getImage(){
-            //TODO Dodać ograniczenie liczby wywołań
-            StorageReference imgRef = storageReference.child("announcement/" + needHelp.getId() + "/images/photo0");
-            imgRef.getDownloadUrl().addOnSuccessListener(v -> {
-                Glide.with(myContext).load(v).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24).into(needHelpImage);
-            }).addOnFailureListener(v -> {
-                needHelpImage.setImageResource(R.drawable.ic_baseline_missing_image_24);
-                getImage();
-            });
+        private void getImage() {
+
+            photoLoadingAttempts++;
+                StorageReference imgRef = storageReference.child("announcement/" + needHelp.getId() + "/images/photo0");
+                imgRef.getDownloadUrl().addOnSuccessListener(v -> {
+                    Glide.with(myContext).load(v).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24).into(needHelpImage);
+                }).addOnFailureListener(v -> {
+                    needHelpImage.setImageResource(R.drawable.ic_baseline_missing_image_24);
+                    if(photoLoadingAttempts != MAX_PHOTO_LOADING_ATTEMPTS)
+                    getImage();
+                });
         }
 
         @Override

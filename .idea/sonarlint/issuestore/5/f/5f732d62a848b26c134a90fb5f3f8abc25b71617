@@ -1,4 +1,0 @@
-
-k
-java:S1450"URemove the "dialog" field and declare it as a local variable in the relevant methods.(ÿ›ÿ
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ßµÂ¨

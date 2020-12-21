@@ -49,7 +49,5 @@ t
 Dapp/src/main/java/com/example/help_hub/Singletones/UserDatabase.java,c\8\c88d13d8d6922703379d3f65aa55b9e5703b24e0
 ƒ
 Sapp/src/main/java/com/example/help_hub/Singletones/UserPortfolioImagesDatabase.java,a\0\a0a023f213baf672e9d1dd16eaef986ffdaec7bf
-„
-Tapp/src/main/java/com/example/help_hub/AlertDialogues/SelectTypeOfAdvertisement.java,5\f\5f732d62a848b26c134a90fb5f3f8abc25b71617
 v
 Fapp/src/main/java/com/example/help_hub/Activities/NeedHelpDetails.java,7\9\794321237796b1b34072d8385865a10ca3cf9a81

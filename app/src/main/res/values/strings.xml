@@ -133,4 +133,7 @@
 
     <string name="added_to_observed" translatable="false">Added to observed</string>
     <string name="removed_from_observed" translatable="false">Removed from observed</string>
+
+    <string name="send" translatable="false">Send</string>
+    <string name="message_hint" translatable="false">Enter your message</string>
 </resources>

@@ -69,4 +69,11 @@ dependencies {
 
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    //For listView
+    implementation 'com.firebaseui:firebase-ui-database:1.0.1'
+
+    implementation 'com.google.firebase:firebase-database:19.6.0'
+    implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
+    implementation 'com.google.firebase:firebase-core:18.0.0'
 }

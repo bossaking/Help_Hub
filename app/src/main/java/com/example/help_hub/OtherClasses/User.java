@@ -11,7 +11,6 @@ public class User {
         this.Id = Id;
     }
 
-
     public String getName() {
         return Name;
     }

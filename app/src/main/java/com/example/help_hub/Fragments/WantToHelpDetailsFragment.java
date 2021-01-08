@@ -1,6 +1,7 @@
 package com.example.help_hub.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -15,10 +16,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.help_hub.Activities.ChatActivity;
 import com.example.help_hub.Activities.NeedHelpDetails;
 import com.example.help_hub.Activities.WantToHelpDetails;
 import com.example.help_hub.Adapters.SliderAdapter;
@@ -50,18 +53,20 @@ public class WantToHelpDetailsFragment extends Fragment {
 
     private CardView wantToHelpUserDataCardView;
 
+    private Button writeButton;
+
     Context myContext;
 
     String userId, offerId;
 
+    FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
     StorageReference storageReference;
 
-    private Boolean isObserved=false;
+    private Boolean isObserved = false;
 
     public WantToHelpDetailsFragment() {
     }
-
 
 
     @Override
@@ -78,6 +83,7 @@ public class WantToHelpDetailsFragment extends Fragment {
 
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         myContext = getContext();
         setHasOptionsMenu(true);
@@ -89,6 +95,8 @@ public class WantToHelpDetailsFragment extends Fragment {
 
         userNameTextView = view.findViewById(R.id.want_to_help_user_name);
         phoneNumberTextView = view.findViewById(R.id.want_to_help_user_phone_number);
+
+        writeButton = view.findViewById(R.id.write_button);
 
         Bundle bundle = getActivity().getIntent().getExtras();
 
@@ -104,6 +112,14 @@ public class WantToHelpDetailsFragment extends Fragment {
                     new OtherUserProfileFragment(userId)).addToBackStack(null).commit();
         });
 
+        writeButton.setOnClickListener(viewListener -> {
+            Intent intent = new Intent(myContext, ChatActivity.class);
+            intent.putExtra(ChatActivity.NEED_HELP_ID_EXTRA, bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_ID));
+            intent.putExtra(ChatActivity.TITLE_EXTRA, bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_TITLE));
+            //intent.putExtra(ChatActivity.THIS_USER_ID_EXTRA, firebaseAuth.getUid());
+            intent.putExtra(ChatActivity.OTHER_USER_NAME_EXTRA, userNameTextView.getText().toString());
+            startActivity(intent);
+        });
 
         offerId = bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_ID);
 
@@ -117,7 +133,7 @@ public class WantToHelpDetailsFragment extends Fragment {
         DocumentReference reference = firebaseFirestore.collection("users").document(userId);
         Task<DocumentSnapshot> userSnap = reference.get();
         userSnap.addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
+            if (task.isSuccessful()) {
                 DocumentSnapshot doc = task.getResult();
                 userNameTextView.setText(doc.getString("Name"));
                 phoneNumberTextView.setText(doc.getString("Phone number"));
@@ -130,9 +146,9 @@ public class WantToHelpDetailsFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.other_user_profile_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
-        if(userId.equals(FirebaseAuth.getInstance().getUid())){
+        if (userId.equals(FirebaseAuth.getInstance().getUid())) {
             menu.findItem(R.id.add_to_bookmark_button).setVisible(false);
-        }else{
+        } else {
             checkOffers(menu);
         }
     }
@@ -176,10 +192,10 @@ public class WantToHelpDetailsFragment extends Fragment {
     private void checkOffers(Menu menu) {
         FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getUid())
                 .collection("observed offers").document(offerId).get().addOnCompleteListener((OnCompleteListener<DocumentSnapshot>) task -> {
-            if(task.getResult().exists()) {
+            if (task.getResult().exists()) {
                 isObserved = true;
                 menu.findItem(R.id.add_to_bookmark_button).setIcon(R.drawable.ic_baseline_star_24);
-            }else{
+            } else {
                 isObserved = false;
                 menu.findItem(R.id.add_to_bookmark_button).setIcon(R.drawable.ic_baseline_star_border_24);
             }

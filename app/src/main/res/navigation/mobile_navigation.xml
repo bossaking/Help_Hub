@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_orders" />
 
     <fragment
+        android:id="@+id/messages"
+        android:name="com.example.help_hub.Fragments.MessageBoxFragment"
+        android:label="fragment_messages"
+        tools:layout="@layout/fragment_messages"/>
+
+    <fragment
         android:id="@+id/want_to_help"
         android:name="com.example.help_hub.Fragments.WantToHelpFragment"
         android:label="fragment_orders"

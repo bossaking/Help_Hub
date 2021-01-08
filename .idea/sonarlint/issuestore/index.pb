@@ -51,3 +51,25 @@ Dapp/src/main/java/com/example/help_hub/Singletones/UserDatabase.java,c\8\c88d1
 Sapp/src/main/java/com/example/help_hub/Singletones/UserPortfolioImagesDatabase.java,a\0\a0a023f213baf672e9d1dd16eaef986ffdaec7bf
 v
 Fapp/src/main/java/com/example/help_hub/Activities/NeedHelpDetails.java,7\9\794321237796b1b34072d8385865a10ca3cf9a81
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+x
+Happ/src/main/java/com/example/help_hub/Fragments/WantToHelpFragment.java,0\a\0a2ee36d526a397d4fef9aaa8eaf185fef431bb3
+x
+Happ/src/main/java/com/example/help_hub/Activities/WantToHelpDetails.java,5\1\51cbda9da96a11b1ccaf72b922e497baeba1d7e3
+
+Oapp/src/main/java/com/example/help_hub/Fragments/WantToHelpDetailsFragment.java,e\7\e7643d416bff94f206f0e15ffa5b40a333c49c83
+v
+Fapp/src/main/java/com/example/help_hub/Fragments/NeedHelpFragment.java,4\e\4ed22a3faef77ca98b82f89fbf28d95181b1077a
+q
+Aapp/src/main/java/com/example/help_hub/OtherClasses/NeedHelp.java,0\0\00bbb80e6755a37697499edadfac46b42c181218
+}
+Mapp/src/main/java/com/example/help_hub/Fragments/NeedHelpDetailsFragment.java,0\9\090f7dcf2f1b887df052200005766d690fda16b6
+t
+Dapp/src/main/java/com/example/help_hub/OtherClasses/ChatMessage.java,9\f\9fbb45f38abf6e040b437e896c605904f03f7445
+m
+=app/src/main/java/com/example/help_hub/OtherClasses/Chat.java,4\b\4b799bd53b364f3752f03b5e04a6b2f784bbd97b
+s
+Capp/src/main/java/com/example/help_hub/Activities/ChatActivity.java,c\5\c5af4156382d9435d3cc83acf3e247e6faea5c75
+x
+Happ/src/main/java/com/example/help_hub/Fragments/MessageBoxFragment.java,a\5\a5969024fc95faafa325c64f0712c5f8792d5855

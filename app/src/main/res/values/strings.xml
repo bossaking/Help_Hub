@@ -3,7 +3,7 @@
 
     <!--REGISTRATION ACTIVITY-->
     <string name="registration_header">Registration</string>
-    <string name="email_hint">E-mail adress</string>
+    <string name="email_hint">E-mail address</string>
     <string name="password_hint">Password</string>
     <string name="repeat_password_hint">Repeat password</string>
     <string name="registration_button">Sign up</string>
@@ -32,7 +32,7 @@
     <string name="login_error" translatable="false">Invalid e-mail address or password</string>
 
     <!--LOADING DIALOG-->
-    <string name="loading_dialog_title">Loading...</string>
+    <string name="loading_dialog_title">Loading…</string>
 
     <!--RESET PASSWORD DIALOG-->
     <string name="reset_password_title" translatable="false">Reset password</string>
@@ -74,6 +74,7 @@
     <string name="title_activity_main" translatable="false">MainActivity</string>
     <string name="title_need_help" translatable="false">I need help</string>
     <string name="title_want_to_help" translatable="false">I want to help</string>
+    <string name="title_messages" translatable="false">Messages</string>
     <string name="title_user_profile" translatable="false">Profile</string>
     <string name="title_administration_panel" translatable="false">Administration</string>
 
@@ -136,4 +137,7 @@
 
     <string name="send" translatable="false">Send</string>
     <string name="message_hint" translatable="false">Enter your message</string>
+    <string name="item_message_box_title_placeholder" translatable="false">Title of the notice or tender</string>
+    <string name="item_message_box_user_name_placeholder" translatable="false">Marian Luj</string>
+
 </resources>

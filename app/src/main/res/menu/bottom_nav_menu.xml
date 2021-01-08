@@ -12,6 +12,11 @@
         android:title="@string/title_want_to_help" />
 
     <item
+        android:id="@+id/messages"
+        android:icon="@drawable/ic_baseline_message_24"
+        android:title="@string/title_messages"/>
+
+    <item
         android:id="@+id/user_profile"
         android:icon="@drawable/ic_baseline_account_circle_24"
         android:title="@string/title_user_profile" />

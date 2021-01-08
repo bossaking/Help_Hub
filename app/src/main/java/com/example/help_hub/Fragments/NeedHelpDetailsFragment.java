@@ -1,11 +1,13 @@
 package com.example.help_hub.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,11 +15,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.viewpager2.widget.ViewPager2;
+
 import com.bumptech.glide.Glide;
+import com.example.help_hub.Activities.ChatActivity;
 import com.example.help_hub.Activities.NeedHelpDetails;
 import com.example.help_hub.Adapters.SliderAdapter;
 import com.example.help_hub.R;
@@ -39,7 +45,6 @@ import java.util.List;
 public class NeedHelpDetailsFragment extends Fragment {
 
 
-
     private ImageView needHelpImage;
     private ImageView needHelpUserImage;
 
@@ -52,22 +57,24 @@ public class NeedHelpDetailsFragment extends Fragment {
 
     private CardView needHelpUserDataCardView;
 
+    private Button writeButton;
+
     private ViewPager2 pager2;
 
     Context myContext;
 
     String userId, announcementId;
 
+    FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
     StorageReference storageReference;
 
     SliderAdapter sliderAdapter;
 
-    private Boolean isObserved=false;
+    private Boolean isObserved = false;
 
     public NeedHelpDetailsFragment() {
     }
-
 
 
     @Override
@@ -84,6 +91,7 @@ public class NeedHelpDetailsFragment extends Fragment {
 
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         myContext = getContext();
         setHasOptionsMenu(true);
@@ -95,6 +103,8 @@ public class NeedHelpDetailsFragment extends Fragment {
 
         userNameTextView = view.findViewById(R.id.need_help_user_name);
         phoneNumberTextView = view.findViewById(R.id.need_help_user_phone_number);
+
+        writeButton = view.findViewById(R.id.write_button);
 
         Bundle bundle = getActivity().getIntent().getExtras();
 
@@ -110,6 +120,14 @@ public class NeedHelpDetailsFragment extends Fragment {
                     new OtherUserProfileFragment(userId)).addToBackStack(null).commit();
         });
 
+        writeButton.setOnClickListener(viewListener -> {
+            Intent intent = new Intent(myContext, ChatActivity.class);
+            intent.putExtra(ChatActivity.NEED_HELP_ID_EXTRA, bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_ID));
+            intent.putExtra(ChatActivity.TITLE_EXTRA, bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_TITLE));
+            //intent.putExtra(ChatActivity.THIS_USER_ID_EXTRA, firebaseAuth.getUid());
+            intent.putExtra(ChatActivity.OTHER_USER_NAME_EXTRA, userNameTextView.getText().toString());
+            startActivity(intent);
+        });
 
         announcementId = bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_ID);
 
@@ -120,7 +138,7 @@ public class NeedHelpDetailsFragment extends Fragment {
 
         StorageReference imgRef = storageReference.child("announcement/" + announcementId + "/images");
         imgRef.listAll().addOnSuccessListener(listResult -> {
-            for(StorageReference fileRef : listResult.getItems()){
+            for (StorageReference fileRef : listResult.getItems()) {
                 fileRef.getMetadata().addOnSuccessListener(storageMetadata -> {
                     String name = storageMetadata.getName();
                     fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
@@ -144,7 +162,7 @@ public class NeedHelpDetailsFragment extends Fragment {
         DocumentReference reference = firebaseFirestore.collection("users").document(userId);
         Task<DocumentSnapshot> userSnap = reference.get();
         userSnap.addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
+            if (task.isSuccessful()) {
                 DocumentSnapshot doc = task.getResult();
                 userNameTextView.setText(doc.getString("Name"));
                 phoneNumberTextView.setText(doc.getString("Phone number"));
@@ -157,9 +175,9 @@ public class NeedHelpDetailsFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.other_user_profile_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
-        if(userId.equals(FirebaseAuth.getInstance().getUid())){
+        if (userId.equals(FirebaseAuth.getInstance().getUid())) {
             menu.findItem(R.id.add_to_bookmark_button).setVisible(false);
-        }else{
+        } else {
             checkAnnouncements(menu);
         }
     }
@@ -203,10 +221,10 @@ public class NeedHelpDetailsFragment extends Fragment {
     private void checkAnnouncements(Menu menu) {
         FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getUid())
                 .collection("observed announcements").document(announcementId).get().addOnCompleteListener((OnCompleteListener<DocumentSnapshot>) task -> {
-            if(task.getResult().exists()) {
+            if (task.getResult().exists()) {
                 isObserved = true;
                 menu.findItem(R.id.add_to_bookmark_button).setIcon(R.drawable.ic_baseline_star_24);
-            }else{
+            } else {
                 isObserved = false;
                 menu.findItem(R.id.add_to_bookmark_button).setIcon(R.drawable.ic_baseline_star_border_24);
             }

@@ -38,7 +38,8 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseListAdapter<ChatMessage> adapter;
     private EditText messageEdit;
     private Button sendButton;
-    public static final String NEED_HELP_ID_EXTRA = "needhelpidextra", TITLE_EXTRA = "titleextra", OTHER_USER_ID_EXTRA = "useridextra", OTHER_USER_NAME_EXTRA = "usernameextra" ;
+    private FirebaseAuth firebaseAuth;
+    public static final String NEED_HELP_ID_EXTRA = "needhelpidextra", TITLE_EXTRA = "titleextra", THIS_USER_ID_EXTRA = "useridextra", OTHER_USER_NAME_EXTRA = "usernameextra" ;
     private User loggedUser;
     private String Id, Title, userId, userName;
 
@@ -47,12 +48,15 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
         Id = getIntent().getStringExtra(NEED_HELP_ID_EXTRA);
         Title = getIntent().getStringExtra(TITLE_EXTRA);
-        userId = getIntent().getStringExtra(OTHER_USER_ID_EXTRA);
+        //userId = getIntent().getStringExtra(THIS_USER_ID_EXTRA);
+        userId = firebaseAuth.getUid();
         userName = getIntent().getStringExtra(OTHER_USER_NAME_EXTRA);
 
-        UserDatabase userDatabase = UserDatabase.getInstance(this, FirebaseAuth.getInstance().getUid());
+        UserDatabase userDatabase = UserDatabase.getInstance(this, firebaseAuth.getUid());
         loggedUser = userDatabase.getUser();
 
         avatarImage = findViewById(R.id.avatar_image_view);
@@ -65,7 +69,7 @@ public class ChatActivity extends AppCompatActivity {
         titleText.setText(Title);
         nameText.setText(userName);
 
-        adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class, R.layout.item_message, FirebaseDatabase.getInstance().getReference(Id + userId)) {
+        adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class, R.layout.item_message, FirebaseDatabase.getInstance().getReference("chat/" + Id + userId)) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
                 TextView userNameText = v.findViewById(R.id.user_name_text_view);
@@ -87,7 +91,7 @@ public class ChatActivity extends AppCompatActivity {
         sendButton.setOnClickListener(v -> {
             if (messageEdit.getText().equals("") || messageEdit.getText().equals(null))
                 return;
-            FirebaseDatabase.getInstance().getReference(Id + userId).push().setValue(new ChatMessage(messageEdit.getText().toString(), loggedUser.getId()));
+            FirebaseDatabase.getInstance().getReference("chat/" + Id + userId).push().setValue(new ChatMessage(messageEdit.getText().toString(), loggedUser.getId()));
             messageEdit.setText("");
         });
 

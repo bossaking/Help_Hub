@@ -124,7 +124,7 @@ public class NeedHelpDetailsFragment extends Fragment {
             Intent intent = new Intent(myContext, ChatActivity.class);
             intent.putExtra(ChatActivity.NEED_HELP_ID_EXTRA, bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_ID));
             intent.putExtra(ChatActivity.TITLE_EXTRA, bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_TITLE));
-            //intent.putExtra(ChatActivity.THIS_USER_ID_EXTRA, firebaseAuth.getUid());
+            intent.putExtra(ChatActivity.THIS_USER_ID_EXTRA, userId);
             intent.putExtra(ChatActivity.OTHER_USER_NAME_EXTRA, userNameTextView.getText().toString());
             startActivity(intent);
         });

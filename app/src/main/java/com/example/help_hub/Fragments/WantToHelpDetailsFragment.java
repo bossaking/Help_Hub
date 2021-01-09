@@ -116,7 +116,7 @@ public class WantToHelpDetailsFragment extends Fragment {
             Intent intent = new Intent(myContext, ChatActivity.class);
             intent.putExtra(ChatActivity.NEED_HELP_ID_EXTRA, bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_ID));
             intent.putExtra(ChatActivity.TITLE_EXTRA, bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_TITLE));
-            //intent.putExtra(ChatActivity.THIS_USER_ID_EXTRA, firebaseAuth.getUid());
+            intent.putExtra(ChatActivity.THIS_USER_ID_EXTRA, userId);
             intent.putExtra(ChatActivity.OTHER_USER_NAME_EXTRA, userNameTextView.getText().toString());
             startActivity(intent);
         });
@@ -191,7 +191,7 @@ public class WantToHelpDetailsFragment extends Fragment {
 
     private void checkOffers(Menu menu) {
         FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getUid())
-                .collection("observed offers").document(offerId).get().addOnCompleteListener((OnCompleteListener<DocumentSnapshot>) task -> {
+                .collection("observed offers").document(offerId).get().addOnCompleteListener(task -> {
             if (task.getResult().exists()) {
                 isObserved = true;
                 menu.findItem(R.id.add_to_bookmark_button).setIcon(R.drawable.ic_baseline_star_24);

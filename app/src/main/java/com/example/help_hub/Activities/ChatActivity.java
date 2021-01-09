@@ -77,7 +77,7 @@ public class ChatActivity extends AppCompatActivity {
         nameText.setText(userName);
 
         adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class, R.layout.item_message, FirebaseDatabase.getInstance()
-                .getReference("chat/" + Id + userId)) {
+                .getReference("chat/" + otherUserId + userId)) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
                 TextView userNameText = v.findViewById(R.id.user_name_text_view);
@@ -103,14 +103,14 @@ public class ChatActivity extends AppCompatActivity {
             //Zapisywanie informacji do tabeli użytkownika
             if(adapter.getCount() == 0) {
                 DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(userId)
-                        .collection("chats").document(Id + userId);
+                        .collection("chats").document(otherUserId + userId);
                 HashMap<String, Object> chatMap = new HashMap<>();
                 chatMap.put("offer id", Id);
                 chatMap.put("other user id", otherUserId);
                 docRef.set(chatMap);
 
                 docRef = FirebaseFirestore.getInstance().collection("users").document(otherUserId)
-                        .collection("chats").document(Id + userId);
+                        .collection("chats").document(otherUserId + userId);
                 chatMap.clear();
                 chatMap.put("offer id", Id);
                 chatMap.put("other user id", userId);
@@ -118,7 +118,7 @@ public class ChatActivity extends AppCompatActivity {
             }
 
             //Wysyłanie wiadomości
-            FirebaseDatabase.getInstance().getReference("chat/" + Id + userId).push().setValue(new ChatMessage(messageEdit.getText().toString(), loggedUser.getId()));
+            FirebaseDatabase.getInstance().getReference("chat/" + otherUserId + userId).push().setValue(new ChatMessage(messageEdit.getText().toString(), loggedUser.getId()));
             messageEdit.setText("");
         });
 

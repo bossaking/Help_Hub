@@ -26,9 +26,13 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.HashMap;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -39,9 +43,12 @@ public class ChatActivity extends AppCompatActivity {
     private EditText messageEdit;
     private Button sendButton;
     private FirebaseAuth firebaseAuth;
-    public static final String NEED_HELP_ID_EXTRA = "needhelpidextra", TITLE_EXTRA = "titleextra", THIS_USER_ID_EXTRA = "useridextra", OTHER_USER_NAME_EXTRA = "usernameextra" ;
+    public static final String NEED_HELP_ID_EXTRA = "needhelpidextra", TITLE_EXTRA = "titleextra", THIS_USER_ID_EXTRA = "useridextra",
+            OTHER_USER_NAME_EXTRA = "usernameextra" ;
     private User loggedUser;
-    private String Id, Title, userId, userName;
+    private String Id, Title, userId, userName, otherUserId;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +59,7 @@ public class ChatActivity extends AppCompatActivity {
 
         Id = getIntent().getStringExtra(NEED_HELP_ID_EXTRA);
         Title = getIntent().getStringExtra(TITLE_EXTRA);
-        //userId = getIntent().getStringExtra(THIS_USER_ID_EXTRA);
+        otherUserId = getIntent().getStringExtra(THIS_USER_ID_EXTRA);
         userId = firebaseAuth.getUid();
         userName = getIntent().getStringExtra(OTHER_USER_NAME_EXTRA);
 
@@ -69,7 +76,8 @@ public class ChatActivity extends AppCompatActivity {
         titleText.setText(Title);
         nameText.setText(userName);
 
-        adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class, R.layout.item_message, FirebaseDatabase.getInstance().getReference("chat/" + Id + userId)) {
+        adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class, R.layout.item_message, FirebaseDatabase.getInstance()
+                .getReference("chat/" + Id + userId)) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
                 TextView userNameText = v.findViewById(R.id.user_name_text_view);
@@ -91,12 +99,31 @@ public class ChatActivity extends AppCompatActivity {
         sendButton.setOnClickListener(v -> {
             if (messageEdit.getText().equals("") || messageEdit.getText().equals(null))
                 return;
+
+            //Zapisywanie informacji do tabeli użytkownika
+            if(adapter.getCount() == 0) {
+                DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(userId)
+                        .collection("chats").document(Id + userId);
+                HashMap<String, Object> chatMap = new HashMap<>();
+                chatMap.put("offer id", Id);
+                chatMap.put("other user id", otherUserId);
+                docRef.set(chatMap);
+
+                docRef = FirebaseFirestore.getInstance().collection("users").document(otherUserId)
+                        .collection("chats").document(Id + userId);
+                chatMap.clear();
+                chatMap.put("offer id", Id);
+                chatMap.put("other user id", userId);
+                docRef.set(chatMap);
+            }
+
+            //Wysyłanie wiadomości
             FirebaseDatabase.getInstance().getReference("chat/" + Id + userId).push().setValue(new ChatMessage(messageEdit.getText().toString(), loggedUser.getId()));
             messageEdit.setText("");
         });
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference imgRef = storageReference.child("users/" + userId + "/profile.jpg");
+        StorageReference imgRef = storageReference.child("users/" + otherUserId + "/profile.jpg");
         imgRef.getDownloadUrl().addOnSuccessListener(v -> {
             Glide.with(getApplicationContext()).load(v).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24).into(avatarImage);
         }).addOnFailureListener(v -> {

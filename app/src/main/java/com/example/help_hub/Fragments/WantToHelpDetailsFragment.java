@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -118,7 +119,20 @@ public class WantToHelpDetailsFragment extends Fragment {
             intent.putExtra(ChatActivity.TITLE_EXTRA, bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_TITLE));
             intent.putExtra(ChatActivity.THIS_USER_ID_EXTRA, userId);
             intent.putExtra(ChatActivity.OTHER_USER_NAME_EXTRA, userNameTextView.getText().toString());
-            startActivity(intent);
+
+            CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("users")
+                    .document(userId).collection("chats");
+            collectionReference.get().addOnSuccessListener(queryDocumentSnapshots -> {
+                for (DocumentSnapshot ds : queryDocumentSnapshots) {
+
+                    if (ds.getString("offer id").equals(bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_ID))) {
+                        intent.putExtra(ChatActivity.CHAT_ID_EXTRA, ds.getId());
+                        break;
+                    }
+                }
+
+                startActivity(intent);
+            });
         });
 
         offerId = bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_ID);

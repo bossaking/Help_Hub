@@ -208,6 +208,7 @@ public class MessageBoxFragment extends Fragment {
                 intent.putExtra(ChatActivity.TITLE_EXTRA, offerTitle.getText());
                 intent.putExtra(ChatActivity.THIS_USER_ID_EXTRA, chatListMain.get(getAdapterPosition()).getOtherUserId());
                 intent.putExtra(ChatActivity.OTHER_USER_NAME_EXTRA, userName.getText());
+                intent.putExtra(ChatActivity.CHAT_ID_EXTRA, chatListMain.get(getAdapterPosition()).getChatId());
                 myActivity.startActivity(intent);
             }
         }

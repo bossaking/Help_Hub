@@ -25,6 +25,7 @@ import com.example.help_hub.Singletones.UserDatabase;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -44,7 +45,7 @@ public class ChatActivity extends AppCompatActivity {
     private Button sendButton;
     private FirebaseAuth firebaseAuth;
     public static final String NEED_HELP_ID_EXTRA = "needhelpidextra", TITLE_EXTRA = "titleextra", THIS_USER_ID_EXTRA = "useridextra",
-            OTHER_USER_NAME_EXTRA = "usernameextra" ;
+            OTHER_USER_NAME_EXTRA = "usernameextra", CHAT_ID_EXTRA = "chatidextra" ;
     private User loggedUser;
     private String Id, Title, userId, userName, otherUserId;
 
@@ -76,8 +77,13 @@ public class ChatActivity extends AppCompatActivity {
         titleText.setText(Title);
         nameText.setText(userName);
 
+        String id = getIntent().getStringExtra(CHAT_ID_EXTRA);
+        if(id == null){
+            id = FirebaseDatabase.getInstance().getReference("chat").push().getKey();
+        }
+
         adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class, R.layout.item_message, FirebaseDatabase.getInstance()
-                .getReference("chat/" + otherUserId + userId)) {
+                .getReference("chat/" + id)) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
                 TextView userNameText = v.findViewById(R.id.user_name_text_view);
@@ -96,6 +102,7 @@ public class ChatActivity extends AppCompatActivity {
 
         messageList.setAdapter(adapter);
 
+        String finalId = id;
         sendButton.setOnClickListener(v -> {
             if (messageEdit.getText().equals("") || messageEdit.getText().equals(null))
                 return;
@@ -103,14 +110,14 @@ public class ChatActivity extends AppCompatActivity {
             //Zapisywanie informacji do tabeli użytkownika
             if(adapter.getCount() == 0) {
                 DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(userId)
-                        .collection("chats").document(otherUserId + userId);
+                        .collection("chats").document(finalId);
                 HashMap<String, Object> chatMap = new HashMap<>();
                 chatMap.put("offer id", Id);
                 chatMap.put("other user id", otherUserId);
                 docRef.set(chatMap);
 
                 docRef = FirebaseFirestore.getInstance().collection("users").document(otherUserId)
-                        .collection("chats").document(otherUserId + userId);
+                        .collection("chats").document(finalId);
                 chatMap.clear();
                 chatMap.put("offer id", Id);
                 chatMap.put("other user id", userId);
@@ -118,7 +125,8 @@ public class ChatActivity extends AppCompatActivity {
             }
 
             //Wysyłanie wiadomości
-            FirebaseDatabase.getInstance().getReference("chat/" + otherUserId + userId).push().setValue(new ChatMessage(messageEdit.getText().toString(), loggedUser.getId()));
+            FirebaseDatabase.getInstance().getReference("chat/" + finalId).push()
+                    .setValue(new ChatMessage(messageEdit.getText().toString(), loggedUser.getId()));
             messageEdit.setText("");
         });
 

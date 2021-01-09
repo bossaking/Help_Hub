@@ -28,12 +28,11 @@ import com.example.help_hub.Activities.NeedHelpDetails;
 import com.example.help_hub.Adapters.SliderAdapter;
 import com.example.help_hub.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -121,12 +120,27 @@ public class NeedHelpDetailsFragment extends Fragment {
         });
 
         writeButton.setOnClickListener(viewListener -> {
+
             Intent intent = new Intent(myContext, ChatActivity.class);
             intent.putExtra(ChatActivity.NEED_HELP_ID_EXTRA, bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_ID));
             intent.putExtra(ChatActivity.TITLE_EXTRA, bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_TITLE));
             intent.putExtra(ChatActivity.THIS_USER_ID_EXTRA, userId);
             intent.putExtra(ChatActivity.OTHER_USER_NAME_EXTRA, userNameTextView.getText().toString());
-            startActivity(intent);
+
+            CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("users")
+                    .document(userId).collection("chats");
+            collectionReference.get().addOnSuccessListener(queryDocumentSnapshots -> {
+                for(DocumentSnapshot ds : queryDocumentSnapshots){
+
+                    if(ds.getString("offer id").equals(bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_ID))){
+                        intent.putExtra(ChatActivity.CHAT_ID_EXTRA, ds.getId());
+                        break;
+                    }
+                }
+
+                startActivity(intent);
+            });
+
         });
 
         announcementId = bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_ID);

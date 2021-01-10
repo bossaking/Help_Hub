@@ -101,7 +101,6 @@ public class MessageBoxFragment extends Fragment {
                     chatListMain.add(chat);
                     adapter.notifyDataSetChanged();
                }
-
            }
         });
 
@@ -151,8 +150,6 @@ public class MessageBoxFragment extends Fragment {
                         }
                     }
                 });
-
-
             }
         }
 

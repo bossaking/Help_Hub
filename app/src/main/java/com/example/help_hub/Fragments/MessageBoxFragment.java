@@ -110,6 +110,7 @@ public class MessageBoxFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                }
            }
+            dataLoadingDialog.DismissDialog();
         });
 
         return view;

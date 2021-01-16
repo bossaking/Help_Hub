@@ -95,23 +95,38 @@ public class MessageBoxFragment extends Fragment {
         CollectionReference chatsRef = FirebaseFirestore.getInstance().collection("users").document(userId)
                 .collection("chats");
 
-        dataLoadingDialog = new LoadingDialog(myActivity);
-        dataLoadingDialog.StartLoadingDialog();
 
-        chatsRef.get().addOnCompleteListener(task -> {
-           if(task.isSuccessful()){
-               for(QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())){
-                    Chat chat = new Chat();
-                    chat.setChatId(doc.getId());
-                    chat.setOtherUserId(doc.getString("other user id"));
-                    chat.setOfferId(doc.getString("offer id"));
+        chatsRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
+            for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+                switch (dc.getType()){
+                    case ADDED:
+                        QueryDocumentSnapshot doc = dc.getDocument();
+                        Chat chat = new Chat();
+                        chat.setChatId(doc.getId());
+                        chat.setOtherUserId(doc.getString("other user id"));
+                        chat.setOfferId(doc.getString("offer id"));
 
-                    chatListMain.add(chat);
-                    adapter.notifyDataSetChanged();
-               }
-           }
-            dataLoadingDialog.DismissDialog();
+                        chatListMain.add(chat);
+                        adapter.notifyDataSetChanged();
+                        break;
+                }
+            }
         });
+
+//        chatsRef.get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                for (QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())) {
+//                    Chat chat = new Chat();
+//                    chat.setChatId(doc.getId());
+//                    chat.setOtherUserId(doc.getString("other user id"));
+//                    chat.setOfferId(doc.getString("offer id"));
+//
+//                    chatListMain.add(chat);
+//                    adapter.notifyDataSetChanged();
+//                }
+//
+//            }
+//        });
 
         return view;
     }
@@ -141,16 +156,16 @@ public class MessageBoxFragment extends Fragment {
                 DocumentReference offerRef = FirebaseFirestore.getInstance().collection("offers")
                         .document(chat.getOfferId());
                 offerRef.get().addOnCompleteListener(task1 -> {
-                    if(task1.isSuccessful()){
+                    if (task1.isSuccessful()) {
                         DocumentSnapshot documentSnapshot = task1.getResult();
-                        if(documentSnapshot.getString("Title") != null) {
+                        if (documentSnapshot.getString("Title") != null) {
                             holder.offerTitle.setText(documentSnapshot.getString("Title"));
                             getOtherUserData(holder, position);
-                        }else{
+                        } else {
                             DocumentReference announcementRef = FirebaseFirestore.getInstance().collection("announcement")
                                     .document(chat.getOfferId());
                             announcementRef.get().addOnCompleteListener(task -> {
-                                if(task.isSuccessful()){
+                                if (task.isSuccessful()) {
                                     DocumentSnapshot ds = task.getResult();
                                     holder.offerTitle.setText(ds.getString("Title"));
                                     getOtherUserData(holder, position);
@@ -162,14 +177,14 @@ public class MessageBoxFragment extends Fragment {
             }
         }
 
-        private void getOtherUserData(ChatHolder holder, int position){
+        private void getOtherUserData(ChatHolder holder, int position) {
 
             Chat chat = chatListMain.get(position);
 
             //Pobieranie danych innego użytkownika
             DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(chat.getOtherUserId());
             userRef.get().addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot docSnap = task.getResult();
                     holder.userName.setText(docSnap.getString("Name"));
 
@@ -178,8 +193,10 @@ public class MessageBoxFragment extends Fragment {
                         Glide.with(getActivity()).load(uri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
                                 .into(holder.avatar);
                     });
+
                     if(position == chatListMain.size() - 1){
                         dataLoadingDialog.DismissDialog();
+
                     }
                 }
             });

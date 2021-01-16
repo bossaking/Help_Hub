@@ -40,15 +40,16 @@
         android:textStyle="bold"
         android:textSize="16sp"/>
 
-    <ListView
-        android:id="@+id/messages_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/title_text_view"
-        android:layout_above="@id/linearLayout"
-        android:divider="@color/fui_transparent"
-        android:dividerHeight="10dp"
-        android:layout_marginTop="10dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/messages_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/title_text_view"
+            android:padding="10sp"
+            android:layout_marginTop="10dp"
+            android:layout_above="@id/linearLayout"/>
+
+
 
     <LinearLayout
             android:id="@+id/linearLayout"

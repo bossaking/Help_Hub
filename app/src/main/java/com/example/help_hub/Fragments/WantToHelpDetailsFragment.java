@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.text.Html;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -27,6 +29,7 @@ import com.example.help_hub.Activities.WantToHelpDetails;
 import com.example.help_hub.Adapters.SliderAdapter;
 import com.example.help_hub.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -98,16 +101,44 @@ public class WantToHelpDetailsFragment extends Fragment {
         phoneNumberTextView = view.findViewById(R.id.want_to_help_user_phone_number);
 
         writeButton = view.findViewById(R.id.write_button);
+        wantToHelpUserDataCardView = view.findViewById(R.id.want_to_help_user_data_card_view);
 
         Bundle bundle = getActivity().getIntent().getExtras();
+        if(bundle == null){
+            bundle = new Bundle();
+        }
+        if(getActivity().getIntent().getData() != null){
+            DocumentReference reference = FirebaseFirestore.getInstance().collection("offers")
+                    .document(getActivity().getIntent().getData().getQueryParameter("id"));
+            Bundle finalBundle = bundle;
+            reference.get().addOnSuccessListener(documentSnapshot -> {
+                finalBundle.putString(WantToHelpDetails.EXTRA_WANT_TO_HELP_TITLE, documentSnapshot.getString("Title"));
+                finalBundle.putString(WantToHelpDetails.EXTRA_WANT_TO_HELP_PRICE, documentSnapshot.getString("Price"));
+                finalBundle.putString(WantToHelpDetails.EXTRA_WANT_TO_HELP_DESCRIPTION, documentSnapshot.getString("Description"));
+                finalBundle.putString(WantToHelpDetails.EXTRA_WANT_TO_HELP_USER_ID, documentSnapshot.getString("UserId"));
+                finalBundle.putString(WantToHelpDetails.EXTRA_WANT_TO_HELP_ID, documentSnapshot.getId());
 
+                showOffer(finalBundle);
+            });
+        }else{
+            showOffer(bundle);
+        }
+
+
+
+
+
+        return view;
+    }
+
+    private void showOffer(Bundle bundle) {
         titleTextView.setText(bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_TITLE));
         priceTextView.setText(bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_PRICE) + " " + getString(R.string.new_notice_currency));
-        descriptionTextView.setText(bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_DESCRIPTION));
+        descriptionTextView.setText(bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_DESCRIPTION));
 
-        userId = bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_USER_ID);
+        userId = bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_USER_ID);
 
-        wantToHelpUserDataCardView = view.findViewById(R.id.want_to_help_user_data_card_view);
+
         wantToHelpUserDataCardView.setOnClickListener(viewListener -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.want_to_help_details_container,
                     new OtherUserProfileFragment(userId)).addToBackStack(null).commit();
@@ -125,7 +156,7 @@ public class WantToHelpDetailsFragment extends Fragment {
             collectionReference.get().addOnSuccessListener(queryDocumentSnapshots -> {
                 for (DocumentSnapshot ds : queryDocumentSnapshots) {
 
-                    if (ds.getString("offer id").equals(bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_ID))) {
+                    if (ds.getString("offer id").equals(bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_ID))) {
                         intent.putExtra(ChatActivity.CHAT_ID_EXTRA, ds.getId());
                         break;
                     }
@@ -154,16 +185,18 @@ public class WantToHelpDetailsFragment extends Fragment {
             }
         });
 
-        return view;
+        getActivity().invalidateOptionsMenu();
     }
 
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.other_user_profile_menu, menu);
+        inflater.inflate(R.menu.bookmark_share_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
-        if (userId.equals(FirebaseAuth.getInstance().getUid())) {
-            menu.findItem(R.id.add_to_bookmark_button).setVisible(false);
-        } else {
-            checkOffers(menu);
+        if(userId != null) {
+            if (userId.equals(FirebaseAuth.getInstance().getUid())) {
+                menu.findItem(R.id.add_to_bookmark_button).setVisible(false);
+            } else {
+                checkOffers(menu);
+            }
         }
     }
 
@@ -171,20 +204,34 @@ public class WantToHelpDetailsFragment extends Fragment {
 
         int id = item.getItemId();
 
-        if (id == R.id.add_to_bookmark_button) {
+        switch (id){
+            case R.id.add_to_bookmark_button:
+                if (isObserved) {
+                    removeOfferFromObserved();
+                    item.setIcon(R.drawable.ic_baseline_star_border_24);
+                } else {
+                    addOfferToObserved();
+                    item.setIcon(R.drawable.ic_baseline_star_24);
+                }
 
-            if (isObserved) {
-                removeOfferFromObserved();
-                item.setIcon(R.drawable.ic_baseline_star_border_24);
-            } else {
-                addOfferToObserved();
-                item.setIcon(R.drawable.ic_baseline_star_24);
-            }
-
-            isObserved = !isObserved;
-            return true;
+                isObserved = !isObserved;
+                return true;
+            case R.id.share_button:
+                share();
+                return true;
         }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void share() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        String subject = titleTextView.getText().toString();
+        String body = subject + "\n" + "https://iknowyou.site/wanttohelp/?id=" + offerId;
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, body);
+        startActivity(Intent.createChooser(shareIntent, "Share"));
     }
 
     private void addOfferToObserved() {

@@ -154,6 +154,7 @@ public class NeedHelpFragment extends Fragment {
             needHelpTitle.setText(title);
             needHelpPrice.setText(getResources().getString(R.string.budget) + " " + needHelp.getPrice() + " " + getString(R.string.new_notice_currency));
             needHelpDescription.setText(desc);
+            if(showsCount != null)
             needHelpShowsCount.setText(showsCount.toString());
             photoLoadingAttempts = 0;
             getImage();

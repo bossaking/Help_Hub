@@ -95,39 +95,28 @@ public class MessageBoxFragment extends Fragment {
         CollectionReference chatsRef = FirebaseFirestore.getInstance().collection("users").document(userId)
                 .collection("chats");
 
-
+        dataLoadingDialog = new LoadingDialog(getActivity());
+        dataLoadingDialog.StartLoadingDialog();
         chatsRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
-            for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
-                switch (dc.getType()){
-                    case ADDED:
-                        QueryDocumentSnapshot doc = dc.getDocument();
-                        Chat chat = new Chat();
-                        chat.setChatId(doc.getId());
-                        chat.setOtherUserId(doc.getString("other user id"));
-                        chat.setOfferId(doc.getString("offer id"));
+            if(queryDocumentSnapshots.getDocumentChanges().size() == 0){
+                dataLoadingDialog.DismissDialog();
+            }else {
+                for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+                    switch (dc.getType()) {
+                        case ADDED:
+                            QueryDocumentSnapshot doc = dc.getDocument();
+                            Chat chat = new Chat();
+                            chat.setChatId(doc.getId());
+                            chat.setOtherUserId(doc.getString("other user id"));
+                            chat.setOfferId(doc.getString("offer id"));
 
-                        chatListMain.add(chat);
-                        adapter.notifyDataSetChanged();
-                        break;
+                            chatListMain.add(chat);
+                            adapter.notifyDataSetChanged();
+                            break;
+                    }
                 }
             }
         });
-
-//        chatsRef.get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                for (QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())) {
-//                    Chat chat = new Chat();
-//                    chat.setChatId(doc.getId());
-//                    chat.setOtherUserId(doc.getString("other user id"));
-//                    chat.setOfferId(doc.getString("offer id"));
-//
-//                    chatListMain.add(chat);
-//                    adapter.notifyDataSetChanged();
-//                }
-//
-//            }
-//        });
-
         return view;
     }
 
@@ -196,7 +185,6 @@ public class MessageBoxFragment extends Fragment {
 
                     if(position == chatListMain.size() - 1){
                         dataLoadingDialog.DismissDialog();
-
                     }
                 }
             });

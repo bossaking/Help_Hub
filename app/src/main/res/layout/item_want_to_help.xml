@@ -56,5 +56,29 @@
             android:layout_toEndOf="@id/want_to_help_image"
             android:text="@string/description_placeholder" />
 
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBottom="@id/want_to_help_description">
+            <ImageView
+                    android:id="@+id/shows_count_image_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_baseline_eye_24"
+                    android:layout_marginStart="15sp"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_marginEnd="5sp"/>
+            <TextView
+                    android:id="@+id/shows_count_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="15sp"
+                    android:textColor="@color/colorAccent"/>
+        </LinearLayout>
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

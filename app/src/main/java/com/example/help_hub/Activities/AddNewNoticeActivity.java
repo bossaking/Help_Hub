@@ -117,6 +117,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         noticeMap.put("Category", categoryTitle);
         noticeMap.put("Subcategory", subCategoryTitle);
         noticeMap.put("UserId", userId);
+        noticeMap.put("ShowsCount", 0);
 
         String id = firebaseFirestore.collection("announcement").document().getId();
         firebaseFirestore.collection("announcement").document(id).set(noticeMap).addOnSuccessListener(v -> {

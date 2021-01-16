@@ -23,13 +23,17 @@ import com.example.help_hub.Activities.AddNewNoticeActivity;
 import com.example.help_hub.Activities.NeedHelpDetails;
 import com.example.help_hub.OtherClasses.NeedHelp;
 import com.example.help_hub.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -91,6 +95,12 @@ public class NeedHelpFragment extends Fragment {
                         needHelp.setId(dc.getDocument().getId());
                         needHelpList.add(needHelp);
                         break;
+                    case MODIFIED:
+                        needHelp = dc.getDocument().toObject(NeedHelp.class);
+                        needHelp.setId(dc.getDocument().getId());
+                        needHelpList.remove(dc.getOldIndex());
+                        needHelpList.add(dc.getOldIndex(), needHelp);
+                        break;
                 }
             }
 
@@ -115,7 +125,7 @@ public class NeedHelpFragment extends Fragment {
     private class NeedHelpHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView needHelpImage;
-        private TextView needHelpTitle, needHelpPrice, needHelpDescription;
+        private TextView needHelpTitle, needHelpPrice, needHelpDescription, needHelpShowsCount;
         private NeedHelp needHelp;
 
         public NeedHelpHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -127,13 +137,16 @@ public class NeedHelpFragment extends Fragment {
             needHelpTitle = itemView.findViewById(R.id.need_help_title);
             needHelpPrice = itemView.findViewById(R.id.need_help_price);
             needHelpDescription = itemView.findViewById(R.id.need_help_description);
+            needHelpShowsCount = itemView.findViewById(R.id.shows_count_text_view);
         }
 
         public void bind(NeedHelp needHelp) {
             this.needHelp = needHelp;
             String title, desc;
+            Integer showsCount;
             title = needHelp.getTitle();
             desc = needHelp.getDescription();
+            showsCount = needHelp.getShowsCount();
             if (title.length() > 18)
                 title = title.substring(0, 20) + "...";
             if (desc.length() > 30)
@@ -141,7 +154,7 @@ public class NeedHelpFragment extends Fragment {
             needHelpTitle.setText(title);
             needHelpPrice.setText(getResources().getString(R.string.budget) + " " + needHelp.getPrice() + " " + getString(R.string.new_notice_currency));
             needHelpDescription.setText(desc);
-
+            needHelpShowsCount.setText(showsCount.toString());
             photoLoadingAttempts = 0;
             getImage();
         }
@@ -149,18 +162,28 @@ public class NeedHelpFragment extends Fragment {
         private void getImage() {
 
             photoLoadingAttempts++;
-                StorageReference imgRef = storageReference.child("announcement/" + needHelp.getId() + "/images/photo0");
-                imgRef.getDownloadUrl().addOnSuccessListener(v -> {
-                    Glide.with(myContext).load(v).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24).into(needHelpImage);
-                }).addOnFailureListener(v -> {
-                    needHelpImage.setImageResource(R.drawable.ic_baseline_missing_image_24);
-                    if(photoLoadingAttempts != MAX_PHOTO_LOADING_ATTEMPTS)
+            StorageReference imgRef = storageReference.child("announcement/" + needHelp.getId() + "/images/photo0");
+            imgRef.getDownloadUrl().addOnSuccessListener(v -> {
+                Glide.with(myContext).load(v).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24).into(needHelpImage);
+            }).addOnFailureListener(v -> {
+                needHelpImage.setImageResource(R.drawable.ic_baseline_missing_image_24);
+                if (photoLoadingAttempts != MAX_PHOTO_LOADING_ATTEMPTS)
                     getImage();
-                });
+            });
         }
 
         @Override
         public void onClick(View view) {
+
+            DocumentReference ref = FirebaseFirestore.getInstance().collection("announcement").document(needHelp.getId());
+            ref.get().addOnSuccessListener(documentSnapshot -> {
+                long shows = documentSnapshot.getLong("ShowsCount");
+                shows++;
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("ShowsCount", shows);
+                ref.update(map);
+            });
+
             Intent intent = new Intent(view.getContext(), NeedHelpDetails.class);
             intent.putExtra(NeedHelpDetails.EXTRA_NEED_HELP_ID, needHelp.getId());
             intent.putExtra(NeedHelpDetails.EXTRA_NEED_HELP_TITLE, needHelp.getTitle());

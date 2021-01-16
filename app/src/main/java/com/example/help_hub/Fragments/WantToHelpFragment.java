@@ -23,11 +23,13 @@ import com.example.help_hub.OtherClasses.WantToHelp;
 import com.example.help_hub.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class WantToHelpFragment extends Fragment {
@@ -96,6 +98,12 @@ public class WantToHelpFragment extends Fragment {
                         wantToHelp.setId(dc.getDocument().getId());
                         wantToHelpList.add(wantToHelp);
                         break;
+                    case MODIFIED:
+                        wantToHelp = dc.getDocument().toObject(WantToHelp.class);
+                        wantToHelp.setId(dc.getDocument().getId());
+                        wantToHelpList.remove(dc.getOldIndex());
+                        wantToHelpList.add(dc.getOldIndex(), wantToHelp);
+                        break;
                 }
             }
 
@@ -108,7 +116,7 @@ public class WantToHelpFragment extends Fragment {
     private class WantToHelpHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView wantToHelpImage;
-        private TextView wantToHelpTitle, wantToHelpPrice, wantToHelpDescription;
+        private TextView wantToHelpTitle, wantToHelpPrice, wantToHelpDescription, wantToHelpShowsCount;
         private WantToHelp wantToHelp;
 
         public WantToHelpHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -120,13 +128,16 @@ public class WantToHelpFragment extends Fragment {
             wantToHelpTitle = itemView.findViewById(R.id.want_to_help_title);
             wantToHelpPrice = itemView.findViewById(R.id.want_to_help_price);
             wantToHelpDescription = itemView.findViewById(R.id.want_to_help_description);
+            wantToHelpShowsCount = itemView.findViewById(R.id.shows_count_text_view);
         }
 
         public void bind(WantToHelp wantToHelp) {
             this.wantToHelp = wantToHelp;
             String title, desc;
+            Integer showsCount;
             title = wantToHelp.getTitle();
             desc = wantToHelp.getDescription();
+            showsCount = wantToHelp.getShowsCount();
             if (title.length() > 18)
                 title = title.substring(0, 20) + "...";
             if (desc.length() > 30)
@@ -134,6 +145,7 @@ public class WantToHelpFragment extends Fragment {
             wantToHelpTitle.setText(title);
             wantToHelpPrice.setText(getResources().getString(R.string.cost) + " " + wantToHelp.getPrice() + " " + getString(R.string.new_offer_currency));
             wantToHelpDescription.setText(desc);
+            wantToHelpShowsCount.setText(showsCount.toString());
             StorageReference imgRef = storageReference.child("users/" + wantToHelp.getUserId() + "/profile.jpg");
             imgRef.getDownloadUrl().addOnSuccessListener(v -> {
                 Glide.with(myContext).load(v).into(wantToHelpImage);
@@ -144,6 +156,16 @@ public class WantToHelpFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
+
+            DocumentReference ref = FirebaseFirestore.getInstance().collection("offers").document(wantToHelp.getId());
+            ref.get().addOnSuccessListener(documentSnapshot -> {
+                long shows = documentSnapshot.getLong("ShowsCount");
+                shows++;
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("ShowsCount", shows);
+                ref.update(map);
+            });
+
             Intent intent = new Intent(view.getContext(), WantToHelpDetails.class);
             intent.putExtra(WantToHelpDetails.EXTRA_WANT_TO_HELP_ID, wantToHelp.getId());
             intent.putExtra(WantToHelpDetails.EXTRA_WANT_TO_HELP_TITLE, wantToHelp.getTitle());

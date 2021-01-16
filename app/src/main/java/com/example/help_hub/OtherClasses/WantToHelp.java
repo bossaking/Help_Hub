@@ -1,8 +1,11 @@
 package com.example.help_hub.OtherClasses;
 
+import java.net.Inet4Address;
+
 public class WantToHelp {
 
     private String Title, Price, Description, Id, UserId;
+    private Integer ShowsCount;
 
     public WantToHelp() {
     }
@@ -45,5 +48,13 @@ public class WantToHelp {
 
     public void setUserId(String userId) {
         UserId = userId;
+    }
+
+    public Integer getShowsCount() {
+        return ShowsCount;
+    }
+
+    public void setShowsCount(Integer showsCount) {
+        ShowsCount = showsCount;
     }
 }

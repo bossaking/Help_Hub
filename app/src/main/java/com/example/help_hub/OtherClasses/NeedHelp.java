@@ -5,6 +5,7 @@ import android.net.Uri;
 public class NeedHelp {
 
     private String Title, Price, Description, Id, UserId;
+    private Integer ShowsCount;
 
     public NeedHelp() {
     }
@@ -47,5 +48,13 @@ public class NeedHelp {
 
     public void setUserId(String userId) {
         UserId = userId;
+    }
+
+    public Integer getShowsCount() {
+        return ShowsCount;
+    }
+
+    public void setShowsCount(Integer showsCount) {
+        ShowsCount = showsCount;
     }
 }

@@ -20,7 +20,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.ChatActivity;
+import com.example.help_hub.Activities.RegistrationActivity;
 import com.example.help_hub.Activities.WantToHelpDetails;
+import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.OtherClasses.Chat;
 import com.example.help_hub.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -59,6 +61,9 @@ public class MessageBoxFragment extends Fragment {
 
     private String userId;
 
+    private LoadingDialog dataLoadingDialog;
+
+
     //private FirebaseRecyclerOptions<Chat> options;
     //private FirebaseRecyclerAdapter<Chat, ChatHolder> adapter;
 
@@ -89,6 +94,7 @@ public class MessageBoxFragment extends Fragment {
 
         CollectionReference chatsRef = FirebaseFirestore.getInstance().collection("users").document(userId)
                 .collection("chats");
+
 
         chatsRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
             for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
@@ -168,8 +174,6 @@ public class MessageBoxFragment extends Fragment {
                         }
                     }
                 });
-
-
             }
         }
 
@@ -189,8 +193,10 @@ public class MessageBoxFragment extends Fragment {
                         Glide.with(getActivity()).load(uri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
                                 .into(holder.avatar);
                     });
-                    if (position == chatListMain.size() - 1) {
-                        //TODO CLOSE LOADING DIALOG
+
+                    if(position == chatListMain.size() - 1){
+                        dataLoadingDialog.DismissDialog();
+
                     }
                 }
             });

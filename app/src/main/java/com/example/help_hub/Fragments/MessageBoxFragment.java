@@ -20,7 +20,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.ChatActivity;
+import com.example.help_hub.Activities.RegistrationActivity;
 import com.example.help_hub.Activities.WantToHelpDetails;
+import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.OtherClasses.Chat;
 import com.example.help_hub.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -59,6 +61,9 @@ public class MessageBoxFragment extends Fragment {
 
     private String userId;
 
+    private LoadingDialog dataLoadingDialog;
+
+
     //private FirebaseRecyclerOptions<Chat> options;
     //private FirebaseRecyclerAdapter<Chat, ChatHolder> adapter;
 
@@ -90,21 +95,28 @@ public class MessageBoxFragment extends Fragment {
         CollectionReference chatsRef = FirebaseFirestore.getInstance().collection("users").document(userId)
                 .collection("chats");
 
-        chatsRef.get().addOnCompleteListener(task -> {
-           if(task.isSuccessful()){
-               for(QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())){
-                    Chat chat = new Chat();
-                    chat.setChatId(doc.getId());
-                    chat.setOtherUserId(doc.getString("other user id"));
-                    chat.setOfferId(doc.getString("offer id"));
+        dataLoadingDialog = new LoadingDialog(getActivity());
+        dataLoadingDialog.StartLoadingDialog();
+        chatsRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
+            if(queryDocumentSnapshots.getDocumentChanges().size() == 0){
+                dataLoadingDialog.DismissDialog();
+            }else {
+                for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+                    switch (dc.getType()) {
+                        case ADDED:
+                            QueryDocumentSnapshot doc = dc.getDocument();
+                            Chat chat = new Chat();
+                            chat.setChatId(doc.getId());
+                            chat.setOtherUserId(doc.getString("other user id"));
+                            chat.setOfferId(doc.getString("offer id"));
 
-                    chatListMain.add(chat);
-                    adapter.notifyDataSetChanged();
-               }
-
-           }
+                            chatListMain.add(chat);
+                            adapter.notifyDataSetChanged();
+                            break;
+                    }
+                }
+            }
         });
-
         return view;
     }
 
@@ -133,16 +145,16 @@ public class MessageBoxFragment extends Fragment {
                 DocumentReference offerRef = FirebaseFirestore.getInstance().collection("offers")
                         .document(chat.getOfferId());
                 offerRef.get().addOnCompleteListener(task1 -> {
-                    if(task1.isSuccessful()){
+                    if (task1.isSuccessful()) {
                         DocumentSnapshot documentSnapshot = task1.getResult();
-                        if(documentSnapshot.getString("Title") != null) {
+                        if (documentSnapshot.getString("Title") != null) {
                             holder.offerTitle.setText(documentSnapshot.getString("Title"));
                             getOtherUserData(holder, position);
-                        }else{
+                        } else {
                             DocumentReference announcementRef = FirebaseFirestore.getInstance().collection("announcement")
                                     .document(chat.getOfferId());
                             announcementRef.get().addOnCompleteListener(task -> {
-                                if(task.isSuccessful()){
+                                if (task.isSuccessful()) {
                                     DocumentSnapshot ds = task.getResult();
                                     holder.offerTitle.setText(ds.getString("Title"));
                                     getOtherUserData(holder, position);
@@ -151,19 +163,17 @@ public class MessageBoxFragment extends Fragment {
                         }
                     }
                 });
-
-
             }
         }
 
-        private void getOtherUserData(ChatHolder holder, int position){
+        private void getOtherUserData(ChatHolder holder, int position) {
 
             Chat chat = chatListMain.get(position);
 
             //Pobieranie danych innego użytkownika
             DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(chat.getOtherUserId());
             userRef.get().addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot docSnap = task.getResult();
                     holder.userName.setText(docSnap.getString("Name"));
 
@@ -172,8 +182,9 @@ public class MessageBoxFragment extends Fragment {
                         Glide.with(getActivity()).load(uri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
                                 .into(holder.avatar);
                     });
+
                     if(position == chatListMain.size() - 1){
-                        //TODO CLOSE LOADING DIALOG
+                        dataLoadingDialog.DismissDialog();
                     }
                 }
             });

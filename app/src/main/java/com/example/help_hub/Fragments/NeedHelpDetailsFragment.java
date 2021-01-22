@@ -25,6 +25,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.ChatActivity;
 import com.example.help_hub.Activities.NeedHelpDetails;
+import com.example.help_hub.Activities.WantToHelpDetails;
 import com.example.help_hub.Adapters.SliderAdapter;
 import com.example.help_hub.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -105,15 +106,42 @@ public class NeedHelpDetailsFragment extends Fragment {
 
         writeButton = view.findViewById(R.id.write_button);
 
-        Bundle bundle = getActivity().getIntent().getExtras();
+        needHelpUserDataCardView = view.findViewById(R.id.need_help_user_data_card_view);
+        pager2 = view.findViewById(R.id.need_help_photos);
 
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if(bundle == null){
+            bundle = new Bundle();
+        }
+        if(getActivity().getIntent().getData() != null){
+            DocumentReference reference = FirebaseFirestore.getInstance().collection("announcement")
+                    .document(getActivity().getIntent().getData().getQueryParameter("id"));
+            Bundle finalBundle = bundle;
+            reference.get().addOnSuccessListener(documentSnapshot -> {
+                finalBundle.putString(NeedHelpDetails.EXTRA_NEED_HELP_TITLE, documentSnapshot.getString("Title"));
+                finalBundle.putString(NeedHelpDetails.EXTRA_NEED_HELP_PRICE, documentSnapshot.getString("Price"));
+                finalBundle.putString(NeedHelpDetails.EXTRA_NEED_HELP_DESCRIPTION, documentSnapshot.getString("Description"));
+                finalBundle.putString(NeedHelpDetails.EXTRA_NEED_HELP_USER_ID, documentSnapshot.getString("UserId"));
+                finalBundle.putString(NeedHelpDetails.EXTRA_NEED_HELP_ID, documentSnapshot.getId());
+
+                showAnnouncement(finalBundle);
+            });
+        }else{
+            showAnnouncement(bundle);
+        }
+
+
+        return view;
+    }
+
+    private void showAnnouncement(Bundle bundle){
         titleTextView.setText(bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_TITLE));
         priceTextView.setText(bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_PRICE) + " " + getString(R.string.new_notice_currency));
         descriptionTextView.setText(bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_DESCRIPTION));
 
         userId = bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_USER_ID);
 
-        needHelpUserDataCardView = view.findViewById(R.id.need_help_user_data_card_view);
+
         needHelpUserDataCardView.setOnClickListener(viewListener -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.need_help_details_container,
                     new OtherUserProfileFragment(userId)).addToBackStack(null).commit();
@@ -145,7 +173,7 @@ public class NeedHelpDetailsFragment extends Fragment {
 
         announcementId = bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_ID);
 
-        pager2 = view.findViewById(R.id.need_help_photos);
+
         List<Uri> imagesUri = new ArrayList<>();
 
         sliderAdapter = new SliderAdapter(imagesUri, pager2, getContext());
@@ -182,13 +210,14 @@ public class NeedHelpDetailsFragment extends Fragment {
                 phoneNumberTextView.setText(doc.getString("Phone number"));
             }
         });
-
-        return view;
+        getActivity().invalidateOptionsMenu();
     }
 
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.other_user_profile_menu, menu);
+        inflater.inflate(R.menu.bookmark_share_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
+        if(userId == null)
+            return;
         if (userId.equals(FirebaseAuth.getInstance().getUid())) {
             menu.findItem(R.id.add_to_bookmark_button).setVisible(false);
         } else {
@@ -200,20 +229,33 @@ public class NeedHelpDetailsFragment extends Fragment {
 
         int id = item.getItemId();
 
-        if (id == R.id.add_to_bookmark_button) {
+        switch (id){
+            case R.id.add_to_bookmark_button:
+                if (isObserved) {
+                    removeAnnouncementFromObserved();
+                    item.setIcon(R.drawable.ic_baseline_star_border_24);
+                } else {
+                    addAnnouncementToObserved();
+                    item.setIcon(R.drawable.ic_baseline_star_24);
+                }
 
-            if (isObserved) {
-                removeAnnouncementFromObserved();
-                item.setIcon(R.drawable.ic_baseline_star_border_24);
-            } else {
-                addAnnouncementToObserved();
-                item.setIcon(R.drawable.ic_baseline_star_24);
-            }
-
-            isObserved = !isObserved;
-            return true;
+                isObserved = !isObserved;
+                return true;
+            case R.id.share_button:
+                share();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void share() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        String subject = titleTextView.getText().toString();
+        String body = subject + "\n" + "https://iknowyou.site/needhelp/?id=" + announcementId;
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, body);
+        startActivity(Intent.createChooser(shareIntent, "Share"));
     }
 
     private void addAnnouncementToObserved() {

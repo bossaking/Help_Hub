@@ -17,4 +17,18 @@
 
     <color name="text_input_background2">#ECEFF1</color>
     <color name="text_input_background">#F5F5F5</color>
+
+    <color name="greenButtonColor">#2ef0a2</color>
+    <color name="blueButtonColor">#1268b3</color>
+    <color name="foreignMessageColor">#00BCD4</color>
+    <color name="ownMessageColor">#4CAF50</color>
+    <color name="whiteColor">#FFFFFF</color>
+    <color name="blackColor">#000000</color>
+    <color name="grayColor">#737272</color>
+    <color name="redColor">#E83535</color>
+    <color name="yellowColor">#CDDC39</color>
+
+    <color name="greenSecondColor">#95d6a4</color>
+    <color name="yellowSecondColor">#ffe07d</color>
+    <color name="backgroundColor">#EAE7C4</color>
 </resources>

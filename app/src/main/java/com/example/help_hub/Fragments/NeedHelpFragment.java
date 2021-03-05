@@ -1,11 +1,14 @@
 package com.example.help_hub.Fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import android.os.Handler;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,8 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.AddNewNoticeActivity;
@@ -25,10 +26,8 @@ import com.example.help_hub.OtherClasses.NeedHelp;
 import com.example.help_hub.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -37,7 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class NeedHelpFragment extends Fragment {
+public class NeedHelpFragment extends Fragment{
 
     public static final int NEED_HELP_DETAILS_REQUEST_CODE = 1;
     public static final int MAX_PHOTO_LOADING_ATTEMPTS = 20;
@@ -48,10 +47,19 @@ public class NeedHelpFragment extends Fragment {
     private RecyclerView recyclerView;
     private FirebaseFirestore firebaseFirestore;
     private StorageReference storageReference;
+    private ListenerRegistration snapshotListener;
 
     NeedHelpAdapter adapter;
 
     int photoLoadingAttempts;
+
+
+    //FILTER ORDERS
+    private Spinner filterOrdersSpinner;
+    private int filterIndex; // 0 - All, 1 - Only my own
+    private List<NeedHelp> fullNeedHelpList;
+
+    TextView informationText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +82,10 @@ public class NeedHelpFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
         needHelpList = new ArrayList<>();
+        fullNeedHelpList = new ArrayList<>();
+        filterIndex = 0;
+
+        informationText = view.findViewById(R.id.informationText);
 
         FloatingActionButton add = view.findViewById(R.id.floatingActionButton);
         add.setOnClickListener(v -> {
@@ -86,28 +98,77 @@ public class NeedHelpFragment extends Fragment {
         adapter = new NeedHelpAdapter();
         recyclerView.setAdapter(adapter);
 
-        firebaseFirestore.collection("announcement").addSnapshotListener((queryDocumentSnapshots, e) -> {
+
+        snapshotListener = firebaseFirestore.collection("announcement").addSnapshotListener((queryDocumentSnapshots, e) -> {
 
             for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+                NeedHelp needHelp;
                 switch (dc.getType()) {
                     case ADDED:
-                        NeedHelp needHelp = dc.getDocument().toObject(NeedHelp.class);
+                        needHelp = dc.getDocument().toObject(NeedHelp.class);
                         needHelp.setId(dc.getDocument().getId());
-                        needHelpList.add(needHelp);
+                        fullNeedHelpList.add(dc.getNewIndex(), needHelp);
                         break;
                     case MODIFIED:
                         needHelp = dc.getDocument().toObject(NeedHelp.class);
                         needHelp.setId(dc.getDocument().getId());
-                        needHelpList.remove(dc.getOldIndex());
-                        needHelpList.add(dc.getOldIndex(), needHelp);
+                        fullNeedHelpList.remove(dc.getOldIndex());
+                        fullNeedHelpList.add(dc.getOldIndex(), needHelp);
                         break;
+                    case REMOVED:
+                        fullNeedHelpList.remove(dc.getOldIndex());
                 }
             }
-
+            filterOrders(adapter);
             adapter.notifyDataSetChanged();
         });
 
+        //FILTER ORDERS SPINNER IMPLEMENTATION
+        filterOrdersSpinner = view.findViewById(R.id.filter_orders_spinner);
+        AdapterView.OnItemSelectedListener filterSelectedListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                filterIndex = position;
+                filterOrders(adapter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        };
+        filterOrdersSpinner.setOnItemSelectedListener(filterSelectedListener);
+
         return view;
+    }
+
+    //FILTER METHOD
+    private void filterOrders(NeedHelpAdapter adapter){
+
+        needHelpList.clear();
+
+        if(filterIndex == 0){
+
+            needHelpList.addAll(fullNeedHelpList);
+
+        }else if(filterIndex == 1){
+
+            for(NeedHelp nh : fullNeedHelpList){
+                if(nh.getUserId().equals(FirebaseAuth.getInstance().getUid())){
+                    needHelpList.add(nh);
+                }
+            }
+
+        }
+
+        if(needHelpList.size() == 0){
+            informationText.setText("Wow...It looks like you haven't asked for help yet");
+            informationText.setVisibility(View.VISIBLE);
+        }else{
+            informationText.setVisibility(View.GONE);
+        }
+
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -124,7 +185,7 @@ public class NeedHelpFragment extends Fragment {
 
     private class NeedHelpHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private ImageView needHelpImage;
+        private ImageView needHelpImage, deleteImageView;
         private TextView needHelpTitle, needHelpPrice, needHelpDescription, needHelpShowsCount;
         private NeedHelp needHelp;
 
@@ -134,6 +195,7 @@ public class NeedHelpFragment extends Fragment {
             itemView.setOnClickListener(this);
 
             needHelpImage = itemView.findViewById(R.id.need_help_image);
+            deleteImageView = itemView.findViewById(R.id.deleteOrderImageView);
             needHelpTitle = itemView.findViewById(R.id.need_help_title);
             needHelpPrice = itemView.findViewById(R.id.need_help_price);
             needHelpDescription = itemView.findViewById(R.id.need_help_description);
@@ -142,6 +204,17 @@ public class NeedHelpFragment extends Fragment {
 
         public void bind(NeedHelp needHelp) {
             this.needHelp = needHelp;
+
+            if(!needHelp.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
+                deleteImageView.setVisibility(View.INVISIBLE);
+            }else{
+                deleteImageView.setVisibility(View.VISIBLE);
+                deleteImageView.setOnClickListener(v -> {
+                    deleteOrder(needHelp);
+                });
+            }
+
+
             String title, desc;
             Integer showsCount;
             title = needHelp.getTitle();
@@ -168,9 +241,22 @@ public class NeedHelpFragment extends Fragment {
                 Glide.with(myContext).load(v).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24).into(needHelpImage);
             }).addOnFailureListener(v -> {
                 needHelpImage.setImageResource(R.drawable.ic_baseline_missing_image_24);
-                if (photoLoadingAttempts != MAX_PHOTO_LOADING_ATTEMPTS)
-                    getImage();
             });
+        }
+
+        //DELETE ORDER
+        private void deleteOrder(NeedHelp needHelp){
+            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+            alertDialog.setTitle("Delete");
+            alertDialog.setMessage("Are you sure you want to delete this?");
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes",
+                    (dialog, which) -> {
+                        firebaseFirestore.collection("announcement").document(needHelp.getId()).delete();
+                        dialog.dismiss();
+                    });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
+                    ((dialog, which) -> dialog.dismiss()));
+            alertDialog.show();
         }
 
         @Override
@@ -219,5 +305,11 @@ public class NeedHelpFragment extends Fragment {
             NeedHelp needHelp = needHelpList.get(position);
             holder.bind(needHelp);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        snapshotListener.remove();
     }
 }

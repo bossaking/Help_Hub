@@ -140,4 +140,9 @@
     <string name="item_message_box_title_placeholder" translatable="false">Title of the notice or tender</string>
     <string name="item_message_box_user_name_placeholder" translatable="false">Marian Luj</string>
 
+    <string-array name="orders_filters">
+        <item>All</item>
+        <item>Only my own</item>
+    </string-array>
+
 </resources>

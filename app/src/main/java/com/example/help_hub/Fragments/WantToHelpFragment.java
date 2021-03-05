@@ -1,13 +1,16 @@
 package com.example.help_hub.Fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,9 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.AddTheOfferActivity;
 import com.example.help_hub.Activities.WantToHelpDetails;
+import com.example.help_hub.OtherClasses.NeedHelp;
 import com.example.help_hub.OtherClasses.WantToHelp;
 import com.example.help_hub.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -44,6 +49,14 @@ public class WantToHelpFragment extends Fragment {
     private StorageReference storageReference;
 
     WantToHelpAdapter adapter;
+
+    TextView informationText;
+
+    //FILTER ORDERS
+    private Spinner filterOrdersSpinner;
+    private int filterIndex; // 0 - All, 1 - Only my own
+    private List<WantToHelp> fullWantToHelpList;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,11 +90,15 @@ public class WantToHelpFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
         wantToHelpList = new ArrayList<>();
+        fullWantToHelpList = new ArrayList<>();
+        filterIndex = 0;
 
         FloatingActionButton add = view.findViewById(R.id.floatingActionButton);
         add.setOnClickListener(v -> {
             myActivity.startActivity(new Intent(myContext, AddTheOfferActivity.class));
         });
+
+        informationText = view.findViewById(R.id.informationText);
 
         recyclerView = view.findViewById(R.id.order_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(myContext));
@@ -92,30 +109,76 @@ public class WantToHelpFragment extends Fragment {
         firebaseFirestore.collection("offers").addSnapshotListener((queryDocumentSnapshots, e) -> {
 
             for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+                WantToHelp wantToHelp;
                 switch (dc.getType()) {
                     case ADDED:
-                        WantToHelp wantToHelp = dc.getDocument().toObject(WantToHelp.class);
+                        wantToHelp = dc.getDocument().toObject(WantToHelp.class);
                         wantToHelp.setId(dc.getDocument().getId());
-                        wantToHelpList.add(wantToHelp);
+                        fullWantToHelpList.add(dc.getNewIndex(), wantToHelp);
                         break;
                     case MODIFIED:
                         wantToHelp = dc.getDocument().toObject(WantToHelp.class);
                         wantToHelp.setId(dc.getDocument().getId());
-                        wantToHelpList.remove(dc.getOldIndex());
-                        wantToHelpList.add(dc.getOldIndex(), wantToHelp);
+                        fullWantToHelpList.remove(dc.getOldIndex());
+                        fullWantToHelpList.add(dc.getOldIndex(), wantToHelp);
                         break;
+                    case REMOVED:
+                        fullWantToHelpList.remove(dc.getOldIndex());
                 }
             }
-
-            adapter.notifyDataSetChanged();
+            filterOrders(adapter);
         });
+
+        //FILTER ORDERS SPINNER IMPLEMENTATION
+        filterOrdersSpinner = view.findViewById(R.id.filter_orders_spinner);
+        AdapterView.OnItemSelectedListener filterSelectedListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                filterIndex = position;
+                filterOrders(adapter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        };
+        filterOrdersSpinner.setOnItemSelectedListener(filterSelectedListener);
 
         return view;
     }
 
+    //FILTER METHOD
+    private void filterOrders(WantToHelpFragment.WantToHelpAdapter adapter){
+        wantToHelpList.clear();
+
+        if(filterIndex == 0){
+
+            wantToHelpList.addAll(fullWantToHelpList);
+
+        }else if(filterIndex == 1){
+
+            for(WantToHelp wth : fullWantToHelpList){
+                if(wth.getUserId().equals(FirebaseAuth.getInstance().getUid())){
+                    wantToHelpList.add(wth);
+                }
+            }
+
+        }
+
+        if(wantToHelpList.size() == 0){
+            informationText.setText("It's empty here ... um ... Apparently, you haven't offered your services here yet.");
+            informationText.setVisibility(View.VISIBLE);
+        }else{
+            informationText.setVisibility(View.GONE);
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
     private class WantToHelpHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private ImageView wantToHelpImage;
+        private ImageView wantToHelpImage, deleteImageView;;
         private TextView wantToHelpTitle, wantToHelpPrice, wantToHelpDescription, wantToHelpShowsCount;
         private WantToHelp wantToHelp;
 
@@ -125,6 +188,7 @@ public class WantToHelpFragment extends Fragment {
             itemView.setOnClickListener(this);
 
             wantToHelpImage = itemView.findViewById(R.id.want_to_help_image);
+            deleteImageView = itemView.findViewById(R.id.deleteOrderImageView);
             wantToHelpTitle = itemView.findViewById(R.id.want_to_help_title);
             wantToHelpPrice = itemView.findViewById(R.id.want_to_help_price);
             wantToHelpDescription = itemView.findViewById(R.id.want_to_help_description);
@@ -133,6 +197,16 @@ public class WantToHelpFragment extends Fragment {
 
         public void bind(WantToHelp wantToHelp) {
             this.wantToHelp = wantToHelp;
+
+            if(!wantToHelp.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
+                deleteImageView.setVisibility(View.INVISIBLE);
+            }else{
+                deleteImageView.setVisibility(View.VISIBLE);
+                deleteImageView.setOnClickListener(v -> {
+                    deleteOrder(wantToHelp);
+                });
+            }
+
             String title, desc;
             Integer showsCount;
             title = wantToHelp.getTitle();
@@ -152,6 +226,21 @@ public class WantToHelpFragment extends Fragment {
             }).addOnFailureListener(v -> {
                 wantToHelpImage.setImageResource(R.drawable.ic_baseline_missing_image_24);
             });
+        }
+
+        //DELETE ORDER
+        private void deleteOrder(WantToHelp wantToHelp){
+            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+            alertDialog.setTitle("Delete");
+            alertDialog.setMessage("Are you sure you want to delete this?");
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes",
+                    (dialog, which) -> {
+                        firebaseFirestore.collection("offers").document(wantToHelp.getId()).delete();
+                        dialog.dismiss();
+                    });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
+                    ((dialog, which) -> dialog.dismiss()));
+            alertDialog.show();
         }
 
         @Override

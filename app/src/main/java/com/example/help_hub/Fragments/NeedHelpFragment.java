@@ -3,11 +3,9 @@ package com.example.help_hub.Fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.os.Handler;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,10 +19,10 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.AddNewNoticeActivity;
+import com.example.help_hub.Activities.EditNeedHelpActivity;
 import com.example.help_hub.Activities.NeedHelpDetails;
 import com.example.help_hub.OtherClasses.NeedHelp;
 import com.example.help_hub.R;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
@@ -34,11 +32,11 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class NeedHelpFragment extends Fragment{
 
     public static final int NEED_HELP_DETAILS_REQUEST_CODE = 1;
+    public static final int NEED_HELP_EDIT_REQUEST_CODE = 1;
     public static final int MAX_PHOTO_LOADING_ATTEMPTS = 20;
 
     Activity myActivity;
@@ -185,7 +183,7 @@ public class NeedHelpFragment extends Fragment{
 
     private class NeedHelpHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private ImageView needHelpImage, deleteImageView;
+        private ImageView needHelpImage, deleteImageView, editImageView;
         private TextView needHelpTitle, needHelpPrice, needHelpDescription, needHelpShowsCount;
         private NeedHelp needHelp;
 
@@ -196,6 +194,7 @@ public class NeedHelpFragment extends Fragment{
 
             needHelpImage = itemView.findViewById(R.id.need_help_image);
             deleteImageView = itemView.findViewById(R.id.deleteOrderImageView);
+            editImageView = itemView.findViewById(R.id.editOrderImageView);
             needHelpTitle = itemView.findViewById(R.id.need_help_title);
             needHelpPrice = itemView.findViewById(R.id.need_help_price);
             needHelpDescription = itemView.findViewById(R.id.need_help_description);
@@ -207,10 +206,16 @@ public class NeedHelpFragment extends Fragment{
 
             if(!needHelp.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
                 deleteImageView.setVisibility(View.INVISIBLE);
+                editImageView.setVisibility(View.INVISIBLE);
             }else{
                 deleteImageView.setVisibility(View.VISIBLE);
                 deleteImageView.setOnClickListener(v -> {
                     deleteOrder(needHelp);
+                });
+
+                editImageView.setVisibility(View.VISIBLE);
+                editImageView.setOnClickListener(v -> {
+                    editOrder(needHelp);
                 });
             }
 
@@ -221,7 +226,7 @@ public class NeedHelpFragment extends Fragment{
             desc = needHelp.getDescription();
             showsCount = needHelp.getShowsCount();
             if (title.length() > 18)
-                title = title.substring(0, 20) + "...";
+                title = title.substring(0, 18) + "...";
             if (desc.length() > 30)
                 desc = desc.substring(0, 30) + "...";
             needHelpTitle.setText(title);
@@ -257,6 +262,17 @@ public class NeedHelpFragment extends Fragment{
             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
                     ((dialog, which) -> dialog.dismiss()));
             alertDialog.show();
+        }
+
+        private void editOrder(NeedHelp needHelp) {
+            Intent intent = new Intent(getContext(), EditNeedHelpActivity.class);
+            intent.putExtra(EditNeedHelpActivity.EXTRA_NEED_HELP_ID, needHelp.getId());
+            intent.putExtra(EditNeedHelpActivity.EXTRA_NEED_HELP_TITLE, needHelp.getTitle());
+            intent.putExtra(EditNeedHelpActivity.EXTRA_NEED_HELP_PRICE, needHelp.getPrice());
+            intent.putExtra(EditNeedHelpActivity.EXTRA_NEED_HELP_DESCRIPTION, needHelp.getDescription());
+            intent.putExtra(EditNeedHelpActivity.EXTRA_NEED_HELP_CATEGORY, needHelp.getCategory());
+            intent.putExtra(EditNeedHelpActivity.EXTRA_NEED_HELP_SUBCATEGORY, needHelp.getSubcategory());
+            startActivityForResult(intent, NEED_HELP_EDIT_REQUEST_CODE);
         }
 
         @Override

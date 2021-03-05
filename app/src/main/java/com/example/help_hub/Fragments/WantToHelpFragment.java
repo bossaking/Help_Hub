@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.AddTheOfferActivity;
+import com.example.help_hub.Activities.EditNeedHelpActivity;
+import com.example.help_hub.Activities.EditWantToHelpActivity;
 import com.example.help_hub.Activities.WantToHelpDetails;
 import com.example.help_hub.OtherClasses.NeedHelp;
 import com.example.help_hub.OtherClasses.WantToHelp;
@@ -40,6 +42,7 @@ import java.util.List;
 public class WantToHelpFragment extends Fragment {
 
     public static final int WANT_TO_HELP_DETAILS_REQUEST_CODE = 1;
+    public static final int WANT_TO_HELP_EDIT_REQUEST_CODE = 1;
 
     Activity myActivity;
     Context myContext;
@@ -178,7 +181,7 @@ public class WantToHelpFragment extends Fragment {
 
     private class WantToHelpHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private ImageView wantToHelpImage, deleteImageView;;
+        private ImageView wantToHelpImage, deleteImageView, editImageView;
         private TextView wantToHelpTitle, wantToHelpPrice, wantToHelpDescription, wantToHelpShowsCount;
         private WantToHelp wantToHelp;
 
@@ -189,6 +192,7 @@ public class WantToHelpFragment extends Fragment {
 
             wantToHelpImage = itemView.findViewById(R.id.want_to_help_image);
             deleteImageView = itemView.findViewById(R.id.deleteOrderImageView);
+            editImageView = itemView.findViewById(R.id.editOrderImageView);
             wantToHelpTitle = itemView.findViewById(R.id.want_to_help_title);
             wantToHelpPrice = itemView.findViewById(R.id.want_to_help_price);
             wantToHelpDescription = itemView.findViewById(R.id.want_to_help_description);
@@ -200,10 +204,16 @@ public class WantToHelpFragment extends Fragment {
 
             if(!wantToHelp.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
                 deleteImageView.setVisibility(View.INVISIBLE);
+                editImageView.setVisibility(View.INVISIBLE);
             }else{
                 deleteImageView.setVisibility(View.VISIBLE);
                 deleteImageView.setOnClickListener(v -> {
                     deleteOrder(wantToHelp);
+                });
+
+                editImageView.setVisibility(View.VISIBLE);
+                editImageView.setOnClickListener(v -> {
+                    editOrder(wantToHelp);
                 });
             }
 
@@ -241,6 +251,17 @@ public class WantToHelpFragment extends Fragment {
             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
                     ((dialog, which) -> dialog.dismiss()));
             alertDialog.show();
+        }
+
+        private void editOrder(WantToHelp wantToHelp) {
+            Intent intent = new Intent(getContext(), EditWantToHelpActivity.class);
+            intent.putExtra(EditWantToHelpActivity.EXTRA_WANT_TO_HELP_ID, wantToHelp.getId());
+            intent.putExtra(EditWantToHelpActivity.EXTRA_WANT_TO_HELP_TITLE, wantToHelp.getTitle());
+            intent.putExtra(EditWantToHelpActivity.EXTRA_WANT_TO_HELP_PRICE, wantToHelp.getPrice());
+            intent.putExtra(EditWantToHelpActivity.EXTRA_WANT_TO_HELP_DESCRIPTION, wantToHelp.getDescription());
+            intent.putExtra(EditWantToHelpActivity.EXTRA_WANT_TO_HELP_CATEGORY, wantToHelp.getCategory());
+            intent.putExtra(EditWantToHelpActivity.EXTRA_WANT_TO_HELP_SUBCATEGORY, wantToHelp.getSubcategory());
+            startActivityForResult(intent, WANT_TO_HELP_EDIT_REQUEST_CODE);
         }
 
         @Override

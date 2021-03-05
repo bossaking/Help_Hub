@@ -263,7 +263,6 @@ public class UserProfile extends Fragment {
 
             imageView.setOnLongClickListener(v -> true);
         }
-
     }
 
     private void GetUserInformation() {

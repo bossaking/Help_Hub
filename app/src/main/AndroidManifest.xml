@@ -60,6 +60,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.RegistrationActivity" />
+        <activity android:name=".Activities.EditNeedHelpActivity" />
+        <activity android:name=".Activities.EditWantToHelpActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />

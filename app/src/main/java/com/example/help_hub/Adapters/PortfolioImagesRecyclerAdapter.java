@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.help_hub.OtherClasses.PortfolioImage;
 import com.example.help_hub.R;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PortfolioImagesRecyclerAdapter extends RecyclerView.Adapter {
@@ -86,4 +88,6 @@ public class PortfolioImagesRecyclerAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return images.size();
     }
+
+
 }

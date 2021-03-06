@@ -6,6 +6,9 @@ import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,11 +36,17 @@ import com.example.help_hub.OtherClasses.NeedHelp;
 import com.example.help_hub.OtherClasses.PortfolioImage;
 import com.example.help_hub.R;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +74,7 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
     NeedHelp needHelp;
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private PortfolioImagesRecyclerAdapter adapter;
 
     private List<PortfolioImage> needHelpImages;
 
@@ -164,16 +173,23 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
             imageRef.delete();
         }
 
+        loadImagesToDatabase();
+    }
+
+    private void loadImagesToDatabase(){
+
         for (int i = 0; i < needHelpImages.size() - 1; i++) {
             PortfolioImage portfolioImage = needHelpImages.get(i);
             StorageReference imgRef = FirebaseStorage.getInstance().getReference().child("announcement/" + needHelp.getId() + "/images/photo" + i);
-            imgRef.putFile(portfolioImage.getImageUri()).addOnSuccessListener(taskSnapshot -> {
+            imgRef.putBytes(portfolioImage.getImageBytes()).addOnSuccessListener(taskSnapshot -> {
                 Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
             }).addOnFailureListener(e -> {
                 Toast.makeText(context, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             });
         }
+
     }
+
 
     private boolean validateData() {
         if (title.isEmpty()) {
@@ -230,10 +246,24 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
             if (clipData != null) {
                 for (int i = 0; i < clipData.getItemCount(); i++) {
 
-                    PortfolioImage needHelpImage = new PortfolioImage(DocumentFile.fromSingleUri(getApplicationContext(), clipData.getItemAt(i).getUri()).getName(), clipData.getItemAt(i).getUri());
+                    Uri imageUri = clipData.getItemAt(i).getUri();
+
+                    PortfolioImage needHelpImage = new PortfolioImage(
+                            DocumentFile.fromSingleUri(getApplicationContext(), imageUri).getName(), imageUri);
+
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        byte[] imageBytes = baos.toByteArray();
+                        needHelpImage.setImageBytes(imageBytes);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    }
+
 
                     AddImage(needHelpImage);
-                    //needHelpImages.add(0, needHelpImage);
                 }
             }
         }
@@ -251,9 +281,15 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
                 fileRef.getMetadata().addOnSuccessListener(storageMetadata -> {
                     String name = storageMetadata.getName();
                     fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        AddImage(new PortfolioImage(name, uri));
-                        imagesCount = imagesCount + 1;
-                        adapter.notifyDataSetChanged();
+                        fileRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+                            PortfolioImage image = new PortfolioImage(name, uri);
+                            image.setImageBytes(bytes);
+                            AddImage(image);
+                            imagesCount++;
+                            adapter.notifyDataSetChanged();
+                        }).addOnFailureListener(e -> {
+                            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        });
                     }).addOnCompleteListener(task -> {
                     });
                 });

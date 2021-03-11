@@ -5,16 +5,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.view.*;
+import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +30,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,11 +52,14 @@ public class WantToHelpFragment extends Fragment {
 
     TextView informationText;
 
-    //FILTER ORDERS
+    //FILTER BY BELONGING ORDERS
     private Spinner filterOrdersSpinner;
     private int filterIndex; // 0 - All, 1 - Only my own
     private List<WantToHelp> fullWantToHelpList;
 
+    //FILTER BY SEARCH ORDERS
+    SearchView searchView;
+    private String searchPhrase;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,9 +92,15 @@ public class WantToHelpFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
+
+        setHasOptionsMenu(true);
+
         wantToHelpList = new ArrayList<>();
         fullWantToHelpList = new ArrayList<>();
         filterIndex = 0;
+
+        searchPhrase = "";
+
 
         FloatingActionButton add = view.findViewById(R.id.floatingActionButton);
         add.setOnClickListener(v -> {
@@ -130,6 +136,7 @@ public class WantToHelpFragment extends Fragment {
                 }
             }
             filterOrders(adapter);
+            searchOrders();
         });
 
         //FILTER ORDERS SPINNER IMPLEMENTATION
@@ -151,7 +158,59 @@ public class WantToHelpFragment extends Fragment {
         return view;
     }
 
-    //FILTER METHOD
+    @Override
+    public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
+        inflater.inflate(R.menu.main_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
+
+        MenuItem searchItem = menu.findItem(R.id.search);
+        searchView = (SearchView)searchItem.getActionView();
+
+        //FOR ALWAYS EXPANDED
+        searchView.setIconifiedByDefault(false);
+        searchView.clearFocus();
+
+        searchView.setQueryHint(getString(R.string.type_something));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchPhrase = newText;
+                searchOrders();
+                return false;
+            }
+        });
+    }
+
+    //FILTER BY SEARCH METHOD
+    private void searchOrders(){
+
+        wantToHelpList.clear();
+
+
+        if(searchPhrase.isEmpty()){
+
+            wantToHelpList.addAll(fullWantToHelpList);
+
+        }else{
+            searchPhrase = searchPhrase.toLowerCase();
+            for (WantToHelp wth : fullWantToHelpList){
+                if(wth.getTitle().toLowerCase().contains(searchPhrase) || wth.getDescription().toLowerCase().contains(searchPhrase)){
+                    wantToHelpList.add(wth);
+                }
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
+    //FILTER BY BELONGING METHOD
     private void filterOrders(WantToHelpFragment.WantToHelpAdapter adapter){
         wantToHelpList.clear();
 
@@ -311,4 +370,7 @@ public class WantToHelpFragment extends Fragment {
             holder.bind(wantToHelp);
         }
     }
+
+
+
 }

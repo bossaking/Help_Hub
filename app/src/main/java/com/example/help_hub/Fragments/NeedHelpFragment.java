@@ -6,16 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.view.*;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.AddNewNoticeActivity;
@@ -28,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,10 +51,14 @@ public class NeedHelpFragment extends Fragment{
     int photoLoadingAttempts;
 
 
-    //FILTER ORDERS
+    //FILTER BY BELONGING ORDERS
     private Spinner filterOrdersSpinner;
     private int filterIndex; // 0 - All, 1 - Only my own
     private List<NeedHelp> fullNeedHelpList;
+
+    //FILTER BY SEARCH ORDERS
+    SearchView searchView;
+    private String searchPhrase;
 
     TextView informationText;
 
@@ -65,6 +68,8 @@ public class NeedHelpFragment extends Fragment{
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
+
+
     }
 
     @Override
@@ -79,9 +84,12 @@ public class NeedHelpFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
+        setHasOptionsMenu(true);
         needHelpList = new ArrayList<>();
         fullNeedHelpList = new ArrayList<>();
         filterIndex = 0;
+
+        searchPhrase = "";
 
         informationText = view.findViewById(R.id.informationText);
 
@@ -117,8 +125,8 @@ public class NeedHelpFragment extends Fragment{
                         fullNeedHelpList.remove(dc.getOldIndex());
                 }
             }
-            filterOrders(adapter);
-            adapter.notifyDataSetChanged();
+            filterOrders();
+            searchOrders();
         });
 
         //FILTER ORDERS SPINNER IMPLEMENTATION
@@ -127,7 +135,7 @@ public class NeedHelpFragment extends Fragment{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 filterIndex = position;
-                filterOrders(adapter);
+                filterOrders();
             }
 
             @Override
@@ -137,11 +145,65 @@ public class NeedHelpFragment extends Fragment{
         };
         filterOrdersSpinner.setOnItemSelectedListener(filterSelectedListener);
 
+
+
         return view;
     }
 
-    //FILTER METHOD
-    private void filterOrders(NeedHelpAdapter adapter){
+    @Override
+    public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
+        inflater.inflate(R.menu.main_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
+
+        MenuItem searchItem = menu.findItem(R.id.search);
+        searchView = (SearchView)searchItem.getActionView();
+
+        //FOR ALWAYS EXPANDED
+        searchView.setIconifiedByDefault(false);
+        searchView.clearFocus();
+
+        searchView.setQueryHint(getString(R.string.type_something));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchPhrase = newText;
+                searchOrders();
+                return false;
+            }
+        });
+    }
+
+    //FILTER BY SEARCH METHOD
+    private void searchOrders(){
+
+        needHelpList.clear();
+
+
+        if(searchPhrase.isEmpty()){
+
+            needHelpList.addAll(fullNeedHelpList);
+
+        }else{
+            searchPhrase = searchPhrase.toLowerCase();
+            for (NeedHelp nh : fullNeedHelpList){
+                if(nh.getTitle().toLowerCase().contains(searchPhrase) || nh.getDescription().toLowerCase().contains(searchPhrase)){
+                    needHelpList.add(nh);
+                }
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
+    //FILTER BY BELONGING METHOD
+    private void filterOrders(){
 
         needHelpList.clear();
 
@@ -174,11 +236,6 @@ public class NeedHelpFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
 
 
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     private class NeedHelpHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -324,8 +381,19 @@ public class NeedHelpFragment extends Fragment{
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        if(searchView != null)
+        searchView.clearFocus();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         snapshotListener.remove();
+
     }
+
+
 }

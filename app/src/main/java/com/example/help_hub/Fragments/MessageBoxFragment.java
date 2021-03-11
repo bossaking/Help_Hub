@@ -120,6 +120,10 @@ public class MessageBoxFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
 
     public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
 
@@ -223,5 +227,17 @@ public class MessageBoxFragment extends Fragment {
                 myActivity.startActivity(intent);
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity) myActivity).getSupportActionBar().hide();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((AppCompatActivity) myActivity).getSupportActionBar().show();
     }
 }

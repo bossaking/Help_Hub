@@ -135,7 +135,7 @@ public class WantToHelpFragment extends Fragment {
                         fullWantToHelpList.remove(dc.getOldIndex());
                 }
             }
-            filterOrders(adapter);
+            //filterOrders(adapter);
             searchOrders();
         });
 
@@ -145,7 +145,8 @@ public class WantToHelpFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 filterIndex = position;
-                filterOrders(adapter);
+                //filterOrders(adapter);
+                searchOrders();
             }
 
             @Override
@@ -207,20 +208,21 @@ public class WantToHelpFragment extends Fragment {
             }
         }
 
-        adapter.notifyDataSetChanged();
+        filterOrders(new ArrayList<>(wantToHelpList));
     }
 
     //FILTER BY BELONGING METHOD
-    private void filterOrders(WantToHelpFragment.WantToHelpAdapter adapter){
+    private void filterOrders(List<WantToHelp> ordersList){
+        
         wantToHelpList.clear();
 
         if(filterIndex == 0){
 
-            wantToHelpList.addAll(fullWantToHelpList);
+            wantToHelpList.addAll(ordersList);
 
         }else if(filterIndex == 1){
 
-            for(WantToHelp wth : fullWantToHelpList){
+            for(WantToHelp wth : ordersList){
                 if(wth.getUserId().equals(FirebaseAuth.getInstance().getUid())){
                     wantToHelpList.add(wth);
                 }

@@ -125,7 +125,7 @@ public class NeedHelpFragment extends Fragment{
                         fullNeedHelpList.remove(dc.getOldIndex());
                 }
             }
-            filterOrders();
+            //filterOrders();
             searchOrders();
         });
 
@@ -135,7 +135,7 @@ public class NeedHelpFragment extends Fragment{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 filterIndex = position;
-                filterOrders();
+                searchOrders();
             }
 
             @Override
@@ -183,8 +183,8 @@ public class NeedHelpFragment extends Fragment{
     //FILTER BY SEARCH METHOD
     private void searchOrders(){
 
-        needHelpList.clear();
 
+        needHelpList.clear();
 
         if(searchPhrase.isEmpty()){
 
@@ -198,22 +198,22 @@ public class NeedHelpFragment extends Fragment{
                 }
             }
         }
-
-        adapter.notifyDataSetChanged();
+        filterOrders(new ArrayList<>(needHelpList));
+        //adapter.notifyDataSetChanged();
     }
 
     //FILTER BY BELONGING METHOD
-    private void filterOrders(){
+    private void filterOrders(List<NeedHelp> ordersList){
 
         needHelpList.clear();
 
         if(filterIndex == 0){
 
-            needHelpList.addAll(fullNeedHelpList);
+            needHelpList.addAll(ordersList);
 
         }else if(filterIndex == 1){
 
-            for(NeedHelp nh : fullNeedHelpList){
+            for(NeedHelp nh : ordersList){
                 if(nh.getUserId().equals(FirebaseAuth.getInstance().getUid())){
                     needHelpList.add(nh);
                 }

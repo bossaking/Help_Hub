@@ -25,12 +25,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.help_hub.Adapters.PortfolioImagesRecyclerAdapter;
+import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.OtherClasses.PortfolioImage;
 import com.example.help_hub.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +58,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
     private RecyclerView.Adapter adapter;
 
     String userId;
+    String userCity;
 
     private List<PortfolioImage> noticeImages;
 
@@ -63,6 +69,9 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_need_help);
 
+        LoadingDialog loadingDialog = new LoadingDialog(this);
+        loadingDialog.StartLoadingDialog();
+
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -72,6 +81,12 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         firebaseAuth = FirebaseAuth.getInstance();
 
         userId = firebaseAuth.getUid();
+        firebaseFirestore.collection("users").document(userId).get().addOnCompleteListener(task -> {
+           if(task.isSuccessful()){
+               userCity = task.getResult().getString("City");
+               loadingDialog.DismissDialog();
+           }
+        });
 
         mNewNoticeTitle = findViewById(R.id.new_notice_title_edit_text);
         mNewNoticePrice = findViewById(R.id.new_notice_budget);
@@ -118,6 +133,7 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
         noticeMap.put("Subcategory", subCategoryTitle);
         noticeMap.put("UserId", userId);
         noticeMap.put("ShowsCount", 0);
+        noticeMap.put("City", userCity);
 
         String id = firebaseFirestore.collection("announcement").document().getId();
         firebaseFirestore.collection("announcement").document(id).set(noticeMap).addOnSuccessListener(v -> {

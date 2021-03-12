@@ -19,8 +19,14 @@ import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.AddNewNoticeActivity;
 import com.example.help_hub.Activities.EditNeedHelpActivity;
 import com.example.help_hub.Activities.NeedHelpDetails;
+import com.example.help_hub.AlertDialogues.FiltersDialog;
+import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.OtherClasses.NeedHelp;
+import com.example.help_hub.OtherClasses.User;
 import com.example.help_hub.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
@@ -32,7 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class NeedHelpFragment extends Fragment{
+public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersDialogListener {
 
     public static final int NEED_HELP_DETAILS_REQUEST_CODE = 1;
     public static final int NEED_HELP_EDIT_REQUEST_CODE = 1;
@@ -59,6 +65,9 @@ public class NeedHelpFragment extends Fragment{
     //FILTER BY SEARCH ORDERS
     SearchView searchView;
     private String searchPhrase;
+
+    //FILTER BY CITY
+    private String city;
 
     TextView informationText;
 
@@ -90,6 +99,8 @@ public class NeedHelpFragment extends Fragment{
         filterIndex = 0;
 
         searchPhrase = "";
+
+        city = "";
 
         informationText = view.findViewById(R.id.informationText);
 
@@ -129,24 +140,6 @@ public class NeedHelpFragment extends Fragment{
             searchOrders();
         });
 
-        //FILTER ORDERS SPINNER IMPLEMENTATION
-        filterOrdersSpinner = view.findViewById(R.id.filter_orders_spinner);
-        AdapterView.OnItemSelectedListener filterSelectedListener = new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                filterIndex = position;
-                searchOrders();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        };
-        filterOrdersSpinner.setOnItemSelectedListener(filterSelectedListener);
-
-
-
         return view;
     }
 
@@ -157,7 +150,7 @@ public class NeedHelpFragment extends Fragment{
 
 
         MenuItem searchItem = menu.findItem(R.id.search);
-        searchView = (SearchView)searchItem.getActionView();
+        searchView = (SearchView) searchItem.getActionView();
 
         //FOR ALWAYS EXPANDED
         searchView.setIconifiedByDefault(false);
@@ -180,20 +173,32 @@ public class NeedHelpFragment extends Fragment{
         });
     }
 
-    //FILTER BY SEARCH METHOD
-    private void searchOrders(){
+    @Override
+    public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
 
+        switch (item.getItemId()) {
+            case R.id.filters:
+                FiltersDialog filtersDialog = new FiltersDialog(myActivity, this, filterIndex, city);
+                filtersDialog.show(getActivity().getSupportFragmentManager(), null);
+                break;
+        }
+
+        return true;
+    }
+
+    //FILTER BY SEARCH METHOD
+    private void searchOrders() {
 
         needHelpList.clear();
 
-        if(searchPhrase.isEmpty()){
+        if (searchPhrase.isEmpty()) {
 
             needHelpList.addAll(fullNeedHelpList);
 
-        }else{
+        } else {
             searchPhrase = searchPhrase.toLowerCase();
-            for (NeedHelp nh : fullNeedHelpList){
-                if(nh.getTitle().toLowerCase().contains(searchPhrase) || nh.getDescription().toLowerCase().contains(searchPhrase)){
+            for (NeedHelp nh : fullNeedHelpList) {
+                if (nh.getTitle().toLowerCase().contains(searchPhrase) || nh.getDescription().toLowerCase().contains(searchPhrase)) {
                     needHelpList.add(nh);
                 }
             }
@@ -203,28 +208,83 @@ public class NeedHelpFragment extends Fragment{
     }
 
     //FILTER BY BELONGING METHOD
-    private void filterOrders(List<NeedHelp> ordersList){
+    private void filterOrders(List<NeedHelp> ordersList) {
 
-        needHelpList.clear();
+        //needHelpList.clear();
 
-        if(filterIndex == 0){
+        switch (filterIndex) {
+            case 0:
+                filterByCity(new ArrayList<>(needHelpList));
+                break;
+            case 1: //ONLY MY OWN
+                showOnlyMyOwn(ordersList);
+                filterByCity(new ArrayList<>(needHelpList));
+                break;
+            case 2://ONLY OBSERVABLE
+                showOnlyObserved(ordersList);
+                break;
+            case 3://OBSERVABLE AND MY OWN
+                showOnlyMyOwn(ordersList);
+                showOnlyObserved(ordersList);
+                break;
+        }
 
-            needHelpList.addAll(ordersList);
+    }
 
-        }else if(filterIndex == 1){
+    private void showOnlyMyOwn(List<NeedHelp> ordersList){
+        for (NeedHelp nh : ordersList) {
+            if (!nh.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
+                needHelpList.remove(nh);
+            }
+        }
+    }
 
-            for(NeedHelp nh : ordersList){
-                if(nh.getUserId().equals(FirebaseAuth.getInstance().getUid())){
-                    needHelpList.add(nh);
+    private void showOnlyObserved(List<NeedHelp> ordersList){
+        LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+        loadingDialog.StartLoadingDialog();
+
+        List<String> observedList = new ArrayList<>();
+
+        firebaseFirestore.collection("users").document(FirebaseAuth.getInstance().getUid())
+                .collection("observed announcements").get().addOnCompleteListener(task -> {
+            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                observedList.add(documentSnapshot.getString("announcement id"));
+            }
+            loadingDialog.DismissDialog();
+            for (NeedHelp nh : ordersList) {
+                if(filterIndex == 2) {
+                    if (!observedList.contains(nh.getId())) {
+                        needHelpList.remove(nh);
+                    }
+                }else{
+                    if (observedList.contains(nh.getId())) {
+                        if(!needHelpList.contains(nh))
+                        needHelpList.add(nh);
+                    }
                 }
             }
 
+            filterByCity(new ArrayList<>(needHelpList));
+        });
+    }
+
+    //FILTER BY CITY
+    private void filterByCity(List<NeedHelp> ordersList) {
+
+        //needHelpList.clear();
+
+        if (!city.isEmpty()) {
+            for (NeedHelp nh : ordersList) {
+                if (!nh.getCity().equals(city)) {
+                    needHelpList.remove(nh);
+                }
+            }
         }
 
-        if(needHelpList.size() == 0){
+        if (needHelpList.size() == 0) {
             informationText.setText("Wow...It looks like you haven't asked for help yet");
             informationText.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             informationText.setVisibility(View.GONE);
         }
 
@@ -232,11 +292,13 @@ public class NeedHelpFragment extends Fragment{
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void applyFilters(String city, int filterIndex) {
+        this.city = city;
+        this.filterIndex = filterIndex;
 
-
+        searchOrders();
     }
+
 
     private class NeedHelpHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -261,10 +323,10 @@ public class NeedHelpFragment extends Fragment{
         public void bind(NeedHelp needHelp) {
             this.needHelp = needHelp;
 
-            if(!needHelp.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
+            if (!needHelp.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
                 deleteImageView.setVisibility(View.INVISIBLE);
                 editImageView.setVisibility(View.INVISIBLE);
-            }else{
+            } else {
                 deleteImageView.setVisibility(View.VISIBLE);
                 deleteImageView.setOnClickListener(v -> {
                     deleteOrder(needHelp);
@@ -289,8 +351,8 @@ public class NeedHelpFragment extends Fragment{
             needHelpTitle.setText(title);
             needHelpPrice.setText(getResources().getString(R.string.budget) + " " + needHelp.getPrice() + " " + getString(R.string.new_notice_currency));
             needHelpDescription.setText(desc);
-            if(showsCount != null)
-            needHelpShowsCount.setText(showsCount.toString());
+            if (showsCount != null)
+                needHelpShowsCount.setText(showsCount.toString());
             photoLoadingAttempts = 0;
             getImage();
         }
@@ -307,7 +369,7 @@ public class NeedHelpFragment extends Fragment{
         }
 
         //DELETE ORDER
-        private void deleteOrder(NeedHelp needHelp){
+        private void deleteOrder(NeedHelp needHelp) {
             AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
             alertDialog.setTitle("Delete");
             alertDialog.setMessage("Are you sure you want to delete this?");
@@ -384,8 +446,8 @@ public class NeedHelpFragment extends Fragment{
     public void onResume() {
         super.onResume();
 
-        if(searchView != null)
-        searchView.clearFocus();
+        if (searchView != null)
+            searchView.clearFocus();
     }
 
     @Override

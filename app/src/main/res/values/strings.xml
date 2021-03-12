@@ -141,6 +141,13 @@
     <string name="item_message_box_user_name_placeholder" translatable="false">Marian Luj</string>
     <string name="search">Search</string>
     <string name="type_something">Type something</string>
+    <string name="filters">filters</string>
+    <string name="apply">APPLY</string>
+    <string name="cancel">CANCEL</string>
+    <string name="city">City</string>
+    <string name="only_observable">ONLY OBSERVABLE</string>
+    <string name="only_my_own">ONLY MY OWN</string>
+    <string name="all">ALL</string>
 
     <string-array name="orders_filters">
         <item>All</item>

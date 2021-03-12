@@ -139,23 +139,6 @@ public class WantToHelpFragment extends Fragment {
             searchOrders();
         });
 
-        //FILTER ORDERS SPINNER IMPLEMENTATION
-        filterOrdersSpinner = view.findViewById(R.id.filter_orders_spinner);
-        AdapterView.OnItemSelectedListener filterSelectedListener = new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                filterIndex = position;
-                //filterOrders(adapter);
-                searchOrders();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        };
-        filterOrdersSpinner.setOnItemSelectedListener(filterSelectedListener);
-
         return view;
     }
 
@@ -213,7 +196,7 @@ public class WantToHelpFragment extends Fragment {
 
     //FILTER BY BELONGING METHOD
     private void filterOrders(List<WantToHelp> ordersList){
-        
+
         wantToHelpList.clear();
 
         if(filterIndex == 0){

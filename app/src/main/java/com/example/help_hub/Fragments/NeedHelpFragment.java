@@ -315,7 +315,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
             super(itemView);
 
             mainViewCategoriesRecyclerView = itemView.findViewById(R.id.main_view_categories_recycler_view);
-            mainViewCategoriesAdapter = new MainViewCategoriesAdapter(categories);
+            mainViewCategoriesAdapter = new MainViewCategoriesAdapter(myContext, categories);
             mainViewCategoriesRecyclerView.setAdapter(mainViewCategoriesAdapter);
         }
 
@@ -391,7 +391,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         }
 
         private void getImage() {
-
             photoLoadingAttempts++;
             StorageReference imgRef = storageReference.child("announcement/" + needHelp.getId() + "/images/photo0");
             imgRef.getDownloadUrl().addOnSuccessListener(v -> {

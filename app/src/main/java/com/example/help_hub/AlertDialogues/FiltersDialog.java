@@ -4,11 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.*;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.CompoundButton;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
@@ -27,11 +26,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class FiltersDialog extends DialogFragment {
+public class FiltersDialog extends DialogFragment implements TextWatcher {
 
     private Button applyFiltersButton, cancelButton;
     private SwitchCompat allOrdersSwitch, onlyOwnOrdersSwitch, onlyObservableOrdersSwitch;
     private AutoCompleteTextView cityTextView;
+    private ImageView clearCityFieldButton;
 
     private List<String> cities;
     private String city;
@@ -98,7 +98,13 @@ public class FiltersDialog extends DialogFragment {
 
         setSwitches();
 
+        clearCityFieldButton = view.findViewById(R.id.clear_city_field_button);
+        clearCityFieldButton.setOnClickListener(v -> {
+            cityTextView.setText("");
+        });
+
         cityTextView = view.findViewById(R.id.city_autocomplete_text_view);
+        cityTextView.addTextChangedListener(this);
         cityTextView.setText(city);
 //        cityTextView.setOnFocusChangeListener((v, hasFocus) -> {
 //            if(!cityTextView.isPopupShowing()){
@@ -106,6 +112,8 @@ public class FiltersDialog extends DialogFragment {
 //            }
 //        });
         getCitiesFromFirebase();
+
+
 
         applyFiltersButton = view.findViewById(R.id.apply_filters_button);
         applyFiltersButton.setOnClickListener(v -> {
@@ -189,6 +197,25 @@ public class FiltersDialog extends DialogFragment {
         int width = Resources.getSystem().getDisplayMetrics().widthPixels;
         window.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         window.setGravity(Gravity.CENTER);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if(s.toString().isEmpty()){
+            clearCityFieldButton.setVisibility(View.GONE);
+        }else{
+            clearCityFieldButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 
     public interface filtersDialogListener {

@@ -4,7 +4,7 @@ import java.net.Inet4Address;
 
 public class WantToHelp {
 
-    private String Title, Price, Description, Id, UserId, Category, Subcategory;
+    private String Title, Price, Description, Id, UserId, Category, Subcategory, City;
     private Integer ShowsCount;
 
     public WantToHelp() {
@@ -72,5 +72,13 @@ public class WantToHelp {
 
     public void setSubcategory(String subcategory) {
         Subcategory = subcategory;
+    }
+
+    public void setCity(String city) {
+        City = city;
+    }
+
+    public String getCity() {
+        return City;
     }
 }

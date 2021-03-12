@@ -56,21 +56,21 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 
-    <TextView
-            android:id="@+id/only_my_own_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/medium_text"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:text="@string/only_my_own"
-            android:padding="@dimen/little_padding"/>
+        <TextView
+                android:id="@+id/only_my_own_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/medium_text"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="@string/only_my_own"
+                android:padding="@dimen/little_padding"/>
 
-    <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/only_my_own_switch_compat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/large_text"/>
+        <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/only_my_own_switch_compat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/large_text"/>
 
     </LinearLayout>
 
@@ -83,36 +83,53 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 
-    <TextView
-            android:id="@+id/only_observable_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/medium_text"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:text="@string/only_observable"
-            android:padding="@dimen/little_padding"/>
+        <TextView
+                android:id="@+id/only_observable_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/medium_text"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="@string/only_observable"
+                android:padding="@dimen/little_padding"/>
 
-    <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/only_observable_switch_compat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/large_text"/>
+        <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/only_observable_switch_compat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/large_text"/>
 
     </LinearLayout>
 
-    <AutoCompleteTextView
-            android:id="@+id/city_autocomplete_text_view"
+    <LinearLayout
+            android:id="@+id/city_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/only_observable_linear_layout"
-            android:hint="@string/city"
-            android:layout_marginHorizontal="50sp"/>
+            android:orientation="horizontal">
+
+        <AutoCompleteTextView
+                android:id="@+id/city_autocomplete_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/city"
+                android:layout_marginHorizontal="50sp"/>
+
+        <ImageView
+                android:id="@+id/clear_city_field_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_close_24"
+                android:layout_marginStart="-70sp"
+                android:layout_gravity="center"
+                app:tint="@color/grayColor"/>
+
+    </LinearLayout>
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/city_autocomplete_text_view"
+            app:layout_constraintTop_toBottomOf="@id/city_linear_layout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:gravity="center"

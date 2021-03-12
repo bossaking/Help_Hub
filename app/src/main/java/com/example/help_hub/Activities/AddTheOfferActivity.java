@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,6 +31,7 @@ public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextW
     FirebaseAuth firebaseAuth;
 
     String userId;
+    String userCity;
 
     private Drawable defaultBackground;
 
@@ -37,6 +39,9 @@ public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextW
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_want_to_help);
+
+        LoadingDialog loadingDialog = new LoadingDialog(this);
+        loadingDialog.StartLoadingDialog();
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -47,6 +52,12 @@ public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextW
         firebaseAuth = FirebaseAuth.getInstance();
 
         userId = firebaseAuth.getUid();
+        firebaseFirestore.collection("users").document(userId).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                userCity = task.getResult().getString("City");
+                loadingDialog.DismissDialog();
+            }
+        });
 
         mNewOfferTitle = findViewById(R.id.new_offer_title_edit_text);
         mNewNoticePrice = findViewById(R.id.new_offer_cost);
@@ -82,6 +93,7 @@ public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextW
         offerMap.put("Subcategory", subCategoryTitle);
         offerMap.put("UserId", userId);
         offerMap.put("ShowsCount", 0);
+        offerMap.put("City", userCity);
 
         firebaseFirestore.collection("offers").document().set(offerMap).addOnSuccessListener(v -> {
             Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();

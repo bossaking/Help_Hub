@@ -55,7 +55,7 @@ public class SelectCategoryActivity extends AppCompatActivity implements Categor
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot doc : task.getResult()) {
                     Category newCategory = new Category();
-                    newCategory.id = doc.getId();
+                    newCategory.setId(doc.getId());
                     newCategory.setTitle(doc.getString("Title"));
                     categories.add(newCategory);
                 }

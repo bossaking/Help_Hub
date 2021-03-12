@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Category {
 
-    public String id;
+    private String Id;
     public String parentCategoryId;
     private String Title;
     public List<Category> subcategories;
@@ -16,8 +16,12 @@ public class Category {
         subcategories = new ArrayList<>();
     }
 
+    public void setId(String id) {
+        Id = id;
+    }
+
     public String getId() {
-        return id;
+        return Id;
     }
 
     public void setTitle(String title) {

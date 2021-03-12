@@ -148,6 +148,7 @@
     <string name="only_observable">ONLY OBSERVABLE</string>
     <string name="only_my_own">ONLY MY OWN</string>
     <string name="all">ALL</string>
+    <string name="example_category">EXAMPLE CATEGORY</string>
 
     <string-array name="orders_filters">
         <item>All</item>

@@ -11,6 +11,7 @@ import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,8 +20,11 @@ import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.AddNewNoticeActivity;
 import com.example.help_hub.Activities.EditNeedHelpActivity;
 import com.example.help_hub.Activities.NeedHelpDetails;
+import com.example.help_hub.Adapters.CategoriesAdapter;
+import com.example.help_hub.Adapters.MainViewCategoriesAdapter;
 import com.example.help_hub.AlertDialogues.FiltersDialog;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
+import com.example.help_hub.OtherClasses.Category;
 import com.example.help_hub.OtherClasses.NeedHelp;
 import com.example.help_hub.OtherClasses.User;
 import com.example.help_hub.R;
@@ -71,6 +75,8 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 
     TextView informationText;
 
+    private List<Category> categories;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,9 +118,9 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         recyclerView = view.findViewById(R.id.order_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(myContext));
 
-        adapter = new NeedHelpAdapter();
-        recyclerView.setAdapter(adapter);
 
+
+        categories = new ArrayList<>();
 
         snapshotListener = firebaseFirestore.collection("announcement").addSnapshotListener((queryDocumentSnapshots, e) -> {
 
@@ -136,6 +142,8 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
                         fullNeedHelpList.remove(dc.getOldIndex());
                 }
             }
+            adapter = new NeedHelpAdapter();
+            recyclerView.setAdapter(adapter);
             //filterOrders();
             searchOrders();
         });
@@ -299,6 +307,31 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         searchOrders();
     }
 
+    private class MainViewCategoriesHolder extends RecyclerView.ViewHolder{
+
+        private RecyclerView mainViewCategoriesRecyclerView;
+        MainViewCategoriesAdapter mainViewCategoriesAdapter;
+        public MainViewCategoriesHolder(@NonNull @NotNull View itemView) {
+            super(itemView);
+
+            mainViewCategoriesRecyclerView = itemView.findViewById(R.id.main_view_categories_recycler_view);
+            mainViewCategoriesAdapter = new MainViewCategoriesAdapter(categories);
+            mainViewCategoriesRecyclerView.setAdapter(mainViewCategoriesAdapter);
+        }
+
+        public void bind(){
+
+            if(categories.size() != 0) return;
+            firebaseFirestore.collection("categories").get().addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        categories.add(documentSnapshot.toObject(Category.class));
+                    }
+                    mainViewCategoriesAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+    }
 
     private class NeedHelpHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -306,8 +339,8 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         private TextView needHelpTitle, needHelpPrice, needHelpDescription, needHelpShowsCount;
         private NeedHelp needHelp;
 
-        public NeedHelpHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.item_need_help, parent, false));
+        public NeedHelpHolder(@NonNull @NotNull View itemView) {
+            super(itemView);
 
             itemView.setOnClickListener(this);
 
@@ -416,29 +449,48 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         }
     }
 
-    private class NeedHelpAdapter extends RecyclerView.Adapter<NeedHelpHolder> {
+    private class NeedHelpAdapter extends RecyclerView.Adapter {
 
         @NonNull
         @Override
-        public NeedHelpHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(myContext);
-            return new NeedHelpHolder(layoutInflater, parent);
+            View view;
+            if(viewType == 0){
+                view = layoutInflater.inflate(R.layout.main_view_categories_layout, parent, false);
+                return new MainViewCategoriesHolder(view);
+            }else {
+                view = layoutInflater.inflate(R.layout.item_need_help, parent, false);
+                return new NeedHelpHolder(view);
+            }
         }
 
         @Override
-        public void onBindViewHolder(@NonNull NeedHelpHolder holder, int position) {
-
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            if(getItemViewType(position) == 0){
+                ((MainViewCategoriesHolder)holder).bind();
+            }else{
+                ((NeedHelpHolder)holder).bind(needHelpList.get(position - 1));
+            }
         }
 
         @Override
         public int getItemCount() {
-            return needHelpList.size();
+            return needHelpList.size() + 1;
         }
 
+//        @Override
+//        public void onBindViewHolder(@NonNull NeedHelpHolder holder, int position, @NonNull List<Object> payloads) {
+//            NeedHelp needHelp = needHelpList.get(position);
+//            holder.bind(needHelp);
+//        }
+
         @Override
-        public void onBindViewHolder(@NonNull NeedHelpHolder holder, int position, @NonNull List<Object> payloads) {
-            NeedHelp needHelp = needHelpList.get(position);
-            holder.bind(needHelp);
+        public int getItemViewType(int position) {
+            if(position == 0){
+                return 0;
+            }
+            return 1;
         }
     }
 

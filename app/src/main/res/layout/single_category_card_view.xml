@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"
+                                   android:layout_marginHorizontal="5sp">
+
+    <TextView
+            android:id="@+id/single_category_title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/example_category"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_margin="@dimen/little_margin"/>
+
+</androidx.cardview.widget.CardView>

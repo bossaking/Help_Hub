@@ -56,7 +56,7 @@ public class SelectCategoryActivity extends AppCompatActivity implements Categor
                 for (QueryDocumentSnapshot doc : task.getResult()) {
                     Category newCategory = new Category();
                     newCategory.id = doc.getId();
-                    newCategory.title = doc.getString("Title");
+                    newCategory.setTitle(doc.getString("Title"));
                     categories.add(newCategory);
                 }
                 categoriesAdapter.notifyDataSetChanged();
@@ -76,7 +76,7 @@ public class SelectCategoryActivity extends AppCompatActivity implements Categor
                 for (QueryDocumentSnapshot doc : task.getResult()) {
                     Category category = new Category();
                     category.parentCategoryId = parentId;
-                    category.title = doc.getString("Title");
+                    category.setTitle(doc.getString("Title"));
                     categories.add(category);
                 }
 
@@ -91,12 +91,12 @@ public class SelectCategoryActivity extends AppCompatActivity implements Categor
     public void onCategoryClick(int position) {
         Category category = categories.get(position);
         if (category.parentCategoryId.isEmpty()) {
-            categoryTitle = category.title;
+            categoryTitle = category.getTitle();
             categories.clear();
             getSubcategories(category.getId());
             categoriesAdapter.notifyDataSetChanged();
         } else {
-            subcategoryTitle = category.title;
+            subcategoryTitle = category.getTitle();
             Intent data = new Intent();
             data.putExtra("CAT_TITLE", categoryTitle);
             data.putExtra("SUBCAT_TITLE", subcategoryTitle);

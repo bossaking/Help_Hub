@@ -8,7 +8,7 @@ public class Category {
 
     public String id;
     public String parentCategoryId;
-    public String title;
+    private String Title;
     public List<Category> subcategories;
 
     public Category() {
@@ -20,7 +20,11 @@ public class Category {
         return id;
     }
 
+    public void setTitle(String title) {
+        Title = title;
+    }
+
     public String getTitle() {
-        return title;
+        return Title;
     }
 }

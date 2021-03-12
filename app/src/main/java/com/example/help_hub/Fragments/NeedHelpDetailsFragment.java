@@ -276,7 +276,7 @@ public class NeedHelpDetailsFragment extends Fragment {
 
     private void checkAnnouncements(Menu menu) {
         FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getUid())
-                .collection("observed announcements").document(announcementId).get().addOnCompleteListener((OnCompleteListener<DocumentSnapshot>) task -> {
+                .collection("observed announcements").document(announcementId).get().addOnCompleteListener(task -> {
             if (task.getResult().exists()) {
                 isObserved = true;
                 menu.findItem(R.id.add_to_bookmark_button).setIcon(R.drawable.ic_baseline_star_24);

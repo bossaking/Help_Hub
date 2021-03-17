@@ -1,19 +1,30 @@
 
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ğ€¥È
+D
+java:S1659")Declare "Description" on a separate line.(ã ¾üùÿÿÿÿ
+?
+java:S1659"$Declare "UserId" on a separate line.(ã ¾üùÿÿÿÿ
+>
+java:S1659"#Declare "Price" on a separate line.(ã ¾üùÿÿÿÿ
+j	java:S116"PRename this field "Price" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ã ¾üùÿÿÿÿ
+p	java:S116"VRename this field "Description" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ã ¾üùÿÿÿÿ
 G
 java:S1128",Remove this unused import 'android.net.Uri'.(òêû‘ıÿÿÿÿ
-œ
-java:S1186	"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ù¢Í˜ûÿÿÿÿ
->
-java:S1659"#Declare "Price" on a separate line.(üıÅıÿÿÿÿ
-D
-java:S1659")Declare "Description" on a separate line.(üıÅıÿÿÿÿ
+g	java:S116"MRename this field "Id" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ã ¾üùÿÿÿÿ
 ;
-java:S1659" Declare "Id" on a separate line.(üıÅıÿÿÿÿ
-?
-java:S1659"$Declare "UserId" on a separate line.(üıÅıÿÿÿÿ
-j	java:S116"PRename this field "Title" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(üıÅıÿÿÿÿ
-j	java:S116"PRename this field "Price" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(üıÅıÿÿÿÿ
-p	java:S116"VRename this field "Description" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(üıÅıÿÿÿÿ
-g	java:S116"MRename this field "Id" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(üıÅıÿÿÿÿ
-k	java:S116"QRename this field "UserId" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(üıÅıÿÿÿÿ
+java:S1659" Declare "Id" on a separate line.(ã ¾üùÿÿÿÿ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ğ€¥È
+j	java:S116"PRename this field "Title" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ã ¾üùÿÿÿÿ
+œ
+java:S1186
+"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ù¢Í˜ûÿÿÿÿ
+k	java:S116"QRename this field "UserId" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ã ¾üùÿÿÿÿ
+H
+java:S1659"&Declare "Category" on a separate line.(ã ¾üùÿÿÿÿ8”üè„„/
+K
+java:S1659")Declare "Subcategory" on a separate line.(ã ¾üùÿÿÿÿ8”üè„„/
+D
+java:S1659""Declare "City" on a separate line.(ã ¾üùÿÿÿÿ8”üè„„/
+t	java:S116"SRename this field "Category" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ã ¾üùÿÿÿÿ8”üè„„/
+w	java:S116"VRename this field "Subcategory" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ã ¾üùÿÿÿÿ8”üè„„/
+p	java:S116"ORename this field "City" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ã ¾üùÿÿÿÿ8”üè„„/
+q	java:S116"URename this field "ShowsCount" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(şÙ¶8”üè„„/

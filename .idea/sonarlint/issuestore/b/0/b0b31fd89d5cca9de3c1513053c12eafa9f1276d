@@ -1,18 +1,18 @@
 
-P
-java:S1128"5Remove this unused import 'android.widget.ImageView'.(ú¯ëàüÿÿÿÿ
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(øÃÃ¾
-j
-java:S1104'"TMake textView a static final constant or non-public and provide accessors if needed.(ë“”õ
-Q	java:S125#"<This block of commented-out lines of code should be removed.(Ø…Ø¶
-K
-java:S1128"5Remove this unused import 'com.bumptech.glide.Glide'.(Ñˆ…Ë
-Q	java:S1251"<This block of commented-out lines of code should be removed.(÷¨ä
-G
-java:S1128",Remove this unused import 'android.net.Uri'.(òêû‘ıÿÿÿÿ
-E
-java:S3740"/Provide the parametrized type for this generic.(‰¦Öƒ
 V	java:S125)"<This block of commented-out lines of code should be removed.(àÖ»ÿÿÿÿÿ
 V	java:S125-"<This block of commented-out lines of code should be removed.(Ñ„ÎÚûÿÿÿÿ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(øÃÃ¾
+E
+java:S3740"/Provide the parametrized type for this generic.(‰¦Öƒ
+j
+java:S1104'"TMake textView a static final constant or non-public and provide accessors if needed.(ë“”õ
+K
+java:S1128"5Remove this unused import 'com.bumptech.glide.Glide'.(Ñˆ…Ë
 „
 java:S1488K"iImmediately return this expression instead of assigning it to the temporary variable "adapterViewHolder".(Ô‡£¶ÿÿÿÿÿ
+G
+java:S1128",Remove this unused import 'android.net.Uri'.(òêû‘ıÿÿÿÿ
+Q	java:S1251"<This block of commented-out lines of code should be removed.(÷¨ä
+P
+java:S1128"5Remove this unused import 'android.widget.ImageView'.(ú¯ëàüÿÿÿÿ
+Q	java:S125#"<This block of commented-out lines of code should be removed.(Ø…Ø¶

@@ -4,7 +4,7 @@ import android.net.Uri;
 
 public class NeedHelp {
 
-    private String Title, Price, Description, Id, UserId, Category, Subcategory;
+    private String Title, Price, Description, Id, UserId, Category, Subcategory, City;
     private Integer ShowsCount;
 
     public NeedHelp() {
@@ -72,5 +72,13 @@ public class NeedHelp {
 
     public void setSubcategory(String subcategory) {
         Subcategory = subcategory;
+    }
+
+    public void setCity(String city) {
+        City = city;
+    }
+
+    public String getCity() {
+        return City;
     }
 }

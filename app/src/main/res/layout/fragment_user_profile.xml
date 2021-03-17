@@ -9,14 +9,7 @@
     android:orientation="vertical"
     tools:context=".Fragments.UserProfile">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:menu="@menu/user_profile_menu"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
 
     <ScrollView
         android:id="@+id/user_profile_scroll_view"

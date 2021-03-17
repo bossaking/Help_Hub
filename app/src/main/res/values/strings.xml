@@ -139,6 +139,16 @@
     <string name="message_hint" translatable="false">Enter your message</string>
     <string name="item_message_box_title_placeholder" translatable="false">Title of the notice or tender</string>
     <string name="item_message_box_user_name_placeholder" translatable="false">Marian Luj</string>
+    <string name="search">Search</string>
+    <string name="type_something">Type something</string>
+    <string name="filters">filters</string>
+    <string name="apply">APPLY</string>
+    <string name="cancel">CANCEL</string>
+    <string name="city">City</string>
+    <string name="only_observable">ONLY OBSERVABLE</string>
+    <string name="only_my_own">ONLY MY OWN</string>
+    <string name="all">ALL</string>
+    <string name="example_category">EXAMPLE CATEGORY</string>
 
     <string-array name="orders_filters">
         <item>All</item>

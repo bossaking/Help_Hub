@@ -1,29 +1,69 @@
 
->
-java:S1185h"(Remove this method to simply inherit it.(¡Œşø
-a
-java:S1128""FRemove this unused import 'java.util.concurrent.atomic.AtomicBoolean'.(§­‹¼üÿÿÿÿ
-A
-java:S1659v"+Declare "needHelpPrice" on a separate line.(¨ì´
+n
+java:S1128 "LRemove this unused import 'com.google.android.gms.tasks.OnCompleteListener'.(Çğ¸Òÿÿÿÿÿ8Ùãìşƒ/
+Y	java:S125”"<This block of commented-out lines of code should be removed.(æÉ€8Ùãìşƒ/
+@
+java:S1659„""Declare "desc" on a separate line.(ÙÕ“8Ïù•„„/
+j
+java:S1192~"MDefine a constant instead of duplicating this literal "announcement" 3 times.(ÉÙÁ8Ùãìşƒ/
+e
+java:S1128"CRemove this unused import 'com.example.help_hub.OtherClasses.User'.(ß¾Ş»üÿÿÿÿ8Ùãìşƒ/
+`
+java:S1128">Remove this unused import 'androidx.cardview.widget.CardView'.(ğÒ³ãıÿÿÿÿ8Ùãìşƒ/
+P
+java:S1659ß"-Declare "deleteImageView" on a separate line.(×îÛÙúÿÿÿÿ8Ùãìşƒ/
+J
+java:S1602ù",Remove useless curly braces around statement(Èø·Ñ8Ïù•„„/
+^	java:S125›"<This block of commented-out lines of code should be removed.(’ì¼¨üÿÿÿÿ8Ùãìşƒ/
+[
+java:S1128"">Remove this unused import 'com.google.android.gms.tasks.Task'.(¦âÏô8Ùãìşƒ/
+b
+java:S1128"ERemove this unused import 'androidx.appcompat.app.AppCompatActivity'.(€¶£î8Ùãìşƒ/
+O
+java:S1659à"1Declare "needHelpDescription" on a separate line.(ô‘ª˜8Ïù•„„/
+r
+java:S3252ª"OUse static access with "android.content.DialogInterface" for "BUTTON_NEGATIVE".(ÒŸçªÿÿÿÿÿ8Ïù•„„/
 G
-java:S1602K",Remove useless curly braces around statement(®µÂÓùÿÿÿÿ
->
-java:S1185o"(Remove this method to simply inherit it.(öÿÕÅ
+java:S1602t",Remove useless curly braces around statement(®µÂÓùÿÿÿÿ
+J
+java:S1602›",Remove useless curly braces around statement(·Ö¿Ì8Ïù•„„/
+^	java:S125ï"<This block of commented-out lines of code should be removed.(ÈÕ‰¸øÿÿÿÿ8Ïù•„„/
+\
+java:S1155¥">Use isEmpty() to check whether the collection is empty or not.(üÉ©»8Ùãìşƒ/
+N
+java:S1659ß"+Declare "editImageView" on a separate line.(×îÛÙúÿÿÿÿ8Ùãìşƒ/
+a
+java:S1155Æ">Use isEmpty() to check whether the collection is empty or not.(—¦ŞŠıÿÿÿÿ8Ùãìşƒ/
+u
+java:S3776Ä"RRefactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.(ÖğÔÀøÿÿÿÿ8„ıúƒ„/
+h
+java:S1128!"KRemove this unused import 'com.google.android.gms.tasks.OnSuccessListener'.(íå¡8Ùãìşƒ/
 t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ª’øÿÿÿÿ
-˜
-java:S1186¸"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ÃÓó¢
-n	java:S131X"YComplete cases by adding the missing enum constants or add a default case to this switch.(ÆƒéŞ
+M
+java:S1066"/Merge this if statement with the enclosing one.(êÁ°¹8Ùãìşƒ/
+D	java:S131¼""Add a default case to this switch.(øå´¡ÿÿÿÿÿ8Ùãìşƒ/
+I
+java:S1659à"+Declare "needHelpPrice" on a separate line.(ô‘ª˜8Ïù•„„/
+n
+java:S1128"LRemove this unused import 'com.example.help_hub.Adapters.CategoriesAdapter'.(áû±×üÿÿÿÿ8Ùãìşƒ/
 v
-java:S1450,"[Remove the "recyclerView" field and declare it as a local variable in the relevant methods.(¿á© ıÿÿÿÿ
-B
-java:S1602™",Remove useless curly braces around statement(¤í®r
-c
-java:S3973"GUse indentation to denote the code conditionally executed by this "if".(¸çŞ“ÿÿÿÿÿ
-9
-java:S1659†""Declare "desc" on a separate line.(ÙÕ“
-a
-java:S1301X"KReplace this "switch" statement by "if" statements to increase readability.(ÆƒéŞ
-G
-java:S1659v"1Declare "needHelpDescription" on a separate line.(¨ì´
-E
-java:S1128"/Remove this unused import 'android.os.Handler'.(ûÛ’¡
+java:S14508"[Remove the "recyclerView" field and declare it as a local variable in the relevant methods.(¿á© ıÿÿÿÿ
+R
+java:S3740Ğ"/Provide the parametrized type for this generic.(¦¢¸ñüÿÿÿÿ8Ïù•„„/
+N
+java:S1659à"0Declare "needHelpShowsCount" on a separate line.(ô‘ª˜8Ïù•„„/
+u
+java:S3776û"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(‚ßáéÿÿÿÿÿ8Ùãìşƒ/
+J
+java:S1602ş",Remove useless curly braces around statement(«ù„8Ïù•„„/
+I
+java:S1602™",Remove useless curly braces around statement(¤í®r8Ïù•„„/
+m
+java:S3252¥"OUse static access with "android.content.DialogInterface" for "BUTTON_POSITIVE".(ìƒ„Ï8Ïù•„„/
+^	java:S125Ş"<This block of commented-out lines of code should be removed.(’ì¼¨üÿÿÿÿ8Ùãìşƒ/
+n
+java:S1301¼"KReplace this "switch" statement by "if" statements to increase readability.(øå´¡ÿÿÿÿÿ8Ùãìşƒ/
+D	java:S131à""Add a default case to this switch.(¼Îú²ıÿÿÿÿ8Ùãìşƒ/
+Y
+java:S1068C"7Remove this unused "filterOrdersSpinner" private field.(¶àòÁúÿÿÿÿ8Ùãìşƒ/
+^	java:S125Ø"<This block of commented-out lines of code should be removed.(¼†ûÿÿÿÿÿ8Ùãìşƒ/

@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import android.view.*;
 import android.widget.*;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +37,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -117,7 +119,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 
         recyclerView = view.findViewById(R.id.order_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(myContext));
-
 
 
         categories = new ArrayList<>();
@@ -239,7 +240,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 
     }
 
-    private void showOnlyMyOwn(List<NeedHelp> ordersList){
+    private void showOnlyMyOwn(List<NeedHelp> ordersList) {
         for (NeedHelp nh : ordersList) {
             if (!nh.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
                 needHelpList.remove(nh);
@@ -247,7 +248,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         }
     }
 
-    private void showOnlyObserved(List<NeedHelp> ordersList){
+    private void showOnlyObserved(List<NeedHelp> ordersList) {
         LoadingDialog loadingDialog = new LoadingDialog(getActivity());
         loadingDialog.StartLoadingDialog();
 
@@ -260,14 +261,14 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
             }
             loadingDialog.DismissDialog();
             for (NeedHelp nh : ordersList) {
-                if(filterIndex == 2) {
+                if (filterIndex == 2) {
                     if (!observedList.contains(nh.getId())) {
                         needHelpList.remove(nh);
                     }
-                }else{
+                } else {
                     if (observedList.contains(nh.getId())) {
-                        if(!needHelpList.contains(nh))
-                        needHelpList.add(nh);
+                        if (!needHelpList.contains(nh))
+                            needHelpList.add(nh);
                     }
                 }
             }
@@ -307,27 +308,39 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         searchOrders();
     }
 
-    private class MainViewCategoriesHolder extends RecyclerView.ViewHolder{
+    private class MainViewCategoriesHolder extends RecyclerView.ViewHolder {
 
         private RecyclerView mainViewCategoriesRecyclerView;
         MainViewCategoriesAdapter mainViewCategoriesAdapter;
+
         public MainViewCategoriesHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
             mainViewCategoriesRecyclerView = itemView.findViewById(R.id.main_view_categories_recycler_view);
-            mainViewCategoriesAdapter = new MainViewCategoriesAdapter(myContext, categories);
+            mainViewCategoriesAdapter = new MainViewCategoriesAdapter(myContext, categories, adapter, needHelpList, fullNeedHelpList);
             mainViewCategoriesRecyclerView.setAdapter(mainViewCategoriesAdapter);
         }
 
-        public void bind(){
+        public void bind() {
 
-            if(categories.size() != 0) return;
+            if (categories.size() != 0) return;
             firebaseFirestore.collection("categories").get().addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
-                    for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         categories.add(documentSnapshot.toObject(Category.class));
                     }
                     mainViewCategoriesAdapter.notifyDataSetChanged();
+
+                    for (Category category : categories) {
+                        firebaseFirestore.collection("categories").document(category.getId()).collection("Subcategories").get().addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                for (QueryDocumentSnapshot documentSnapshot1 : task1.getResult()) {
+                                    category.subcategories.add(documentSnapshot1.toObject(Category.class));
+                                }
+                                mainViewCategoriesAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
                 }
             });
         }
@@ -448,17 +461,17 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         }
     }
 
-    private class NeedHelpAdapter extends RecyclerView.Adapter {
+    public class NeedHelpAdapter extends RecyclerView.Adapter {
 
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(myContext);
             View view;
-            if(viewType == 0){
+            if (viewType == 0) {
                 view = layoutInflater.inflate(R.layout.main_view_categories_layout, parent, false);
                 return new MainViewCategoriesHolder(view);
-            }else {
+            } else {
                 view = layoutInflater.inflate(R.layout.item_need_help, parent, false);
                 return new NeedHelpHolder(view);
             }
@@ -466,10 +479,10 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            if(getItemViewType(position) == 0){
-                ((MainViewCategoriesHolder)holder).bind();
-            }else{
-                ((NeedHelpHolder)holder).bind(needHelpList.get(position - 1));
+            if (getItemViewType(position) == 0) {
+                ((MainViewCategoriesHolder) holder).bind();
+            } else {
+                ((NeedHelpHolder) holder).bind(needHelpList.get(position - 1));
             }
         }
 
@@ -486,7 +499,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 
         @Override
         public int getItemViewType(int position) {
-            if(position == 0){
+            if (position == 0) {
                 return 0;
             }
             return 1;

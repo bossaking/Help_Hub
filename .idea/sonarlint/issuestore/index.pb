@@ -73,3 +73,11 @@ s
 Capp/src/main/java/com/example/help_hub/Activities/ChatActivity.java,c\5\c5af4156382d9435d3cc83acf3e247e6faea5c75
 x
 Happ/src/main/java/com/example/help_hub/Fragments/MessageBoxFragment.java,a\5\a5969024fc95faafa325c64f0712c5f8792d5855
+}
+Mapp/src/main/java/com/example/help_hub/Activities/EditWantToHelpActivity.java,9\7\9763cb06ffbdb9dba532c1fe97895fdeb7e08591
+{
+Kapp/src/main/java/com/example/help_hub/Activities/EditNeedHelpActivity.java,4\6\46e0ff894c779acebede84596821a41eaea4e1fa
+t
+Dapp/src/main/java/com/example/help_hub/Adapters/MessagesAdapter.java,e\a\ea32fd854531e062add87db75cb72957f6ce7320
+~
+Napp/src/main/java/com/example/help_hub/Adapters/MainViewCategoriesAdapter.java,d\e\de2a4a0373c05694ce69ca06f0ad4859aea9d94b

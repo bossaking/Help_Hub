@@ -44,7 +44,6 @@ public class MainViewCategoriesAdapter extends RecyclerView.Adapter {
         public TextView singleCategoryTitle;
         public ImageView singleCategoryImageView;
 
-
         public AdapterViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             singleCategoryTitle = itemView.findViewById(R.id.single_category_title_text_view);

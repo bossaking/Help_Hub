@@ -85,8 +85,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
-
-
     }
 
     @Override
@@ -237,7 +235,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
                 showOnlyObserved(ordersList);
                 break;
         }
-
     }
 
     private void showOnlyMyOwn(List<NeedHelp> ordersList) {
@@ -518,8 +515,5 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
     public void onDestroyView() {
         super.onDestroyView();
         snapshotListener.remove();
-
     }
-
-
 }

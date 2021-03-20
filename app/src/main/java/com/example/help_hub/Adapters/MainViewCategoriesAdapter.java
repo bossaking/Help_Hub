@@ -32,8 +32,9 @@ public class MainViewCategoriesAdapter extends RecyclerView.Adapter {
     private List<Category> categoryList, modifiedCategory;
     private Context myContext;
     private NeedHelpFragment.NeedHelpAdapter needHelpAdapter;
-    private List<NeedHelp> needHelpList, fullNeedHelpList;
-    //private List<Category> category = new ArrayList<>();
+    private List<NeedHelp> needHelpList, fullNeedHelpList, needHelpListCopy;
+    private boolean isCategory = true;
+    private int choose;
 
     private FirebaseFirestore firebaseFirestore;
 
@@ -42,7 +43,6 @@ public class MainViewCategoriesAdapter extends RecyclerView.Adapter {
 
         public TextView singleCategoryTitle;
         public ImageView singleCategoryImageView;
-
 
         public AdapterViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -54,11 +54,26 @@ public class MainViewCategoriesAdapter extends RecyclerView.Adapter {
 
         @Override
         public void onClick(View v) {
-            modifiedCategory = new ArrayList<>(categoryList);
-            modifiedCategory = modifiedCategory.get(getAdapterPosition()).subcategories;
+            if (isCategory) {
+                modifiedCategory = new ArrayList<>(categoryList);
+                modifiedCategory = modifiedCategory.get(getAdapterPosition()).subcategories;
 
-            notifyDataSetChanged();
-            categoryFilter(categoryList.get(getLayoutPosition()));
+                notifyDataSetChanged();
+                categoryFilter(categoryList.get(getLayoutPosition()));
+
+                needHelpListCopy = new ArrayList<>(needHelpList);
+
+                choose = getLayoutPosition();
+                isCategory = false;
+            } else {
+                //needHelpList = new ArrayList<>(needHelpListCopy);
+                for (NeedHelp needHelp : needHelpListCopy) {
+                    if(!needHelpList.contains(needHelp)){
+                        needHelpList.add(needHelp);
+                    }
+                }
+                subcategoryFilter(categoryList.get(choose).subcategories.get(getLayoutPosition()));
+            }
             needHelpAdapter.notifyDataSetChanged();
         }
     }
@@ -109,9 +124,24 @@ public class MainViewCategoriesAdapter extends RecyclerView.Adapter {
 
     private void categoryFilter(Category category) {
         for (NeedHelp needHelp : fullNeedHelpList) {
-            if(!needHelp.getCategory().equals(category.getTitle())) {
+            if (!needHelp.getCategory().equals(category.getTitle())) {
                 needHelpList.remove(needHelp);
             }
         }
+    }
+
+    private void subcategoryFilter(Category subcategory) {
+        for (int i = 0; i < needHelpList.size(); i++) {
+            if (!needHelpList.get(i).getSubcategory().equals(subcategory.getTitle())) {
+                needHelpList.remove(needHelpList.get(i));
+                i--;
+            }
+        }
+
+        /*for (NeedHelp needHelp : fullNeedHelpList) {
+            if (!needHelp.getSubcategory().equals(subcategory.getTitle())) {
+                needHelpList.remove(needHelp);
+            }
+        }*/
     }
 }

@@ -22,7 +22,6 @@ import com.example.help_hub.Activities.AddNewNoticeActivity;
 import com.example.help_hub.Activities.EditNeedHelpActivity;
 import com.example.help_hub.Activities.NeedHelpDetails;
 import com.example.help_hub.Adapters.CategoriesAdapter;
-import com.example.help_hub.Adapters.MainViewCategoriesAdapter;
 import com.example.help_hub.AlertDialogues.FiltersDialog;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.OtherClasses.Category;
@@ -188,10 +187,18 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
                 FiltersDialog filtersDialog = new FiltersDialog(myActivity, this, filterIndex, city);
                 filtersDialog.show(getActivity().getSupportFragmentManager(), null);
                 break;
+
+            case android.R.id.home:
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
         return true;
     }
+
+
 
     //FILTER BY SEARCH METHOD
     private void searchOrders() {
@@ -515,5 +522,121 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
     public void onDestroyView() {
         super.onDestroyView();
         snapshotListener.remove();
+    }
+
+    public class MainViewCategoriesAdapter extends RecyclerView.Adapter {
+
+        private List<Category> categoryList, modifiedCategory;
+        private Context myContext;
+        private NeedHelpFragment.NeedHelpAdapter needHelpAdapter;
+        private List<NeedHelp> fullNeedHelpList, needHelpListCopy;
+        private boolean isCategory = true;
+        private int choose;
+
+        private FirebaseFirestore firebaseFirestore;
+
+        //VIEW HOLDER STATIC CLASS
+        public class AdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+            public TextView singleCategoryTitle;
+            public ImageView singleCategoryImageView;
+
+            public AdapterViewHolder(@NonNull @NotNull View itemView) {
+                super(itemView);
+                singleCategoryTitle = itemView.findViewById(R.id.single_category_title_text_view);
+                singleCategoryImageView = itemView.findViewById(R.id.single_category_image_view);
+
+                itemView.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View v) {
+
+                //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+                if (isCategory) {
+                    modifiedCategory = new ArrayList<>(categoryList);
+                    modifiedCategory = modifiedCategory.get(getAdapterPosition()).subcategories;
+
+                    notifyDataSetChanged();
+                    categoryFilter(categoryList.get(getLayoutPosition()));
+
+                    needHelpListCopy = new ArrayList<>(needHelpList);
+
+                    choose = getLayoutPosition();
+                    isCategory = false;
+                } else {
+                    //needHelpList = new ArrayList<>(needHelpListCopy);
+                    for (NeedHelp needHelp : needHelpListCopy) {
+                        if(!needHelpList.contains(needHelp)){
+                            needHelpList.add(needHelp);
+                        }
+                    }
+                    subcategoryFilter(categoryList.get(choose).subcategories.get(getLayoutPosition()));
+                }
+                needHelpAdapter.notifyDataSetChanged();
+            }
+        }
+
+        //PUBLIC CONSTRUCTOR
+        public MainViewCategoriesAdapter(Context myContext, List<Category> categoryList, NeedHelpFragment.NeedHelpAdapter adapter, List<NeedHelp> needHelpList, List<NeedHelp> fullNeedHelpList) {
+            //this.needHelpList = needHelpList;
+            this.fullNeedHelpList = fullNeedHelpList;
+            needHelpAdapter = adapter;
+            modifiedCategory = categoryList;
+            this.categoryList = categoryList;
+            this.myContext = myContext;
+        }
+
+        @NonNull
+        @NotNull
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+            firebaseFirestore = FirebaseFirestore.getInstance();
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_category_card_view, parent, false);
+
+            return new AdapterViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
+            Category category = modifiedCategory.get(position);
+            String title = category.getTitle();
+            TextView singleCategoryTitle = ((AdapterViewHolder) holder).singleCategoryTitle;
+            ImageView singleCategoryImageView = ((AdapterViewHolder) holder).singleCategoryImageView;
+            singleCategoryTitle.setText(title);
+            getImage(category, singleCategoryImageView);
+        }
+
+        private void getImage(Category category, ImageView image) {
+            StorageReference imgRef = FirebaseStorage.getInstance().getReference().child("category/" + category.getId() + "/image0.png");
+            imgRef.getDownloadUrl().addOnSuccessListener(v -> {
+                Glide.with(myContext).load(v).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24).into(image);
+            }).addOnFailureListener(v -> {
+                image.setImageResource(R.drawable.ic_baseline_missing_image_24);
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return modifiedCategory.size();
+        }
+
+        private void categoryFilter(Category category) {
+            for (NeedHelp needHelp : fullNeedHelpList) {
+                if (!needHelp.getCategory().equals(category.getTitle())) {
+                    needHelpList.remove(needHelp);
+                }
+            }
+        }
+
+        private void subcategoryFilter(Category subcategory) {
+            for (int i = 0; i < needHelpList.size(); i++) {
+                if (!needHelpList.get(i).getSubcategory().equals(subcategory.getTitle())) {
+                    needHelpList.remove(needHelpList.get(i));
+                    i--;
+                }
+            }
+        }
     }
 }

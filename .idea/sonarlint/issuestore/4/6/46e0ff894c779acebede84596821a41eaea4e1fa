@@ -1,0 +1,55 @@
+
+e
+java:S1192¬"NDefine a constant instead of duplicating this literal "announcement/" 3 times.(İ©ÓÄ
+Q	java:S1107"=This class has 10 parents which is greater than 5 authorized.(¹–¾	
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Œí´È
+Y
+java:S2259õ"BA "NullPointerException" could be thrown; "data" is nullable here.(ã²»
+S
+java:S1128"8Remove this unused import 'android.widget.LinearLayout'.(çîšçúÿÿÿÿ
+P
+java:S1128"5Remove this unused import 'android.widget.ImageView'.(ú¯ëàüÿÿÿÿ
+W
+java:S1128"<Remove this unused import 'android.annotation.SuppressLint'.(ÕƒóÏûÿÿÿÿ
+f
+java:S1128'"KRemove this unused import 'com.google.android.gms.tasks.OnFailureListener'.(ï¿ŞŞúÿÿÿÿ
+O
+java:S1128
+"4Remove this unused import 'android.graphics.Canvas'.(õ«•üÿÿÿÿ
+[
+java:S1128"ERemove this unused import 'android.graphics.drawable.BitmapDrawable'.(³Ï÷
+I
+java:S1128"3Remove this unused import 'android.view.ViewGroup'.(‹îá
+a
+java:S1128("KRemove this unused import 'com.google.android.gms.tasks.OnSuccessListener'.(íå¡
+Y
+java:S1128.">Remove this unused import 'org.jetbrains.annotations.NotNull'.(éš®ïøÿÿÿÿ
+^
+java:S1128-"CRemove this unused import 'com.google.firebase.storage.UploadTask'.(®ğÇıÿÿÿÿ
+u
+java:S1450C"_Remove the "categoriesButton" field and declare it as a local variable in the relevant methods.(üÅ¼ã
+o
+java:S1450C"YRemove the "editButton" field and declare it as a local variable in the relevant methods.(üÅ¼ã
+}
+java:S1450B"bRemove the "needHelpDescription" field and declare it as a local variable in the relevant methods.(§âÌÿÿÿÿÿ
+v
+java:S1450L"[Remove the "recyclerView" field and declare it as a local variable in the relevant methods.(¿á© ıÿÿÿÿ
+˜
+java:S1186Ö"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(á¬‡İ
+
+java:S1186à"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(×åó«øÿÿÿÿ
+D
+java:S1659C".Declare "categoriesButton" on a separate line.(üÅ¼ã
+G
+java:S1602",Remove useless curly braces around statement(çŠ÷Åûÿÿÿÿ
+C
+java:S1602¸",Remove useless curly braces around statement(™ğş¹
+C
+java:S1602º",Remove useless curly braces around statement(úÌä 
+M
+java:S1874ÿ"1Remove this use of "getBitmap"; it is deprecated.(ÑĞ¿¯ûÿÿÿÿ
+H
+java:S1602›",Remove useless curly braces around statement(¥ó™íùÿÿÿÿ
+C
+java:S1602¢",Remove useless curly braces around statement(úÌä 
+d	java:S100¬"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¨àÑ†

@@ -1,0 +1,11 @@
+
+k	java:S114\"QRename this interface name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(½Ö“ùÿÿÿÿ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(øÃÃ¾
+v
+java:S1104@"[Make messageTextView a static final constant or non-public and provide accessors if needed.(ÀÎô•ıÿÿÿÿ
+z
+java:S1104@"_Make messageTimeTextView a static final constant or non-public and provide accessors if needed.(ÀÎô•ıÿÿÿÿ
+x
+java:S1104A"bMake onMessageClickListener a static final constant or non-public and provide accessors if needed.(³„¯ª
+L
+java:S1659@"1Declare "messageTimeTextView" on a separate line.(ÀÎô•ıÿÿÿÿ

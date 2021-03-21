@@ -149,6 +149,7 @@
     <string name="only_my_own">ONLY MY OWN</string>
     <string name="all">ALL</string>
     <string name="example_category">EXAMPLE CATEGORY</string>
+    <string name="back">Back</string>
 
     <string-array name="orders_filters">
         <item>All</item>

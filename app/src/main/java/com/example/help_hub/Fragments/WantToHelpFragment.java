@@ -130,8 +130,8 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
         recyclerView = view.findViewById(R.id.order_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(myContext));
 
-        adapter = new WantToHelpAdapter();
-        recyclerView.setAdapter(adapter);
+/*        adapter = new WantToHelpAdapter();
+        recyclerView.setAdapter(adapter);*/
 
         categories = new ArrayList<>();
 
@@ -155,8 +155,8 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
                         fullWantToHelpList.remove(dc.getOldIndex());
                 }
             }
-/*            adapter = new WantToHelpAdapter();
-            recyclerView.setAdapter(adapter);*/
+            adapter = new WantToHelpAdapter();
+            recyclerView.setAdapter(adapter);
             //filterOrders(adapter);
             searchOrders();
         });

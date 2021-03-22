@@ -79,5 +79,3 @@ Mapp/src/main/java/com/example/help_hub/Activities/EditWantToHelpActivity.java,
 Kapp/src/main/java/com/example/help_hub/Activities/EditNeedHelpActivity.java,4\6\46e0ff894c779acebede84596821a41eaea4e1fa
 t
 Dapp/src/main/java/com/example/help_hub/Adapters/MessagesAdapter.java,e\a\ea32fd854531e062add87db75cb72957f6ce7320
-~
-Napp/src/main/java/com/example/help_hub/Adapters/MainViewCategoriesAdapter.java,d\e\de2a4a0373c05694ce69ca06f0ad4859aea9d94b

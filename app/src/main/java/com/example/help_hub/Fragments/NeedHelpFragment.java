@@ -61,7 +61,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
     NeedHelpAdapter adapter;
 
     int photoLoadingAttempts;
-
+    private View selectedSubcategory, selectedSubcategory2, view2;
 
     //FILTER BY BELONGING ORDERS
     private Spinner filterOrdersSpinner;
@@ -125,7 +125,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         recyclerView = view.findViewById(R.id.order_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(myContext));
 
-
         categories = new ArrayList<>();
 
         snapshotListener = firebaseFirestore.collection("announcement").addSnapshotListener((queryDocumentSnapshots, e) -> {
@@ -186,7 +185,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
             }
         });
 
-
         //TODO NEW IMPLEMENTATION
         backButton = menu.findItem(R.id.category_back_button);
         backButton.setVisible(false);
@@ -201,13 +199,15 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
                 filtersDialog.show(getActivity().getSupportFragmentManager(), null);
                 break;
 
-                //TODO NEW IMPLEMENTATION
+            //TODO NEW IMPLEMENTATION
             case R.id.category_back_button:
-
-                if(subcategory != null){
+                if (selectedSubcategory2 != null) {
+                    selectedSubcategory2.setVisibility(view2.INVISIBLE);
+                }
+                if (subcategory != null) {
                     subcategory = null;
                     searchOrders();
-                }else if(category != null){
+                } else if (category != null) {
                     category = null;
                     mainViewCategoriesAdapter.showCategories();
                     searchOrders();
@@ -353,8 +353,8 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
             return;
         }
 
-        for(NeedHelp nh : ordersList){
-            if(!nh.getSubcategory().equals(subcategory.getTitle())){
+        for (NeedHelp nh : ordersList) {
+            if (!nh.getSubcategory().equals(subcategory.getTitle())) {
                 needHelpList.remove(nh);
             }
         }
@@ -514,6 +514,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
                 ref.update(map);
             });
 
+
             Intent intent = new Intent(view.getContext(), NeedHelpDetails.class);
             intent.putExtra(NeedHelpDetails.EXTRA_NEED_HELP_ID, needHelp.getId());
             intent.putExtra(NeedHelpDetails.EXTRA_NEED_HELP_TITLE, needHelp.getTitle());
@@ -576,6 +577,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         if (searchView != null)
             searchView.clearFocus();
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -614,9 +616,23 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 //                getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
                 //((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+                selectedSubcategory = v.findViewById(R.id.selectedSubcategory);
+
+                if (selectedSubcategory2 != null) {
+                    selectedSubcategory2.setVisibility(v.INVISIBLE);
+                }
+
+                view2 = v;
+
+                selectedSubcategory2 = selectedSubcategory;
+                selectedSubcategory.setVisibility(v.VISIBLE);
+
                 //TODO NEW IMPLEMENTATION
-                if(category == null){
+                if (category == null) {
                     backButton.setVisible(true);
+                    if (selectedSubcategory2 != null) {
+                        selectedSubcategory2.setVisibility(view2.INVISIBLE);
+                    }
                 }
 
                 if (isCategory) {
@@ -639,14 +655,14 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         }
 
         //TODO NEW IMPLEMENTATION
-        public void showCategories(){
+        public void showCategories() {
             isCategory = true;
             actualCategories = new ArrayList<>(categoryList);
             notifyDataSetChanged();
         }
 
         //TODO NEW IMPLEMENTATION
-        public void showSubcategories(List<Category> categories, int position){
+        public void showSubcategories(List<Category> categories, int position) {
             actualCategories = categories.get(position).subcategories;
             notifyDataSetChanged();
         }

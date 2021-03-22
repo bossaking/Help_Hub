@@ -1,69 +1,94 @@
 
-n
-java:S1128 "LRemove this unused import 'com.google.android.gms.tasks.OnCompleteListener'.(Çğ¸Òÿÿÿÿÿ8Ùãìşƒ/
-Y	java:S125”"<This block of commented-out lines of code should be removed.(æÉ€8Ùãìşƒ/
-@
-java:S1659„""Declare "desc" on a separate line.(ÙÕ“8Ïù•„„/
-j
-java:S1192~"MDefine a constant instead of duplicating this literal "announcement" 3 times.(ÉÙÁ8Ùãìşƒ/
-e
-java:S1128"CRemove this unused import 'com.example.help_hub.OtherClasses.User'.(ß¾Ş»üÿÿÿÿ8Ùãìşƒ/
-`
-java:S1128">Remove this unused import 'androidx.cardview.widget.CardView'.(ğÒ³ãıÿÿÿÿ8Ùãìşƒ/
-P
-java:S1659ß"-Declare "deleteImageView" on a separate line.(×îÛÙúÿÿÿÿ8Ùãìşƒ/
+^	java:S125ó"<This block of commented-out lines of code should be removed.(ÈÕ‰¸øÿÿÿÿ8Ïù•„„/
 J
-java:S1602ù",Remove useless curly braces around statement(Èø·Ñ8Ïù•„„/
-^	java:S125›"<This block of commented-out lines of code should be removed.(’ì¼¨üÿÿÿÿ8Ùãìşƒ/
-[
-java:S1128"">Remove this unused import 'com.google.android.gms.tasks.Task'.(¦âÏô8Ùãìşƒ/
-b
-java:S1128"ERemove this unused import 'androidx.appcompat.app.AppCompatActivity'.(€¶£î8Ùãìşƒ/
-O
-java:S1659à"1Declare "needHelpDescription" on a separate line.(ô‘ª˜8Ïù•„„/
-r
-java:S3252ª"OUse static access with "android.content.DialogInterface" for "BUTTON_NEGATIVE".(ÒŸçªÿÿÿÿÿ8Ïù•„„/
-G
-java:S1602t",Remove useless curly braces around statement(®µÂÓùÿÿÿÿ
-J
-java:S1602›",Remove useless curly braces around statement(·Ö¿Ì8Ïù•„„/
-^	java:S125ï"<This block of commented-out lines of code should be removed.(ÈÕ‰¸øÿÿÿÿ8Ïù•„„/
-\
-java:S1155¥">Use isEmpty() to check whether the collection is empty or not.(üÉ©»8Ùãìşƒ/
-N
-java:S1659ß"+Declare "editImageView" on a separate line.(×îÛÙúÿÿÿÿ8Ùãìşƒ/
-a
-java:S1155Æ">Use isEmpty() to check whether the collection is empty or not.(—¦ŞŠıÿÿÿÿ8Ùãìşƒ/
-u
-java:S3776Ä"RRefactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.(ÖğÔÀøÿÿÿÿ8„ıúƒ„/
-h
-java:S1128!"KRemove this unused import 'com.google.android.gms.tasks.OnSuccessListener'.(íå¡8Ùãìşƒ/
+java:S1602Ÿ",Remove useless curly braces around statement(·Ö¿Ì8Ïù•„„/
+t	java:S127ı"XRefactor the code in order to not assign to this loop counter from within the loop body.(¨…ÄK8‡•›Š…/
 t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ª’øÿÿÿÿ
+N
+java:S1659ã"+Declare "editImageView" on a separate line.(×îÛÙúÿÿÿÿ8Ùãìşƒ/
+j
+java:S1192{"MDefine a constant instead of duplicating this literal "announcement" 3 times.(ÉÙÁ8Ùãìşƒ/
+~
+java:S1450˜"`Remove the "firebaseFirestore" field and declare it as a local variable in the relevant methods.(Ã›õŒ8‡•›Š…/
 M
-java:S1066"/Merge this if statement with the enclosing one.(êÁ°¹8Ùãìşƒ/
-D	java:S131¼""Add a default case to this switch.(øå´¡ÿÿÿÿÿ8Ùãìşƒ/
-I
-java:S1659à"+Declare "needHelpPrice" on a separate line.(ô‘ª˜8Ïù•„„/
+java:S1066’"/Merge this if statement with the enclosing one.(êÁ°¹8Ùãìşƒ/
 n
 java:S1128"LRemove this unused import 'com.example.help_hub.Adapters.CategoriesAdapter'.(áû±×üÿÿÿÿ8Ùãìşƒ/
 v
-java:S14508"[Remove the "recyclerView" field and declare it as a local variable in the relevant methods.(¿á© ıÿÿÿÿ
-R
-java:S3740Ğ"/Provide the parametrized type for this generic.(¦¢¸ñüÿÿÿÿ8Ïù•„„/
+java:S14507"[Remove the "recyclerView" field and declare it as a local variable in the relevant methods.(¿á© ıÿÿÿÿ
+D	java:S131å""Add a default case to this switch.(¼Îú²ıÿÿÿÿ8Ùãìşƒ/
+Q
+java:S1659‘".Declare "modifiedCategory" on a separate line.(®¢ªŸıÿÿÿÿ8‡•›Š…/
 N
-java:S1659à"0Declare "needHelpShowsCount" on a separate line.(ô‘ª˜8Ïù•„„/
-u
-java:S3776û"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(‚ßáéÿÿÿÿÿ8Ùãìşƒ/
+java:S1659ä"0Declare "needHelpShowsCount" on a separate line.(ô‘ª˜8Ïù•„„/
+Y	java:S125«"<This block of commented-out lines of code should be removed.(¶«œ¨8ö°ëŠ…/
+Y	java:S125‘"<This block of commented-out lines of code should be removed.(æÉ€8Ùãìşƒ/
 J
-java:S1602ş",Remove useless curly braces around statement(«ù„8Ïù•„„/
+java:S1602ı",Remove useless curly braces around statement(Èø·Ñ8Ïù•„„/
+H
+java:S3398ñ"*Move this method into "AdapterViewHolder".(¢Å˜’8‡•›Š…/
+‚
+java:S1104"_Make singleCategoryTitle a static final constant or non-public and provide accessors if needed.(ğˆåªıÿÿÿÿ8‡•›Š…/
+`
+java:S1128">Remove this unused import 'androidx.cardview.widget.CardView'.(ğÒ³ãıÿÿÿÿ8Ùãìşƒ/
+r
+java:S3252®"OUse static access with "android.content.DialogInterface" for "BUTTON_NEGATIVE".(ÒŸçªÿÿÿÿÿ8Ïù•„„/
+R
+java:S3740"/Provide the parametrized type for this generic.(å‹“êşÿÿÿÿ8‡•›Š…/
+u
+java:S3776È"RRefactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.(ÖğÔÀøÿÿÿÿ8„ıúƒ„/
 I
-java:S1602™",Remove useless curly braces around statement(¤í®r8Ïù•„„/
-m
-java:S3252¥"OUse static access with "android.content.DialogInterface" for "BUTTON_POSITIVE".(ìƒ„Ï8Ïù•„„/
-^	java:S125Ş"<This block of commented-out lines of code should be removed.(’ì¼¨üÿÿÿÿ8Ùãìşƒ/
+java:S1659ä"+Declare "needHelpPrice" on a separate line.(ô‘ª˜8Ïù•„„/
+O
+java:S1659ä"1Declare "needHelpDescription" on a separate line.(ô‘ª˜8Ïù•„„/
+I
+java:S1602",Remove useless curly braces around statement(¤í®r8Ïù•„„/
+Y	java:S125Ç"<This block of commented-out lines of code should be removed.(×·¸…8æ·ÊŠ…/
+L
+java:S1659”".Declare "needHelpListCopy" on a separate line.(ğôã¹8‡•›Š…/
+a
+java:S1155Ê">Use isEmpty() to check whether the collection is empty or not.(—¦ŞŠıÿÿÿÿ8Ùãìşƒ/
+^	java:S125ã"<This block of commented-out lines of code should be removed.(’ì¼¨üÿÿÿÿ8Ùãìşƒ/
+\
+java:S1155©">Use isEmpty() to check whether the collection is empty or not.(üÉ©»8Ùãìşƒ/
+^	java:S125Ÿ"<This block of commented-out lines of code should be removed.(’ì¼¨üÿÿÿÿ8Ùãìşƒ/
+J
+java:S1602‚",Remove useless curly braces around statement(«ù„8Ïù•„„/
+H
+java:S3398ù"*Move this method into "AdapterViewHolder".(øßê£8‡•›Š…/
+I
+java:S1602å",Remove useless curly braces around statement(¤í®r8‡•›Š…/
+P
+java:S1659ã"-Declare "deleteImageView" on a separate line.(×îÛÙúÿÿÿÿ8Ùãìşƒ/
+u
+java:S3776ÿ"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(‚ßáéÿÿÿÿÿ8Ùãìşƒ/
 n
-java:S1301¼"KReplace this "switch" statement by "if" statements to increase readability.(øå´¡ÿÿÿÿÿ8Ùãìşƒ/
-D	java:S131à""Add a default case to this switch.(¼Îú²ıÿÿÿÿ8Ùãìşƒ/
+java:S1128"LRemove this unused import 'com.google.android.gms.tasks.OnCompleteListener'.(Çğ¸Òÿÿÿÿÿ8Ùãìşƒ/
+@
+java:S1659ˆ""Declare "desc" on a separate line.(ÙÕ“8Ïù•„„/
+b
+java:S1128"ERemove this unused import 'androidx.appcompat.app.AppCompatActivity'.(€¶£î8Ùãìşƒ/
+Y	java:S125¹"<This block of commented-out lines of code should be removed.(øÌÙ8‡•›Š…/
+Q
+java:S1172Æ"3Remove this unused method parameter "needHelpList".(ò‡Ã®8æ·ÊŠ…/
+m
+java:S3252©"OUse static access with "android.content.DialogInterface" for "BUTTON_POSITIVE".(ìƒ„Ï8Ïù•„„/
+G
+java:S1602q",Remove useless curly braces around statement(®µÂÓùÿÿÿÿ
+R
+java:S3740Ô"/Provide the parametrized type for this generic.(¦¢¸ñüÿÿÿÿ8Ïù•„„/
+h
+java:S1128 "KRemove this unused import 'com.google.android.gms.tasks.OnSuccessListener'.(íå¡8Ùãìşƒ/
+S
+java:S1068˜"5Remove this unused "firebaseFirestore" private field.(Ã›õŒ8‡•›Š…/
+e
+java:S1128"CRemove this unused import 'com.example.help_hub.OtherClasses.User'.(ß¾Ş»üÿÿÿÿ8Ùãìşƒ/
+J
+java:S1602ç",Remove useless curly braces around statement(·Ö¿Ì8‡•›Š…/
+^	java:S125İ"<This block of commented-out lines of code should be removed.(¼†ûÿÿÿÿÿ8Ùãìşƒ/
+[
+java:S1128!">Remove this unused import 'com.google.android.gms.tasks.Task'.(¦âÏô8Ùãìşƒ/
+†
+java:S1104"cMake singleCategoryImageView a static final constant or non-public and provide accessors if needed.(ÛÑ¶Àüÿÿÿÿ8‡•›Š…/
 Y
-java:S1068C"7Remove this unused "filterOrdersSpinner" private field.(¶àòÁúÿÿÿÿ8Ùãìşƒ/
-^	java:S125Ø"<This block of commented-out lines of code should be removed.(¼†ûÿÿÿÿÿ8Ùãìşƒ/
+java:S1068B"7Remove this unused "filterOrdersSpinner" private field.(¶àòÁúÿÿÿÿ8Ùãìşƒ/

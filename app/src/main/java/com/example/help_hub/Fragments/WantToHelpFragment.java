@@ -22,6 +22,7 @@ import com.example.help_hub.Activities.EditWantToHelpActivity;
 import com.example.help_hub.Activities.WantToHelpDetails;
 import com.example.help_hub.AlertDialogues.FiltersDialog;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
+import com.example.help_hub.OtherClasses.Category;
 import com.example.help_hub.OtherClasses.NeedHelp;
 import com.example.help_hub.OtherClasses.WantToHelp;
 import com.example.help_hub.R;
@@ -30,9 +31,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -50,10 +53,13 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
     private RecyclerView recyclerView;
     private FirebaseFirestore firebaseFirestore;
     private StorageReference storageReference;
+    private ListenerRegistration snapshotListener;
 
     WantToHelpAdapter adapter;
 
     TextView informationText;
+
+    private View selectedSubcategory, previousSelectedSubcategory, previousView;
 
     //FILTER BY BELONGING ORDERS
     private Spinner filterOrdersSpinner;
@@ -66,6 +72,14 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
 
     //FILTER BY CITY
     private String city;
+
+    //TODO FILTER BY CATEGORY AND SUBCATEGORY
+    private Category category;
+    private Category subcategory;
+    private MenuItem backButton;
+    MainViewCategoriesAdapter mainViewCategoriesAdapter;
+
+    private List<Category> categories;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,7 +97,7 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
         myContext = myActivity.getApplicationContext();
     }
 
-    @Override
+/*    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
@@ -91,14 +105,11 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
     @Override
     public void onResume() {
         super.onResume();
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
-
         setHasOptionsMenu(true);
 
         wantToHelpList = new ArrayList<>();
@@ -109,18 +120,20 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
 
         city = "";
 
+        informationText = view.findViewById(R.id.informationText);
+
         FloatingActionButton add = view.findViewById(R.id.floatingActionButton);
         add.setOnClickListener(v -> {
             myActivity.startActivity(new Intent(myContext, AddTheOfferActivity.class));
         });
-
-        informationText = view.findViewById(R.id.informationText);
 
         recyclerView = view.findViewById(R.id.order_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(myContext));
 
         adapter = new WantToHelpAdapter();
         recyclerView.setAdapter(adapter);
+
+        categories = new ArrayList<>();
 
         firebaseFirestore.collection("offers").addSnapshotListener((queryDocumentSnapshots, e) -> {
 
@@ -142,6 +155,8 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
                         fullWantToHelpList.remove(dc.getOldIndex());
                 }
             }
+/*            adapter = new WantToHelpAdapter();
+            recyclerView.setAdapter(adapter);*/
             //filterOrders(adapter);
             searchOrders();
         });
@@ -154,9 +169,8 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
         inflater.inflate(R.menu.main_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
 
-
         MenuItem searchItem = menu.findItem(R.id.search);
-        searchView = (SearchView)searchItem.getActionView();
+        searchView = (SearchView) searchItem.getActionView();
 
         //FOR ALWAYS EXPANDED
         searchView.setIconifiedByDefault(false);
@@ -177,6 +191,10 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
                 return false;
             }
         });
+
+        //TODO NEW IMPLEMENTATION
+        backButton = menu.findItem(R.id.category_back_button);
+        backButton.setVisible(false);
     }
 
     @Override
@@ -187,25 +205,41 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
                 FiltersDialog filtersDialog = new FiltersDialog(myActivity, this, filterIndex, city);
                 filtersDialog.show(getActivity().getSupportFragmentManager(), null);
                 break;
+
+            //TODO NEW IMPLEMENTATION
+            case R.id.category_back_button:
+                if (previousSelectedSubcategory != null) {
+                    previousSelectedSubcategory.setVisibility(previousView.INVISIBLE);
+                }
+                if (subcategory != null) {
+                    subcategory = null;
+                    searchOrders();
+                } else if (category != null) {
+                    category = null;
+                    mainViewCategoriesAdapter.showCategories();
+                    searchOrders();
+                    backButton.setVisible(false);
+                }
+                break;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
         return true;
     }
 
     //FILTER BY SEARCH METHOD
-    private void searchOrders(){
+    private void searchOrders() {
 
         wantToHelpList.clear();
 
-
-        if(searchPhrase.isEmpty()){
-
+        if (searchPhrase.isEmpty()) {
             wantToHelpList.addAll(fullWantToHelpList);
-
-        }else{
+        } else {
             searchPhrase = searchPhrase.toLowerCase();
-            for (WantToHelp wth : fullWantToHelpList){
-                if(wth.getTitle().toLowerCase().contains(searchPhrase) || wth.getDescription().toLowerCase().contains(searchPhrase)){
+            for (WantToHelp wth : fullWantToHelpList) {
+                if (wth.getTitle().toLowerCase().contains(searchPhrase) || wth.getDescription().toLowerCase().contains(searchPhrase)) {
                     wantToHelpList.add(wth);
                 }
             }
@@ -215,7 +249,7 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
     }
 
     //FILTER BY BELONGING METHOD
-    private void filterOrders(List<WantToHelp> ordersList){
+    private void filterOrders(List<WantToHelp> ordersList) {
 
         //wantToHelpList.clear();
 
@@ -237,7 +271,7 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
         }
     }
 
-    private void showOnlyMyOwn(List<WantToHelp> ordersList){
+    private void showOnlyMyOwn(List<WantToHelp> ordersList) {
         for (WantToHelp wth : ordersList) {
             if (!wth.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
                 wantToHelpList.remove(wth);
@@ -245,8 +279,7 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
         }
     }
 
-    private void showOnlyObserved(List<WantToHelp> ordersList){
-
+    private void showOnlyObserved(List<WantToHelp> ordersList) {
         LoadingDialog loadingDialog = new LoadingDialog(getActivity());
         loadingDialog.StartLoadingDialog();
 
@@ -259,13 +292,13 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
             }
             loadingDialog.DismissDialog();
             for (WantToHelp wth : ordersList) {
-                if(filterIndex == 2) {
+                if (filterIndex == 2) {
                     if (!observedList.contains(wth.getId())) {
                         wantToHelpList.remove(wth);
                     }
-                }else{
+                } else {
                     if (observedList.contains(wth.getId())) {
-                        if(!wantToHelpList.contains(wth))
+                        if (!wantToHelpList.contains(wth))
                             wantToHelpList.add(wth);
                     }
                 }
@@ -295,6 +328,41 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
             informationText.setVisibility(View.GONE);
         }
 
+        //TODO NEW IMPLEMENTATION
+        filterByCategory(new ArrayList<>(wantToHelpList));
+    }
+
+    //TODO NEW VOID
+    private void filterByCategory(List<WantToHelp> ordersList) {
+
+        if (category == null) {
+            adapter.notifyDataSetChanged();
+            return;
+        }
+
+        for (WantToHelp wth : ordersList) {
+            if (!wth.getCategory().equals(category.getTitle())) {
+                wantToHelpList.remove(wth);
+            }
+        }
+
+        filterBySubcategory(new ArrayList<>(wantToHelpList));
+    }
+
+    //TODO NEW VOID
+    private void filterBySubcategory(List<WantToHelp> ordersList) {
+
+        if (subcategory == null) {
+            adapter.notifyDataSetChanged();
+            return;
+        }
+
+        for (WantToHelp wth : ordersList) {
+            if (!wth.getSubcategory().equals(subcategory.getTitle())) {
+                wantToHelpList.remove(wth);
+            }
+        }
+
         adapter.notifyDataSetChanged();
     }
 
@@ -306,14 +374,51 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
         searchOrders();
     }
 
+    private class MainViewCategoriesHolder extends RecyclerView.ViewHolder {
+
+        private RecyclerView mainViewCategoriesRecyclerView;
+
+        public MainViewCategoriesHolder(@NonNull @NotNull View itemView) {
+            super(itemView);
+
+            mainViewCategoriesRecyclerView = itemView.findViewById(R.id.main_view_categories_recycler_view);
+            mainViewCategoriesAdapter = new MainViewCategoriesAdapter(myContext, categories, adapter, wantToHelpList, fullWantToHelpList);
+            mainViewCategoriesRecyclerView.setAdapter(mainViewCategoriesAdapter);
+        }
+
+        public void bind() {
+
+            if (categories.size() != 0) return;
+            firebaseFirestore.collection("categories").get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                        categories.add(documentSnapshot.toObject(Category.class));
+                    }
+                    mainViewCategoriesAdapter.notifyDataSetChanged();
+
+                    for (Category category : categories) {
+                        firebaseFirestore.collection("categories").document(category.getId()).collection("Subcategories").get().addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                for (QueryDocumentSnapshot documentSnapshot1 : task1.getResult()) {
+                                    category.subcategories.add(documentSnapshot1.toObject(Category.class));
+                                }
+                                mainViewCategoriesAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
     private class WantToHelpHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView wantToHelpImage, deleteImageView, editImageView;
         private TextView wantToHelpTitle, wantToHelpPrice, wantToHelpDescription, wantToHelpShowsCount;
         private WantToHelp wantToHelp;
 
-        public WantToHelpHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.item_want_to_help, parent, false));
+        public WantToHelpHolder(@NonNull @NotNull View itemView) {
+            super(itemView);
 
             itemView.setOnClickListener(this);
 
@@ -329,10 +434,10 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
         public void bind(WantToHelp wantToHelp) {
             this.wantToHelp = wantToHelp;
 
-            if(!wantToHelp.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
+            if (!wantToHelp.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
                 deleteImageView.setVisibility(View.INVISIBLE);
                 editImageView.setVisibility(View.INVISIBLE);
-            }else{
+            } else {
                 deleteImageView.setVisibility(View.VISIBLE);
                 deleteImageView.setOnClickListener(v -> {
                     deleteOrder(wantToHelp);
@@ -349,14 +454,16 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
             title = wantToHelp.getTitle();
             desc = wantToHelp.getDescription();
             showsCount = wantToHelp.getShowsCount();
-            if (title.length() > 18)
-                title = title.substring(0, 20) + "...";
-            if (desc.length() > 30)
-                desc = desc.substring(0, 30) + "...";
+
+            if (title.length() > 18) title = title.substring(0, 20) + "...";
+            if (desc.length() > 30) desc = desc.substring(0, 30) + "...";
+
             wantToHelpTitle.setText(title);
             wantToHelpPrice.setText(getResources().getString(R.string.cost) + " " + wantToHelp.getPrice() + " " + getString(R.string.new_offer_currency));
             wantToHelpDescription.setText(desc);
-            wantToHelpShowsCount.setText(showsCount.toString());
+
+            if (showsCount != null) wantToHelpShowsCount.setText(showsCount.toString());
+
             StorageReference imgRef = storageReference.child("users/" + wantToHelp.getUserId() + "/profile.jpg");
             imgRef.getDownloadUrl().addOnSuccessListener(v -> {
                 Glide.with(myContext).load(v).into(wantToHelpImage);
@@ -366,7 +473,7 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
         }
 
         //DELETE ORDER
-        private void deleteOrder(WantToHelp wantToHelp){
+        private void deleteOrder(WantToHelp wantToHelp) {
             AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
             alertDialog.setTitle("Delete");
             alertDialog.setMessage("Are you sure you want to delete this?");
@@ -413,32 +520,190 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
         }
     }
 
-    private class WantToHelpAdapter extends RecyclerView.Adapter<WantToHelpFragment.WantToHelpHolder> {
+    private class WantToHelpAdapter extends RecyclerView.Adapter {
 
         @NonNull
         @Override
-        public WantToHelpFragment.WantToHelpHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(myContext);
-            return new WantToHelpFragment.WantToHelpHolder(layoutInflater, parent);
+            View view;
+            if (viewType == 0) {
+                view = layoutInflater.inflate(R.layout.main_view_categories_layout, parent, false);
+                return new MainViewCategoriesHolder(view);
+            } else {
+                view = layoutInflater.inflate(R.layout.item_want_to_help, parent, false);
+                return new WantToHelpHolder(view);
+            }
         }
 
         @Override
-        public void onBindViewHolder(@NonNull WantToHelpFragment.WantToHelpHolder holder, int position) {
-
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            if (getItemViewType(position) == 0) {
+                ((MainViewCategoriesHolder) holder).bind();
+            } else {
+                ((WantToHelpHolder) holder).bind(wantToHelpList.get(position - 1));
+            }
         }
 
         @Override
         public int getItemCount() {
-            return wantToHelpList.size();
+            return wantToHelpList.size() + 1;
         }
 
-        @Override
+/*        @Override
         public void onBindViewHolder(@NonNull WantToHelpFragment.WantToHelpHolder holder, int position, @NonNull List<Object> payloads) {
             WantToHelp wantToHelp = wantToHelpList.get(position);
             holder.bind(wantToHelp);
+        }*/
+
+        @Override
+        public int getItemViewType(int position) {
+            if (position == 0) {
+                return 0;
+            }
+            return 1;
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        if (searchView != null)
+            searchView.clearFocus();
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        //snapshotListener.remove();
+    }
+
+    public class MainViewCategoriesAdapter extends RecyclerView.Adapter {
+
+        private List<Category> categoryList, actualCategories;
+        private Context myContext;
+        private WantToHelpAdapter wantToHelpAdapter;
+        private List<WantToHelp> fullWantToHelpList, wantToHelpListCopy;
+        private boolean isCategory = true;
+        private int choose;
+
+        private FirebaseFirestore firebaseFirestore;
+
+        //VIEW HOLDER STATIC CLASS
+        public class AdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+            public TextView singleCategoryTitle;
+            public ImageView singleCategoryImageView;
+
+            public AdapterViewHolder(@NonNull @NotNull View itemView) {
+                super(itemView);
+                singleCategoryTitle = itemView.findViewById(R.id.single_category_title_text_view);
+                singleCategoryImageView = itemView.findViewById(R.id.single_category_image_view);
+
+                itemView.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View v) {
+
+                //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//                getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+                //((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+                selectedSubcategory = v.findViewById(R.id.selectedSubcategory);
+
+                if (previousSelectedSubcategory != null) {
+                    previousSelectedSubcategory.setVisibility(v.INVISIBLE);
+                }
+
+                previousView = v;
+
+                previousSelectedSubcategory = selectedSubcategory;
+                selectedSubcategory.setVisibility(v.VISIBLE);
+
+                //TODO NEW IMPLEMENTATION
+                if (category == null) {
+                    backButton.setVisible(true);
+                    if (previousSelectedSubcategory != null) {
+                        previousSelectedSubcategory.setVisibility(previousView.INVISIBLE);
+                    }
+                }
+
+                if (isCategory) {
+                    //modifiedCategory = new ArrayList<>(categoryList);
+                    //modifiedCategory = modifiedCategory.get(getAdapterPosition()).subcategories;
+                    showSubcategories(new ArrayList<>(categoryList), getAdapterPosition());
+
+                    //TODO NEW IMPLEMENTATION
+                    category = categoryList.get(getLayoutPosition());
+                    searchOrders();
+
+                    choose = getLayoutPosition();
+                    isCategory = false;
+                } else {
+                    //TODO NEW IMPLEMENTATION
+                    subcategory = categoryList.get(choose).subcategories.get(getLayoutPosition());
+                    searchOrders();
+                }
+            }
+        }
+
+        //TODO NEW IMPLEMENTATION
+        public void showCategories() {
+            isCategory = true;
+            actualCategories = new ArrayList<>(categoryList);
+            notifyDataSetChanged();
+        }
+
+        //TODO NEW IMPLEMENTATION
+        public void showSubcategories(List<Category> categories, int position) {
+            actualCategories = categories.get(position).subcategories;
+            notifyDataSetChanged();
+        }
+
+        //PUBLIC CONSTRUCTOR
+        public MainViewCategoriesAdapter(Context myContext, List<Category> categoryList, WantToHelpAdapter adapter, List<WantToHelp> wantToHelpList, List<WantToHelp> fullWantToHelpList) {
+            //this.needHelpList = needHelpList;
+            this.fullWantToHelpList = fullWantToHelpList;
+            wantToHelpAdapter = adapter;
+            actualCategories = categoryList;
+            this.categoryList = categoryList;
+            this.myContext = myContext;
+        }
+
+        @NonNull
+        @NotNull
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+            firebaseFirestore = FirebaseFirestore.getInstance();
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_category_card_view, parent, false);
+
+            return new AdapterViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
+            Category category = actualCategories.get(position);
+            String title = category.getTitle();
+            TextView singleCategoryTitle = ((AdapterViewHolder) holder).singleCategoryTitle;
+            ImageView singleCategoryImageView = ((AdapterViewHolder) holder).singleCategoryImageView;
+            singleCategoryTitle.setText(title);
+            getImage(category, singleCategoryImageView);
+        }
+
+        private void getImage(Category category, ImageView image) {
+            StorageReference imgRef = FirebaseStorage.getInstance().getReference().child("category/" + category.getId() + "/image0.png");
+            imgRef.getDownloadUrl().addOnSuccessListener(v -> {
+                Glide.with(myContext).load(v).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24).into(image);
+            }).addOnFailureListener(v -> {
+                image.setImageResource(R.drawable.ic_baseline_missing_image_24);
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return actualCategories.size();
+        }
+    }
 }

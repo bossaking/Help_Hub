@@ -61,7 +61,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
     NeedHelpAdapter adapter;
 
     int photoLoadingAttempts;
-    private View selectedSubcategory, selectedSubcategory2, view2;
+    private View selectedSubcategory, previousSelectedSubcategory, previousView;
 
     //FILTER BY BELONGING ORDERS
     private Spinner filterOrdersSpinner;
@@ -102,10 +102,10 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
         setHasOptionsMenu(true);
+
         needHelpList = new ArrayList<>();
         fullNeedHelpList = new ArrayList<>();
         filterIndex = 0;
@@ -113,7 +113,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         searchPhrase = "";
 
         city = "";
-
 
         informationText = view.findViewById(R.id.informationText);
 
@@ -161,7 +160,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         inflater.inflate(R.menu.main_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
 
-
         MenuItem searchItem = menu.findItem(R.id.search);
         searchView = (SearchView) searchItem.getActionView();
 
@@ -201,8 +199,8 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 
             //TODO NEW IMPLEMENTATION
             case R.id.category_back_button:
-                if (selectedSubcategory2 != null) {
-                    selectedSubcategory2.setVisibility(view2.INVISIBLE);
+                if (previousSelectedSubcategory != null) {
+                    previousSelectedSubcategory.setVisibility(previousView.INVISIBLE);
                 }
                 if (subcategory != null) {
                     subcategory = null;
@@ -222,16 +220,13 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         return true;
     }
 
-
     //FILTER BY SEARCH METHOD
     private void searchOrders() {
 
         needHelpList.clear();
 
         if (searchPhrase.isEmpty()) {
-
             needHelpList.addAll(fullNeedHelpList);
-
         } else {
             searchPhrase = searchPhrase.toLowerCase();
             for (NeedHelp nh : fullNeedHelpList) {
@@ -375,7 +370,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 
         private RecyclerView mainViewCategoriesRecyclerView;
 
-
         public MainViewCategoriesHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
@@ -453,15 +447,16 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
             title = needHelp.getTitle();
             desc = needHelp.getDescription();
             showsCount = needHelp.getShowsCount();
-            if (title.length() > 18)
-                title = title.substring(0, 18) + "...";
-            if (desc.length() > 30)
-                desc = desc.substring(0, 30) + "...";
+
+            if (title.length() > 18) title = title.substring(0, 18) + "...";
+            if (desc.length() > 30) desc = desc.substring(0, 30) + "...";
+
             needHelpTitle.setText(title);
             needHelpPrice.setText(getResources().getString(R.string.budget) + " " + needHelp.getPrice() + " " + getString(R.string.new_notice_currency));
             needHelpDescription.setText(desc);
-            if (showsCount != null)
-                needHelpShowsCount.setText(showsCount.toString());
+
+            if (showsCount != null) needHelpShowsCount.setText(showsCount.toString());
+
             photoLoadingAttempts = 0;
             getImage();
         }
@@ -581,7 +576,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        snapshotListener.remove();
+        //snapshotListener.remove();
     }
 
     public class MainViewCategoriesAdapter extends RecyclerView.Adapter {
@@ -618,20 +613,20 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 
                 selectedSubcategory = v.findViewById(R.id.selectedSubcategory);
 
-                if (selectedSubcategory2 != null) {
-                    selectedSubcategory2.setVisibility(v.INVISIBLE);
+                if (previousSelectedSubcategory != null) {
+                    previousSelectedSubcategory.setVisibility(v.INVISIBLE);
                 }
 
-                view2 = v;
+                previousView = v;
 
-                selectedSubcategory2 = selectedSubcategory;
+                previousSelectedSubcategory = selectedSubcategory;
                 selectedSubcategory.setVisibility(v.VISIBLE);
 
                 //TODO NEW IMPLEMENTATION
                 if (category == null) {
                     backButton.setVisible(true);
-                    if (selectedSubcategory2 != null) {
-                        selectedSubcategory2.setVisibility(view2.INVISIBLE);
+                    if (previousSelectedSubcategory != null) {
+                        previousSelectedSubcategory.setVisibility(previousView.INVISIBLE);
                     }
                 }
 

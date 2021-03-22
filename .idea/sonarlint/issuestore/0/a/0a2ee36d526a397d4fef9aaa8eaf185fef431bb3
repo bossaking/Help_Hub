@@ -1,25 +1,133 @@
 
->
-java:S1185D"(Remove this method to simply inherit it.(öÿÕÅ
->
-java:S1185?"(Remove this method to simply inherit it.(¡Œşø
-a
-java:S1301]"KReplace this "switch" statement by "if" statements to increase readability.(ÆƒéŞ
-C
-java:S1659o"-Declare "wantToHelpPrice" on a separate line.(šçì¯
-8
-java:S1659""Declare "desc" on a separate line.(ÙÕ“
-B
-java:S1602Š",Remove useless curly braces around statement(¤í®r
-v
-java:S1450("[Remove the "recyclerView" field and declare it as a local variable in the relevant methods.(¿á© ıÿÿÿÿ
-n	java:S131]"YComplete cases by adding the missing enum constants or add a default case to this switch.(ÆƒéŞ
-C
-java:S1602Œ",Remove useless curly braces around statement(·Ö¿Ì
+D	java:S131€""Add a default case to this switch.(¼Îú²ıÿÿÿÿ8®•ŠÛ…/
+^	java:S125 "<This block of commented-out lines of code should be removed.(ÅˆÜÈûÿÿÿÿ8®•ŠÛ…/
+@
+java:S1659Ä""Declare "desc" on a separate line.(ÙÕ“8®•ŠÛ…/
+X
+java:S2209ï"5Change this instance-reference to a static reference.(×Ş«ùÿÿÿÿ8™¿ÓÛ…/
+Y	java:S125ú"<This block of commented-out lines of code should be removed.(Àó¹›8™¿ÓÛ…/
+J
+java:S1602»",Remove useless curly braces around statement(·Ö¿Ì8™¿ÓÛ…/
+_
+java:S1117"<Rename "category" which hides the field declared at line 77.(ÿà½çıÿÿÿÿ8Ò©ºÛ…/
+X
+java:S1172š"5Remove this unused method parameter "wantToHelpList".(Íæô´ûÿÿÿÿ8øÑ÷Û…/
+K
+java:S1659 "-Declare "deleteImageView" on a separate line.(ª¾Œ­8®•ŠÛ…/
+S
+java:S2209é"5Change this instance-reference to a static reference.(È¸¾8™¿ÓÛ…/
+O
+java:S1135ñ"2Complete the task associated to this TODO comment.(Ø¿©r8™¿ÓÛ…/
+Y	java:S125â"<This block of commented-out lines of code should be removed.(¶«œ¨8™¿ÓÛ…/
+P
+java:S1135à"2Complete the task associated to this TODO comment.(¬İŞ¡8Öå³Û…/
+P
+java:S1659¡"2Declare "wantToHelpShowsCount" on a separate line.(­ŞØÊ8®•ŠÛ…/
+J
+java:S1602Ö",Remove useless curly braces around statement(·Ö¿Ì8®•ŠÛ…/
+r
+java:S3252å"OUse static access with "android.content.DialogInterface" for "BUTTON_NEGATIVE".(ÒŸçªÿÿÿÿÿ8®•ŠÛ…/
+S
+java:S1068Ï"5Remove this unused "firebaseFirestore" private field.(Ã›õŒ8™¿ÓÛ…/
 I
-java:S1659o"3Declare "wantToHelpDescription" on a separate line.(šçì¯
-G
-java:S1602P",Remove useless curly braces around statement(®µÂÓùÿÿÿÿ
+java:S1659 "+Declare "editImageView" on a separate line.(ª¾Œ­8®•ŠÛ…/
+j
+java:S1192Š"GDefine a constant instead of duplicating this literal "offers" 3 times.(ÔÎ¾òşÿÿÿÿ8®•ŠÛ…/
+V
+java:S10688"4Remove this unused "snapshotListener" private field.(ûıá˜úÿÿÿÿ8”ßÅİ…/
+O
+java:S1135…"2Complete the task associated to this TODO comment.(Ø¿©r8™¿ÓÛ…/
+Y	java:S125ş"<This block of commented-out lines of code should be removed.(İé ß8®•ŠÛ…/
+O
+java:S1135Ë"2Complete the task associated to this TODO comment.(Ø¿©r8å«²Û…/
+I
+java:S1602¹",Remove useless curly braces around statement(¤í®r8™¿ÓÛ…/
 t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ª’øÿÿÿÿ
-
-java:S1186§"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(½æóçùÿÿÿÿ
+L
+java:S1659>"*Declare "previousView" on a separate line.(ûÓ‹ñÿÿÿÿÿ8ÃÁ¥Û…/
+J
+java:S1602º",Remove useless curly braces around statement(Èø·Ñ8®•ŠÛ…/
+Y	java:S125›"<This block of commented-out lines of code should be removed.(×·¸…8™¿ÓÛ…/
+Y
+java:S1068Ë"6Remove this unused "wantToHelpListCopy" private field.(×“¤äşÿÿÿÿ8ä£ıÛ…/
+Y
+java:S1068Ë"6Remove this unused "fullWantToHelpList" private field.(×“¤äşÿÿÿÿ8ÒàüÛ…/
+S
+java:S1659Ë"0Declare "wantToHelpListCopy" on a separate line.(×“¤äşÿÿÿÿ8ä£ıÛ…/
+J
+java:S1602¿",Remove useless curly braces around statement(«ù„8®•ŠÛ…/
+Z
+java:S1117¯"<Rename "category" which hides the field declared at line 77.(‰¦‚„8™¿ÓÛ…/
+U
+java:S2589ô"7Remove this expression which always evaluates to "true"(¹’óé8™¿ÓÛ…/
+Y	java:S125ª"<This block of commented-out lines of code should be removed.(ù·ùŞ8˜ÎÏÛ…/
+K
+java:S1659¡"-Declare "wantToHelpPrice" on a separate line.(­ŞØÊ8®•ŠÛ…/
+S
+java:S2209Ô"5Change this instance-reference to a static reference.(³›±¸8üÉ¦Û…/
+c
+java:S1128"GRemove this unused import 'com.example.help_hub.OtherClasses.NeedHelp'.(¤²›.8â§ÿÛ…/
+^	java:S125º"<This block of commented-out lines of code should be removed.(’ì¼¨üÿÿÿÿ8®•ŠÛ…/
+O
+java:S1135Œ"2Complete the task associated to this TODO comment.(Ø¿©r8™¿ÓÛ…/
+F
+java:S1185Á"(Remove this method to simply inherit it.(±íòÑ8”ßÅİ…/
+‚
+java:S1104Ô"_Make singleCategoryTitle a static final constant or non-public and provide accessors if needed.(ğˆåªıÿÿÿÿ8™¿ÓÛ…/
+~
+java:S1450Ï"`Remove the "firebaseFirestore" field and declare it as a local variable in the relevant methods.(Ã›õŒ8™¿ÓÛ…/
+Y
+java:S1068A"7Remove this unused "filterOrdersSpinner" private field.(¶àòÁúÿÿÿÿ8õàÙÚ…/
+P
+java:S1135Ï"2Complete the task associated to this TODO comment.(¬İŞ¡8áô²Û…/
+p
+java:S3776š"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(ÈÌŠ8®•ŠÛ…/
+v
+java:S14505"[Remove the "recyclerView" field and declare it as a local variable in the relevant methods.(¿á© ıÿÿÿÿ
+Q
+java:S1659¡"3Declare "wantToHelpDescription" on a separate line.(­ŞØÊ8®•ŠÛ…/
+a
+java:S1155‡">Use isEmpty() to check whether the collection is empty or not.(—¦ŞŠıÿÿÿÿ8ÊŞÌİ…/
+b
+java:S1128"ERemove this unused import 'androidx.appcompat.app.AppCompatActivity'.(€¶£î8õàÙÚ…/
+u
+java:S3776…"RRefactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.(ÖğÔÀøÿÿÿÿ8Ò©ºÛ…/
+X	java:S125Ã"<This block of commented-out lines of code should be removed.(­©Ç:8”ßÅİ…/
+O
+java:S1135ş"2Complete the task associated to this TODO comment.(Ø¿©r8™¿ÓÛ…/
+O
+java:S1135“"2Complete the task associated to this TODO comment.(Ø¿©r8™¿ÓÛ…/
+X	java:S125e"<This block of commented-out lines of code should be removed.(¡Œşø8ñÜŒÛ…/
+^	java:S125…"<This block of commented-out lines of code should be removed.(æÒ§†ÿÿÿÿÿ8íğÙŞ…/
+I
+java:S1602Ô",Remove useless curly braces around statement(¤í®r8®•ŠÛ…/
+L
+java:S1659È".Declare "actualCategories" on a separate line.(¾Ñ„ó8™¿ÓÛ…/
+R
+java:S3740‹"/Provide the parametrized type for this generic.(Û»–Ãşÿÿÿÿ8ÍÜ…/
+R
+java:S3740Æ"/Provide the parametrized type for this generic.(å‹“êşÿÿÿÿ8™¿ÓÛ…/
+T
+java:S1135L"2Complete the task associated to this TODO comment.(‚ŒÜëşÿÿÿÿ8²¯œÛ…/
+†
+java:S1104Õ"cMake singleCategoryImageView a static final constant or non-public and provide accessors if needed.(ÛÑ¶Àüÿÿÿÿ8™¿ÓÛ…/
+O
+java:S1135Ã"2Complete the task associated to this TODO comment.(Ø¿©r8‰ášÛ…/
+S
+java:S2209õ"5Change this instance-reference to a static reference.(³›±¸8™¿ÓÛ…/
+n
+java:S1128"QRemove this unused import 'com.example.help_hub.Activities.EditNeedHelpActivity'.(…ş®‰8õàÙÚ…/
+N
+java:S1602~",Remove useless curly braces around statement(®µÂÓùÿÿÿÿ8®•ŠÛ…/
+R
+java:S1066­"/Merge this if statement with the enclosing one.(ª¶şÿÿÿÿ8®•ŠÛ…/
+S
+java:S1068Ê"5Remove this unused "wantToHelpAdapter" private field.(ˆ–í³8Š´şÛ…/
+a
+java:S1155Ä">Use isEmpty() to check whether the collection is empty or not.(—ü”úÿÿÿÿ8ÊŞÌİ…/
+O
+java:S1135Ñ"2Complete the task associated to this TODO comment.(Ø¿©r8—ÆÛ…/
+m
+java:S3252à"OUse static access with "android.content.DialogInterface" for "BUTTON_POSITIVE".(ìƒ„Ï8®•ŠÛ…/
+[
+java:S1659>"9Declare "previousSelectedSubcategory" on a separate line.(ûÓ‹ñÿÿÿÿÿ8ÃÁ¥Û…/

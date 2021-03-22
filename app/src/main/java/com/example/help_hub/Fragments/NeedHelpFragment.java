@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.AddNewNoticeActivity;
 import com.example.help_hub.Activities.EditNeedHelpActivity;
+import com.example.help_hub.Activities.MainActivity;
 import com.example.help_hub.Activities.NeedHelpDetails;
 import com.example.help_hub.Adapters.CategoriesAdapter;
 import com.example.help_hub.AlertDialogues.FiltersDialog;
@@ -74,6 +75,12 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
     //FILTER BY CITY
     private String city;
 
+    //TODO FILTER BY CATEGORY AND SUBCATEGORY
+    private Category category;
+    private Category subcategory;
+    private MenuItem backButton;
+    MainViewCategoriesAdapter mainViewCategoriesAdapter;
+
     TextView informationText;
 
     private List<Category> categories;
@@ -106,6 +113,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         searchPhrase = "";
 
         city = "";
+
 
         informationText = view.findViewById(R.id.informationText);
 
@@ -177,6 +185,11 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
                 return false;
             }
         });
+
+
+        //TODO NEW IMPLEMENTATION
+        backButton = menu.findItem(R.id.category_back_button);
+        backButton.setVisible(false);
     }
 
     @Override
@@ -188,8 +201,19 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
                 filtersDialog.show(getActivity().getSupportFragmentManager(), null);
                 break;
 
-            case android.R.id.home:
-                return true;
+                //TODO NEW IMPLEMENTATION
+            case R.id.category_back_button:
+
+                if(subcategory != null){
+                    subcategory = null;
+                    searchOrders();
+                }else if(category != null){
+                    category = null;
+                    mainViewCategoriesAdapter.showCategories();
+                    searchOrders();
+                    backButton.setVisible(false);
+                }
+                break;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -197,7 +221,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 
         return true;
     }
-
 
 
     //FILTER BY SEARCH METHOD
@@ -301,8 +324,44 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
             informationText.setVisibility(View.GONE);
         }
 
+        //TODO NEW IMPLEMENTATION
+        filterByCategory(new ArrayList<>(needHelpList));
+    }
+
+    //TODO NEW VOID
+    private void filterByCategory(List<NeedHelp> ordersList) {
+
+        if (category == null) {
+            adapter.notifyDataSetChanged();
+            return;
+        }
+
+        for (NeedHelp nh : ordersList) {
+            if (!nh.getCategory().equals(category.getTitle())) {
+                needHelpList.remove(nh);
+            }
+        }
+
+        filterBySubcategory(new ArrayList<>(needHelpList));
+    }
+
+    //TODO NEW VOID
+    private void filterBySubcategory(List<NeedHelp> ordersList) {
+
+        if (subcategory == null) {
+            adapter.notifyDataSetChanged();
+            return;
+        }
+
+        for(NeedHelp nh : ordersList){
+            if(!nh.getSubcategory().equals(subcategory.getTitle())){
+                needHelpList.remove(nh);
+            }
+        }
+
         adapter.notifyDataSetChanged();
     }
+
 
     @Override
     public void applyFilters(String city, int filterIndex) {
@@ -315,7 +374,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
     private class MainViewCategoriesHolder extends RecyclerView.ViewHolder {
 
         private RecyclerView mainViewCategoriesRecyclerView;
-        MainViewCategoriesAdapter mainViewCategoriesAdapter;
+
 
         public MainViewCategoriesHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -517,7 +576,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         if (searchView != null)
             searchView.clearFocus();
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -526,7 +584,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 
     public class MainViewCategoriesAdapter extends RecyclerView.Adapter {
 
-        private List<Category> categoryList, modifiedCategory;
+        private List<Category> categoryList, actualCategories;
         private Context myContext;
         private NeedHelpFragment.NeedHelpAdapter needHelpAdapter;
         private List<NeedHelp> fullNeedHelpList, needHelpListCopy;
@@ -553,29 +611,44 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
             public void onClick(View v) {
 
                 //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//                getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+                //((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+                //TODO NEW IMPLEMENTATION
+                if(category == null){
+                    backButton.setVisible(true);
+                }
 
                 if (isCategory) {
-                    modifiedCategory = new ArrayList<>(categoryList);
-                    modifiedCategory = modifiedCategory.get(getAdapterPosition()).subcategories;
+                    //modifiedCategory = new ArrayList<>(categoryList);
+                    //modifiedCategory = modifiedCategory.get(getAdapterPosition()).subcategories;
+                    showSubcategories(new ArrayList<>(categoryList), getAdapterPosition());
 
-                    notifyDataSetChanged();
-                    categoryFilter(categoryList.get(getLayoutPosition()));
-
-                    needHelpListCopy = new ArrayList<>(needHelpList);
+                    //TODO NEW IMPLEMENTATION
+                    category = categoryList.get(getLayoutPosition());
+                    searchOrders();
 
                     choose = getLayoutPosition();
                     isCategory = false;
                 } else {
-                    //needHelpList = new ArrayList<>(needHelpListCopy);
-                    for (NeedHelp needHelp : needHelpListCopy) {
-                        if(!needHelpList.contains(needHelp)){
-                            needHelpList.add(needHelp);
-                        }
-                    }
-                    subcategoryFilter(categoryList.get(choose).subcategories.get(getLayoutPosition()));
+                    //TODO NEW IMPLEMENTATION
+                    subcategory = categoryList.get(choose).subcategories.get(getLayoutPosition());
+                    searchOrders();
                 }
-                needHelpAdapter.notifyDataSetChanged();
             }
+        }
+
+        //TODO NEW IMPLEMENTATION
+        public void showCategories(){
+            isCategory = true;
+            actualCategories = new ArrayList<>(categoryList);
+            notifyDataSetChanged();
+        }
+
+        //TODO NEW IMPLEMENTATION
+        public void showSubcategories(List<Category> categories, int position){
+            actualCategories = categories.get(position).subcategories;
+            notifyDataSetChanged();
         }
 
         //PUBLIC CONSTRUCTOR
@@ -583,7 +656,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
             //this.needHelpList = needHelpList;
             this.fullNeedHelpList = fullNeedHelpList;
             needHelpAdapter = adapter;
-            modifiedCategory = categoryList;
+            actualCategories = categoryList;
             this.categoryList = categoryList;
             this.myContext = myContext;
         }
@@ -600,7 +673,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 
         @Override
         public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
-            Category category = modifiedCategory.get(position);
+            Category category = actualCategories.get(position);
             String title = category.getTitle();
             TextView singleCategoryTitle = ((AdapterViewHolder) holder).singleCategoryTitle;
             ImageView singleCategoryImageView = ((AdapterViewHolder) holder).singleCategoryImageView;
@@ -619,24 +692,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 
         @Override
         public int getItemCount() {
-            return modifiedCategory.size();
-        }
-
-        private void categoryFilter(Category category) {
-            for (NeedHelp needHelp : fullNeedHelpList) {
-                if (!needHelp.getCategory().equals(category.getTitle())) {
-                    needHelpList.remove(needHelp);
-                }
-            }
-        }
-
-        private void subcategoryFilter(Category subcategory) {
-            for (int i = 0; i < needHelpList.size(); i++) {
-                if (!needHelpList.get(i).getSubcategory().equals(subcategory.getTitle())) {
-                    needHelpList.remove(needHelpList.get(i));
-                    i--;
-                }
-            }
+            return actualCategories.size();
         }
     }
 }

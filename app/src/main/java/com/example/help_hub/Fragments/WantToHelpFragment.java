@@ -130,14 +130,6 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
         recyclerView = view.findViewById(R.id.order_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(myContext));
 
-<<<<<<< Updated upstream
-/*        adapter = new WantToHelpAdapter();
-        recyclerView.setAdapter(adapter);*/
-=======
-        //adapter = new WantToHelpAdapter();
-        //recyclerView.setAdapter(adapter);
->>>>>>> Stashed changes
-
         categories = new ArrayList<>();
 
         firebaseFirestore.collection("offers").addSnapshotListener((queryDocumentSnapshots, e) -> {

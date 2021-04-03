@@ -109,7 +109,7 @@ public class MessageBoxFragment extends Fragment {
                             chat.setChatId(doc.getId());
                             chat.setOtherUserId(doc.getString("other user id"));
                             chat.setOfferId(doc.getString("offer id"));
-
+                            chat.setChatType(doc.getString("chat type"));
                             chatListMain.add(chat);
                             adapter.notifyDataSetChanged();
                             break;
@@ -224,6 +224,7 @@ public class MessageBoxFragment extends Fragment {
                 intent.putExtra(ChatActivity.THIS_USER_ID_EXTRA, chatListMain.get(getAdapterPosition()).getOtherUserId());
                 intent.putExtra(ChatActivity.OTHER_USER_NAME_EXTRA, userName.getText());
                 intent.putExtra(ChatActivity.CHAT_ID_EXTRA, chatListMain.get(getAdapterPosition()).getChatId());
+                intent.putExtra(ChatActivity.CHAT_TYPE_EXTRA, chatListMain.get(getAdapterPosition()).getChatType());
                 myActivity.startActivity(intent);
             }
         }

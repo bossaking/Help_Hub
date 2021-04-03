@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,11 +25,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.*;
@@ -66,6 +62,8 @@ public class UserProfile extends Fragment {
 
     UserDatabase userDatabase;
 
+
+    private RatingBar ratingBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,6 +110,8 @@ public class UserProfile extends Fragment {
         mUserName = view.findViewById(R.id.user_name);
         mUserCity = view.findViewById(R.id.user_city);
         mUserPortfolioDescription = view.findViewById(R.id.portfolio_description);
+
+        ratingBar = view.findViewById(R.id.rating_bar);
 
         return view;
     }
@@ -278,6 +278,7 @@ public class UserProfile extends Fragment {
         } else {
             mUserPortfolioDescription.setVisibility(View.VISIBLE);
         }
+        ratingBar.setRating(user.getUserRating());
         dataLoadingDialog.DismissDialog();
     }
 

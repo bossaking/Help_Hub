@@ -154,9 +154,10 @@ public class NeedHelpDetailsFragment extends Fragment {
             intent.putExtra(ChatActivity.TITLE_EXTRA, bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_TITLE));
             intent.putExtra(ChatActivity.THIS_USER_ID_EXTRA, userId);
             intent.putExtra(ChatActivity.OTHER_USER_NAME_EXTRA, userNameTextView.getText().toString());
+            intent.putExtra(ChatActivity.CHAT_TYPE_EXTRA, "NH");
 
             CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("users")
-                    .document(userId).collection("chats");
+                    .document(FirebaseAuth.getInstance().getUid()).collection("chats");
             collectionReference.get().addOnSuccessListener(queryDocumentSnapshots -> {
                 for(DocumentSnapshot ds : queryDocumentSnapshots){
 

@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.view.*;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -64,6 +65,8 @@ public class OtherUserProfileFragment extends Fragment {
 
     String userId;
 
+    private RatingBar ratingBar;
+
     public OtherUserProfileFragment(String userId) {
         this.userId = userId;
     }
@@ -96,6 +99,8 @@ public class OtherUserProfileFragment extends Fragment {
         mUserName = view.findViewById(R.id.user_name);
         mUserCity = view.findViewById(R.id.user_city);
         mUserPortfolioDescription = view.findViewById(R.id.portfolio_description);
+
+        ratingBar = view.findViewById(R.id.rating_bar);
         return view;
     }
 
@@ -179,6 +184,9 @@ public class OtherUserProfileFragment extends Fragment {
         } else {
             mUserPortfolioDescription.setVisibility(View.VISIBLE);
         }
+
+        ratingBar.setRating(user.getUserRating());
+
         dataLoadingDialog.DismissDialog();
     }
 

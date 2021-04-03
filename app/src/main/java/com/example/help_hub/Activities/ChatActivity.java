@@ -6,13 +6,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,26 +18,30 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Adapters.MessagesAdapter;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
+import com.example.help_hub.AlertDialogues.RatingDialog;
+import com.example.help_hub.OtherClasses.Category;
 import com.example.help_hub.OtherClasses.ChatMessage;
 import com.example.help_hub.OtherClasses.NeedHelp;
 import com.example.help_hub.OtherClasses.User;
 import com.example.help_hub.R;
 import com.example.help_hub.Singletones.UserDatabase;
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.*;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class ChatActivity extends AppCompatActivity implements MessagesAdapter.onMessageClickListener {
+public class ChatActivity extends AppCompatActivity implements MessagesAdapter.onMessageClickListener, RatingDialog.ratingChangedListener {
 
     private ImageView avatarImage;
     private TextView nameText, titleText;
@@ -53,7 +51,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
     private Button sendButton;
     private FirebaseAuth firebaseAuth;
     public static final String NEED_HELP_ID_EXTRA = "needhelpidextra", TITLE_EXTRA = "titleextra", THIS_USER_ID_EXTRA = "useridextra",
-            OTHER_USER_NAME_EXTRA = "usernameextra", CHAT_ID_EXTRA = "chatidextra" ;
+            OTHER_USER_NAME_EXTRA = "usernameextra", CHAT_ID_EXTRA = "chatidextra", CHAT_TYPE_EXTRA = "chattypeextra";
     private User loggedUser;
     private String Id, Title, userId, userName, otherUserId;
 
@@ -65,6 +63,13 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
     LoadingDialog loadingDialog;
 
     String chatId;
+
+    //New functionality
+    private LinearLayout performerActionsLinearLayout;
+    private Button performerActionsButton;
+    private TextView performerActionsTextView;
+    private NeedHelp needHelp;
+    private String chatType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,11 +101,23 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
         messageEdit = findViewById(R.id.message_edit_text);
         sendButton = findViewById(R.id.send_button);
 
+
+        //New functionality
+        performerActionsLinearLayout = findViewById(R.id.performer_actions_linear_layout);
+        performerActionsButton = findViewById(R.id.performer_actions_button);
+        performerActionsTextView = findViewById(R.id.performer_actions_text_view);
+        chatType = getIntent().getStringExtra(CHAT_TYPE_EXTRA);
+        if(chatType.equals("NH")) {
+            needHelp = new NeedHelp();
+            getNeedHelp();
+        }
+
+
         titleText.setText(Title);
         nameText.setText(userName);
 
         chatId = getIntent().getStringExtra(CHAT_ID_EXTRA);
-        if(chatId == null){
+        if (chatId == null) {
             chatId = FirebaseDatabase.getInstance().getReference("chat").push().getKey();
         }
 
@@ -129,12 +146,13 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
 
     private void sendMessage(String sender, String message) {
 
-        if(messages.size() == 0) {
+        if (messages.size() == 0) {
             DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(userId)
                     .collection("chats").document(chatId);
             HashMap<String, Object> chatMap = new HashMap<>();
             chatMap.put("offer id", Id);
             chatMap.put("other user id", otherUserId);
+            chatMap.put("chat type", chatType);
             docRef.set(chatMap);
 
             docRef = FirebaseFirestore.getInstance().collection("users").document(otherUserId)
@@ -142,6 +160,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
             chatMap.clear();
             chatMap.put("offer id", Id);
             chatMap.put("other user id", userId);
+            chatMap.put("chat type", chatType);
             docRef.set(chatMap);
         }
 
@@ -244,5 +263,146 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
         } catch (Exception ignored) {
 
         }
+    }
+
+
+    //New functionality
+    private void getNeedHelp() {
+        FirebaseFirestore.getInstance().collection("announcement").document(Id).addSnapshotListener((documentSnapshot, e) -> {
+            needHelp = documentSnapshot.toObject(NeedHelp.class);
+            checkData();
+        });
+    }
+
+    private void checkData() {
+
+        performerActionsLinearLayout.setVisibility(View.VISIBLE);
+
+        if (needHelp.getUserId().equals(userId)) {
+
+
+            performerActionsButton.setVisibility(View.VISIBLE);
+
+            if (needHelp.getPerformerId() == null || needHelp.getPerformerId().isEmpty()) {
+                performerActionsTextView.setText(R.string.assign_as_a_performer);
+                performerActionsButton.setText(R.string.assign);
+                performerActionsButton.setOnClickListener(v -> {
+                    assignPerformer();
+                });
+            } else if (needHelp.getPerformerId().equals(otherUserId)) {
+
+                switch (needHelp.getStatus()) {
+                    case "In progress":
+                        performerActionsTextView.setText(R.string.this_user_assigned_as_the_performer);
+                        performerActionsButton.setVisibility(View.GONE);
+                        break;
+                    case "Done":
+                        performerActionsTextView.setText(R.string.work_is_done);
+                        performerActionsButton.setText(R.string.accept);
+                        performerActionsButton.setOnClickListener(v -> {
+                            acceptWork();
+                        });
+                        break;
+                    case "Closed":
+                        performerActionsTextView.setText(R.string.announcement_closed);
+                        performerActionsButton.setVisibility(View.GONE);
+                        break;
+                }
+
+
+            } else {
+                performerActionsTextView.setText(R.string.another_performer);
+                performerActionsButton.setVisibility(View.GONE);
+            }
+
+        } else {
+            if (needHelp.getPerformerId() != null && needHelp.getPerformerId().equals(userId)) {
+
+                performerActionsLinearLayout.setVisibility(View.VISIBLE);
+
+                if(needHelp.getStatus() != null){
+
+                    switch (needHelp.getStatus()){
+
+                        case "In progress":
+                            performerActionsTextView.setText(R.string.you_are_assigned_as_the_performer);
+                            performerActionsButton.setVisibility(View.VISIBLE);
+                            performerActionsButton.setText(R.string.done);
+                            performerActionsButton.setOnClickListener(v -> {
+                                workIsDone();
+                            });
+                            break;
+                        case "Done":
+                            performerActionsTextView.setText(R.string.wait_while_work_confirmed);
+                            performerActionsButton.setVisibility(View.GONE);
+                            break;
+                        case "Closed":
+                            performerActionsTextView.setText(R.string.announcement_closed);
+                            performerActionsButton.setVisibility(View.GONE);
+                            break;
+
+                    }
+                }
+            } else {
+
+                performerActionsButton.setVisibility(View.GONE);
+
+                if(needHelp.getStatus() != null){
+
+                    switch (needHelp.getStatus()){
+
+                        case "In progress":
+                        case "Done":
+                            performerActionsTextView.setText(R.string.performer_selected);
+                            break;
+                        case "Closed":
+                            performerActionsTextView.setText(R.string.announcement_closed);
+                            break;
+
+                    }
+                }else{
+                    performerActionsLinearLayout.setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+    private void assignPerformer() {
+
+        Map<String, Object> needHelpMap = new HashMap<>();
+        needHelpMap.put("PerformerId", otherUserId);
+        needHelpMap.put("Status", "In progress");
+
+        FirebaseFirestore.getInstance().collection("announcement").document(Id).update(needHelpMap)
+                .addOnSuccessListener(unused -> {
+                    needHelp.setPerformerId(otherUserId);
+                    needHelp.setStatus("In progress");
+                    Toast.makeText(getApplicationContext(), getString(R.string.performer_assigned), Toast.LENGTH_SHORT).show();
+                    checkData();
+                }).addOnFailureListener(e -> {
+            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void workIsDone() {
+        FirebaseFirestore.getInstance().collection("announcement").document(Id).update("Status", "Done")
+                .addOnSuccessListener(unused -> {
+                    needHelp.setStatus("Done");
+                    Toast.makeText(getApplicationContext(), getString(R.string.wait_while_work_confirmed), Toast.LENGTH_SHORT).show();
+                    checkData();
+                }).addOnFailureListener(e -> {
+            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void acceptWork() {
+        RatingDialog ratingDialog = new RatingDialog(otherUserId, userId, this);
+        ratingDialog.show(getSupportFragmentManager(), null);
+    }
+
+    @Override
+    public void ratingChanged() {
+        FirebaseFirestore.getInstance().collection("announcement").document(Id).update("Status", "Closed");
+        performerActionsLinearLayout.setVisibility(View.GONE);
     }
 }

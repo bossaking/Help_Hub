@@ -133,17 +133,32 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
                 switch (dc.getType()) {
                     case ADDED:
                         needHelp = dc.getDocument().toObject(NeedHelp.class);
-                        needHelp.setId(dc.getDocument().getId());
-                        fullNeedHelpList.add(dc.getNewIndex(), needHelp);
+                        if (needHelp.getStatus() == null || needHelp.getStatus().equals("Available")) {
+                            needHelp.setId(dc.getDocument().getId());
+                            fullNeedHelpList.add(needHelp);
+                        }
                         break;
                     case MODIFIED:
                         needHelp = dc.getDocument().toObject(NeedHelp.class);
                         needHelp.setId(dc.getDocument().getId());
-                        fullNeedHelpList.remove(dc.getOldIndex());
-                        fullNeedHelpList.add(dc.getOldIndex(), needHelp);
+                        int index = fullNeedHelpList.indexOf(new NeedHelp() {
+                            @Override
+                            public boolean equals(@Nullable Object obj) {
+                                NeedHelp nh = (NeedHelp) obj;
+                                return nh.getId().equals(needHelp.getId());
+                            }
+                        });
+                        if(index != -1) {
+                            fullNeedHelpList.remove(index);
+                        }
+                        if (needHelp.getStatus() == null || needHelp.getStatus().equals("Available")) {
+                            fullNeedHelpList.add(index, needHelp);
+                        }
                         break;
                     case REMOVED:
-                        fullNeedHelpList.remove(dc.getOldIndex());
+                        needHelp = dc.getDocument().toObject(NeedHelp.class);
+                        needHelp.setId(dc.getDocument().getId());
+                        fullNeedHelpList.removeIf(nh -> nh.getId().equals(needHelp.getId()));
                 }
             }
             adapter = new NeedHelpAdapter();

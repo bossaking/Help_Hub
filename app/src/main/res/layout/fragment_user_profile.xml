@@ -114,14 +114,30 @@
                         android:textColor="@color/colorAccent"
                         android:visibility="gone"/>
 
-                <RatingBar
-                        android:id="@+id/rating_bar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:numStars="5"
-                        android:layout_gravity="center"
-                        android:stepSize="0.1"
-                        android:isIndicator="true"/>
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_width="match_parent" android:layout_height="wrap_content">
+
+                    <RatingBar
+                            android:id="@+id/rating_bar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:numStars="5"
+                            android:stepSize="0.1"
+                            android:isIndicator="true"/>
+
+                    <TextView
+                            android:id="@+id/opinions_count_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="@string/opinions"
+                            android:textColor="@color/colorPrimaryDark"/>
+
+
+                </LinearLayout>
+
 
                 <TextView
                         android:id="@+id/user_logout_button"

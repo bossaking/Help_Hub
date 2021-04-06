@@ -167,6 +167,14 @@
     <string name="optional_comment">Optional comment</string>
     <string name="announcement_closed">Announcement closed</string>
     <string name="performer_selected">The performer has been selected.</string>
+    <string name="help_this_person_question">Do you want to help this person?</string>
+    <string name="help">Help</string>
+    <string name="already_agree_to_help">You have already agreed to help this person.</string>
+    <string name="rate_help_level">Please rate the level of help received.</string>
+    <string name="rate">Rate</string>
+    <string name="already_rate_performer">You have already rated this performer.</string>
+    <string name="thank_for_help">Thank you for your help.</string>
+    <string name="opinions">opinions</string>
 
     <string-array name="orders_filters">
         <item>All</item>

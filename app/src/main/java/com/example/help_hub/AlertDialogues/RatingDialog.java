@@ -90,29 +90,24 @@ public class RatingDialog extends DialogFragment {
                 Toast.makeText(getContext(), getString(R.string.success), Toast.LENGTH_SHORT).show();
 
 
-                if (!commentEditText.getText().toString().isEmpty()) {
+                Opinion opinion = new Opinion();
 
-                    Opinion opinion = new Opinion();
+                opinion.setOpinionText(commentEditText.getText().toString());
+                opinion.setRating(ratingBar.getRating());
+                opinion.setUserId(userId);
 
-                    opinion.setOpinionText(commentEditText.getText().toString());
-                    opinion.setRating(ratingBar.getRating());
-
-                    FirebaseFirestore.getInstance().collection("users").document(userId).get().addOnSuccessListener(documentSnapshot1 -> {
-                        opinion.setUserNickname(documentSnapshot1.getString("Name"));
-                        FirebaseFirestore.getInstance().collection("users").document(otherUserId).collection("opinions")
-                                .add(opinion).addOnSuccessListener(documentReference -> {
-                            ratingChangedListener.ratingChanged();
-                            this.dismiss();
-                        }).addOnFailureListener(e -> {
-                            Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                        });
+                FirebaseFirestore.getInstance().collection("users").document(userId).get().addOnSuccessListener(documentSnapshot1 -> {
+                    opinion.setUserNickname(documentSnapshot1.getString("Name"));
+                    FirebaseFirestore.getInstance().collection("users").document(otherUserId).collection("opinions")
+                            .add(opinion).addOnSuccessListener(documentReference -> {
+                        ratingChangedListener.ratingChanged();
+                        this.dismiss();
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     });
+                });
 
 
-                } else {
-                    ratingChangedListener.ratingChanged();
-                    this.dismiss();
-                }
             }).addOnFailureListener(e -> {
                 Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             });

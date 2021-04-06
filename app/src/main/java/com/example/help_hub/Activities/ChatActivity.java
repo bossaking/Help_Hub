@@ -19,15 +19,14 @@ import com.bumptech.glide.Glide;
 import com.example.help_hub.Adapters.MessagesAdapter;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.AlertDialogues.RatingDialog;
-import com.example.help_hub.OtherClasses.Category;
-import com.example.help_hub.OtherClasses.ChatMessage;
-import com.example.help_hub.OtherClasses.NeedHelp;
-import com.example.help_hub.OtherClasses.User;
+import com.example.help_hub.OtherClasses.*;
 import com.example.help_hub.R;
 import com.example.help_hub.Singletones.UserDatabase;
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
@@ -40,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ChatActivity extends AppCompatActivity implements MessagesAdapter.onMessageClickListener, RatingDialog.ratingChangedListener {
 
@@ -69,6 +69,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
     private Button performerActionsButton;
     private TextView performerActionsTextView;
     private NeedHelp needHelp;
+    private WantToHelp wantToHelp;
     private String chatType;
 
     @Override
@@ -107,9 +108,12 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
         performerActionsButton = findViewById(R.id.performer_actions_button);
         performerActionsTextView = findViewById(R.id.performer_actions_text_view);
         chatType = getIntent().getStringExtra(CHAT_TYPE_EXTRA);
-        if(chatType.equals("NH")) {
+        if (chatType.equals("NH")) {
             needHelp = new NeedHelp();
             getNeedHelp();
+        } else if (chatType.equals("WTH")) {
+            wantToHelp = new WantToHelp();
+            getWantToHelp();
         }
 
 
@@ -270,11 +274,18 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
     private void getNeedHelp() {
         FirebaseFirestore.getInstance().collection("announcement").document(Id).addSnapshotListener((documentSnapshot, e) -> {
             needHelp = documentSnapshot.toObject(NeedHelp.class);
-            checkData();
+            checkDataNeedHelp();
         });
     }
 
-    private void checkData() {
+    private void getWantToHelp() {
+        FirebaseFirestore.getInstance().collection("offers").document(Id).addSnapshotListener((documentSnapshot, e) -> {
+            wantToHelp = documentSnapshot.toObject(WantToHelp.class);
+            getConfirmedUsers();
+        });
+    }
+
+    private void checkDataNeedHelp() {
 
         performerActionsLinearLayout.setVisibility(View.VISIBLE);
 
@@ -320,9 +331,9 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
 
                 performerActionsLinearLayout.setVisibility(View.VISIBLE);
 
-                if(needHelp.getStatus() != null){
+                if (needHelp.getStatus() != null) {
 
-                    switch (needHelp.getStatus()){
+                    switch (needHelp.getStatus()) {
 
                         case "In progress":
                             performerActionsTextView.setText(R.string.you_are_assigned_as_the_performer);
@@ -347,9 +358,9 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
 
                 performerActionsButton.setVisibility(View.GONE);
 
-                if(needHelp.getStatus() != null){
+                if (needHelp.getStatus() != null) {
 
-                    switch (needHelp.getStatus()){
+                    switch (needHelp.getStatus()) {
 
                         case "In progress":
                         case "Done":
@@ -360,8 +371,67 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                             break;
 
                     }
-                }else{
+                } else {
                     performerActionsLinearLayout.setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+    private void getConfirmedUsers() {
+        FirebaseFirestore.getInstance().collection("offers").document(Id).collection("confirmedUsers")
+                .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    List<ConfirmedUser> confirmedUsers = new ArrayList<>();
+
+                    for (DocumentSnapshot ds : queryDocumentSnapshots) {
+                        confirmedUsers.add(ds.toObject(ConfirmedUser.class));
+                    }
+
+                    checkDataWantToHelp(confirmedUsers);
+
+                });
+    }
+
+    private void checkDataWantToHelp(List<ConfirmedUser> confirmedUsers) {
+
+        if (wantToHelp.getUserId().equals(userId)) {
+
+            performerActionsLinearLayout.setVisibility(View.VISIBLE);
+
+            List<ConfirmedUser> confirmedUserList = confirmedUsers.stream().filter(u -> u.getUserId().equals(otherUserId)).collect(Collectors.toList());
+
+            if (confirmedUserList.size() == 0) {
+                performerActionsTextView.setText(R.string.help_this_person_question);
+                performerActionsButton.setText(R.string.help);
+                performerActionsButton.setVisibility(View.VISIBLE);
+                performerActionsButton.setOnClickListener(v -> {
+                    helpThisPerson();
+                });
+            } else {
+                performerActionsTextView.setText(R.string.already_agree_to_help);
+                performerActionsButton.setVisibility(View.GONE);
+            }
+
+        } else {
+
+            List<ConfirmedUser> confirmedUserList = confirmedUsers.stream().filter(u -> u.getUserId().equals(userId)).collect(Collectors.toList());
+
+            if(confirmedUserList.size() > 0) {
+                ConfirmedUser confirmedUser = confirmedUserList.get(0);
+
+                performerActionsLinearLayout.setVisibility(View.VISIBLE);
+
+                if (confirmedUser.isOpinionSended()) {
+
+                    performerActionsTextView.setText(R.string.already_rate_performer);
+                    performerActionsButton.setVisibility(View.GONE);
+
+                } else {
+                    performerActionsTextView.setText(R.string.rate_help_level);
+                    performerActionsButton.setText(R.string.rate);
+                    performerActionsButton.setOnClickListener(v -> {
+                        rateHelpLevel(confirmedUser);
+                    });
                 }
             }
         }
@@ -378,7 +448,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                     needHelp.setPerformerId(otherUserId);
                     needHelp.setStatus("In progress");
                     Toast.makeText(getApplicationContext(), getString(R.string.performer_assigned), Toast.LENGTH_SHORT).show();
-                    checkData();
+                    checkDataNeedHelp();
                 }).addOnFailureListener(e -> {
             Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         });
@@ -389,7 +459,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                 .addOnSuccessListener(unused -> {
                     needHelp.setStatus("Done");
                     Toast.makeText(getApplicationContext(), getString(R.string.wait_while_work_confirmed), Toast.LENGTH_SHORT).show();
-                    checkData();
+                    checkDataNeedHelp();
                 }).addOnFailureListener(e -> {
             Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         });
@@ -397,12 +467,51 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
 
     private void acceptWork() {
         RatingDialog ratingDialog = new RatingDialog(otherUserId, userId, this);
+        ratingDialog.setCancelable(false);
         ratingDialog.show(getSupportFragmentManager(), null);
+    }
+
+    private void helpThisPerson() {
+
+        DocumentReference doc = FirebaseFirestore.getInstance().collection("offers").document(Id).collection("confirmedUsers")
+                .document();
+
+        ConfirmedUser confirmedUser = new ConfirmedUser();
+        confirmedUser.setUserId(otherUserId);
+        confirmedUser.setOpinionSended(false);
+        confirmedUser.setId(doc.getId());
+
+        FirebaseFirestore.getInstance().collection("offers").document(Id).collection("confirmedUsers").document(doc.getId())
+                .set(confirmedUser).addOnCompleteListener(task -> {
+            Toast.makeText(getApplicationContext(), getString(R.string.thank_for_help), Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> {
+            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+        });
+    }
+
+    private void rateHelpLevel(ConfirmedUser confirmedUser) {
+
+        confirmedUser.setOpinionSended(true);
+
+        FirebaseFirestore.getInstance().collection("offers").document(Id).collection("confirmedUsers")
+                .document(confirmedUser.getId()).set(confirmedUser).addOnCompleteListener(task -> {
+            Toast.makeText(getApplicationContext(), getString(R.string.thank_for_help), Toast.LENGTH_SHORT).show();
+            acceptWork();
+        }).addOnFailureListener(e -> {
+            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+        });
     }
 
     @Override
     public void ratingChanged() {
-        FirebaseFirestore.getInstance().collection("announcement").document(Id).update("Status", "Closed");
-        performerActionsLinearLayout.setVisibility(View.GONE);
+
+        if(chatType.equals("NH")) {
+
+            FirebaseFirestore.getInstance().collection("announcement").document(Id).update("Status", "Closed");
+            performerActionsLinearLayout.setVisibility(View.GONE);
+
+        }else if(chatType.equals("WTH")){
+            performerActionsLinearLayout.setVisibility(View.GONE);
+        }
     }
 }

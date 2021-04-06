@@ -2,7 +2,7 @@ package com.example.help_hub.OtherClasses;
 
 public class Opinion {
 
-    private String OpinionText, UserNickname;
+    private String OpinionText, UserNickname, UserId;
     private float Rating;
 
     public Opinion(){
@@ -31,5 +31,13 @@ public class Opinion {
 
     public String getUserNickname() {
         return UserNickname;
+    }
+
+    public void setUserId(String userId) {
+        UserId = userId;
+    }
+
+    public String getUserId() {
+        return UserId;
     }
 }

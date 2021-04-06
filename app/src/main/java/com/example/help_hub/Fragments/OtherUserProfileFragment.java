@@ -51,7 +51,7 @@ public class OtherUserProfileFragment extends Fragment {
 
     public UserPortfolioImagesDatabase userPortfolioImagesDatabase;
 
-    TextView mUserName, mUserPhoneNumber, mUserCity, mUserPortfolioDescription;
+    TextView mUserName, mUserPhoneNumber, mUserCity, mUserPortfolioDescription, opinionsCountTextView;;
     LinearLayout firstImagesLayout;
 
     ImageView profileImage;
@@ -101,6 +101,7 @@ public class OtherUserProfileFragment extends Fragment {
         mUserPortfolioDescription = view.findViewById(R.id.portfolio_description);
 
         ratingBar = view.findViewById(R.id.rating_bar);
+        opinionsCountTextView = view.findViewById(R.id.opinions_count_text_view);
         return view;
     }
 
@@ -185,9 +186,23 @@ public class OtherUserProfileFragment extends Fragment {
             mUserPortfolioDescription.setVisibility(View.VISIBLE);
         }
 
-        ratingBar.setRating(user.getUserRating());
+        if (user.getUserRating() == 0) {
+            ratingBar.setVisibility(View.GONE);
+            opinionsCountTextView.setVisibility(View.GONE);
+        } else {
+            ratingBar.setRating(user.getUserRating());
+            opinionsCountTextView.setText("(" + (int) user.getAllOpinionsCount() + " " + getString(R.string.opinions) + ")");
+            opinionsCountTextView.setOnClickListener(v -> showAllOpinions(user));
+        }
 
         dataLoadingDialog.DismissDialog();
+    }
+
+    private void showAllOpinions(User user){
+        Intent intent = new Intent(myContext, AllOpinionsActivity.class);
+        intent.putExtra(AllOpinionsActivity.USER_ID, user.getId());
+        intent.putExtra(AllOpinionsActivity.USER_NAME, user.getName());
+        myActivity.startActivity(intent);
     }
 
     private void SetProfileImage(Uri imageUri) {

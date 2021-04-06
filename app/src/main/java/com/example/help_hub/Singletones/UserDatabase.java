@@ -105,6 +105,7 @@ public class UserDatabase {
             user.setRole(documentSnapshot.getString("Role"));
             if(documentSnapshot.contains("UserRating")) {
                 user.setUserRating(documentSnapshot.getLong("UserRating"));
+                user.setAllOpinionsCount(documentSnapshot.getLong("AllOpinionsCount"));
             }else{
                 user.setUserRating(0);
             }

@@ -185,5 +185,17 @@
     <string name="title_activity_fullscreen_image">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="report">Report</string>
+    <string name="report_message">Thank you for helping improve our community.</string>
 
+    <string-array name="report_causes">
+        <item>Inappropriate content.</item>
+        <item>Offensive content.</item>
+        <item>False information.</item>
+        <item>Call for suicide.</item>
+        <item>Spam.</item>
+        <item>Terrorism.</item>
+        <item>Violation of intellectual property rights.</item>
+    </string-array>
+    
 </resources>

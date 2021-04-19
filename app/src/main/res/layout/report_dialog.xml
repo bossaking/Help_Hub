@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Spinner
+        android:id="@+id/causes_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/little_margin"
+        android:padding="@dimen/little_padding"
+        />
+
+    <Button
+        android:id="@+id/dialog_report_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/report"
+        android:textColor="@color/white"
+        android:background="@color/redColor"
+        android:layout_gravity="center"
+        android:layout_marginVertical="@dimen/medium_margin"/>
+
+</LinearLayout>

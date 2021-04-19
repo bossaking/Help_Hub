@@ -244,7 +244,7 @@ public class WantToHelpDetailsFragment extends Fragment {
 
     private void report(){
 
-        ReportDialog reportDialog = new ReportDialog(myContext, offerId);
+        ReportDialog reportDialog = new ReportDialog(myContext, offerId, "WTH");
         reportDialog.show(getChildFragmentManager(), null);
 
     }

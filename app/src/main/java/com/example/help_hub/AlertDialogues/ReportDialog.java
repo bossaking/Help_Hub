@@ -36,11 +36,12 @@ public class ReportDialog extends DialogFragment {
     private Button reportButton;
 
     private Context mContext;
-    private String reportID;
+    private String reportID, type;
 
-    public ReportDialog(Context mContext, String reportID){
+    public ReportDialog(Context mContext, String reportID, String type){
         this.mContext = mContext;
         this.reportID = reportID;
+        this.type = type;
     }
 
     @Nullable
@@ -73,6 +74,7 @@ public class ReportDialog extends DialogFragment {
         reportMap.put("ReportID", reportID);
         reportMap.put("Cause", causesSpinner.getSelectedItem().toString());
         reportMap.put("UserID", FirebaseAuth.getInstance().getUid());
+        reportMap.put("Type", type);
 
         ref.add(reportMap).addOnSuccessListener(documentReference -> {
             Toast.makeText(mContext, getString(R.string.report_message), Toast.LENGTH_SHORT).show();

@@ -2,7 +2,7 @@ package com.example.help_hub.OtherClasses;
 
 public class Report {
 
-    private String ReportID, Cause, UserID;
+    private String ReportID, Cause, UserID, Type;
 
     public Report(){
 
@@ -30,5 +30,13 @@ public class Report {
 
     public void setUserID(String userID) {
         UserID = userID;
+    }
+
+    public String getType() {
+        return Type;
+    }
+
+    public void setType(String type) {
+        Type = type;
     }
 }

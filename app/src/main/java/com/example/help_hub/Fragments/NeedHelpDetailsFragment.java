@@ -268,7 +268,7 @@ public class NeedHelpDetailsFragment extends Fragment {
 
     private void report(){
 
-        ReportDialog reportDialog = new ReportDialog(myContext, announcementId);
+        ReportDialog reportDialog = new ReportDialog(myContext, announcementId, "WTH");
         reportDialog.show(getChildFragmentManager(), null);
 
     }

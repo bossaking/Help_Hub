@@ -175,6 +175,8 @@
     <string name="already_rate_performer">You have already rated this performer.</string>
     <string name="thank_for_help">Thank you for your help.</string>
     <string name="opinions">opinions</string>
+    <string name="cancel_work">The work has been canceled</string>
+    <string name="work_canceled_by_performer">Work has been canceled by performer</string>
 
     <string-array name="orders_filters">
         <item>All</item>

@@ -1,5 +1,6 @@
 package com.example.help_hub.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -66,7 +67,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
 
     //New functionality
     private LinearLayout performerActionsLinearLayout;
-    private Button performerActionsButton;
+    private Button performerActionsButton, performerActionsSecondButton;
     private TextView performerActionsTextView;
     private NeedHelp needHelp;
     private WantToHelp wantToHelp;
@@ -106,6 +107,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
         //New functionality
         performerActionsLinearLayout = findViewById(R.id.performer_actions_linear_layout);
         performerActionsButton = findViewById(R.id.performer_actions_button);
+        performerActionsSecondButton = findViewById(R.id.performer_actions_second_button);
         performerActionsTextView = findViewById(R.id.performer_actions_text_view);
         chatType = getIntent().getStringExtra(CHAT_TYPE_EXTRA);
         if (chatType.equals("NH")) {
@@ -285,12 +287,14 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void checkDataNeedHelp() {
 
         performerActionsLinearLayout.setVisibility(View.VISIBLE);
+        performerActionsButton.setBackgroundColor(getColor(R.color.greenButtonColor));
+        performerActionsSecondButton.setVisibility(View.GONE);
 
         if (needHelp.getUserId().equals(userId)) {
-
 
             performerActionsButton.setVisibility(View.VISIBLE);
 
@@ -305,13 +309,24 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                 switch (needHelp.getStatus()) {
                     case "In progress":
                         performerActionsTextView.setText(R.string.this_user_assigned_as_the_performer);
-                        performerActionsButton.setVisibility(View.GONE);
+                        performerActionsButton.setText(R.string.cancel);
+                        performerActionsButton.setBackgroundColor(getColor(R.color.redColor));
+                        performerActionsButton.setOnClickListener(v -> {
+                            cancelPerformer();
+                        });
                         break;
                     case "Done":
                         performerActionsTextView.setText(R.string.work_is_done);
                         performerActionsButton.setText(R.string.accept);
                         performerActionsButton.setOnClickListener(v -> {
                             acceptWork();
+                        });
+                        break;
+                    case "Canceled":
+                        performerActionsTextView.setText(R.string.work_canceled_by_performer);
+                        performerActionsButton.setText(R.string.accept);
+                        performerActionsButton.setOnClickListener(v -> {
+                            acceptCanceledWork();
                         });
                         break;
                     case "Closed":
@@ -342,8 +357,13 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                             performerActionsButton.setOnClickListener(v -> {
                                 workIsDone();
                             });
+                            performerActionsSecondButton.setVisibility(View.VISIBLE);
+                            performerActionsSecondButton.setOnClickListener(v -> {
+                                cancelWork();
+                            });
                             break;
                         case "Done":
+                        case "Canceled":
                             performerActionsTextView.setText(R.string.wait_while_work_confirmed);
                             performerActionsButton.setVisibility(View.GONE);
                             break;
@@ -362,7 +382,11 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
 
                     switch (needHelp.getStatus()) {
 
+                        case "Available":
+                            performerActionsLinearLayout.setVisibility(View.GONE);
+                            break;
                         case "In progress":
+                        case "Canceled":
                         case "Done":
                             performerActionsTextView.setText(R.string.performer_selected);
                             break;
@@ -454,6 +478,37 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
         });
     }
 
+    private void cancelPerformer(){
+        Map<String, Object> needHelpMap = new HashMap<>();
+        needHelpMap.put("PerformerId", "");
+        needHelpMap.put("Status", "Available");
+
+        FirebaseFirestore.getInstance().collection("announcement").document(Id).update(needHelpMap)
+                .addOnSuccessListener(unused -> {
+                    needHelp.setPerformerId(null);
+                    needHelp.setStatus("Available");
+                    Toast.makeText(getApplicationContext(), "Performer removed. Announcement available.", Toast.LENGTH_SHORT).show();
+                    checkDataNeedHelp();
+                }).addOnFailureListener(e -> {
+            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void cancelWork(){
+
+        Map<String, Object> needHelpMap = new HashMap<>();
+        needHelpMap.put("Status", "Canceled");
+
+        FirebaseFirestore.getInstance().collection("announcement").document(Id).update(needHelpMap)
+                .addOnSuccessListener(unused -> {
+                    needHelp.setStatus("Canceled");
+                    Toast.makeText(getApplicationContext(), getString(R.string.cancel_work), Toast.LENGTH_SHORT).show();
+                    checkDataNeedHelp();
+                }).addOnFailureListener(e -> {
+            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        });
+    }
+
     private void workIsDone() {
         FirebaseFirestore.getInstance().collection("announcement").document(Id).update("Status", "Done")
                 .addOnSuccessListener(unused -> {
@@ -466,6 +521,12 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
     }
 
     private void acceptWork() {
+        RatingDialog ratingDialog = new RatingDialog(otherUserId, userId, this);
+        ratingDialog.setCancelable(false);
+        ratingDialog.show(getSupportFragmentManager(), null);
+    }
+
+    private void acceptCanceledWork(){
         RatingDialog ratingDialog = new RatingDialog(otherUserId, userId, this);
         ratingDialog.setCancelable(false);
         ratingDialog.show(getSupportFragmentManager(), null);
@@ -507,8 +568,23 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
 
         if(chatType.equals("NH")) {
 
-            FirebaseFirestore.getInstance().collection("announcement").document(Id).update("Status", "Closed");
-            performerActionsLinearLayout.setVisibility(View.GONE);
+            if(needHelp.getStatus().equals("Canceled")){
+
+                needHelp.setStatus("Available");
+                needHelp.setPerformerId(null);
+
+                Map<String, Object> needHelpMap = new HashMap<>();
+                needHelpMap.put("PerformerId", "");
+                needHelpMap.put("Status", "Available");
+
+                FirebaseFirestore.getInstance().collection("announcement").document(Id).update(needHelpMap);
+
+            }else {
+                FirebaseFirestore.getInstance().collection("announcement").document(Id).update("Status", "Closed");
+                //performerActionsLinearLayout.setVisibility(View.GONE);
+            }
+
+            checkDataNeedHelp();
 
         }else if(chatType.equals("WTH")){
             performerActionsLinearLayout.setVisibility(View.GONE);

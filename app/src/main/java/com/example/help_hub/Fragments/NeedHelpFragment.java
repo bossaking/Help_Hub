@@ -152,7 +152,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
                             fullNeedHelpList.remove(index);
                         }
                         if (needHelp.getStatus() == null || needHelp.getStatus().equals("Available")) {
-                            fullNeedHelpList.add(index, needHelp);
+                            fullNeedHelpList.add(dc.getNewIndex(), needHelp);
                         }
                         break;
                     case REMOVED:

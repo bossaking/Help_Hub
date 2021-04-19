@@ -148,11 +148,11 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
                                 return nh.getId().equals(needHelp.getId());
                             }
                         });
-                        if(index != -1) {
-                            fullNeedHelpList.remove(index);
+                        if(index == -1) {
+                            return;
                         }
                         if (needHelp.getStatus() == null || needHelp.getStatus().equals("Available")) {
-                            fullNeedHelpList.add(dc.getNewIndex(), needHelp);
+                            fullNeedHelpList.set(index, needHelp);
                         }
                         break;
                     case REMOVED:

@@ -304,7 +304,7 @@ public class UserProfile extends Fragment {
     }
 
     private void SetProfileImage(Uri imageUri) {
-        Glide.with(getActivity()).load(imageUri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24).into(profileImage);
+
         imageLoadingDialog.DismissDialog();
     }
 

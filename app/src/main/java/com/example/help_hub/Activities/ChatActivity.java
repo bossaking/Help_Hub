@@ -16,6 +16,7 @@ import androidx.cardview.widget.CardView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Adapters.MessagesAdapter;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
@@ -34,7 +35,12 @@ import com.google.firebase.database.*;
 import com.google.firebase.firestore.*;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
@@ -50,6 +56,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
     MessagesAdapter messageAdapter;
     private EditText messageEdit;
     private Button sendButton;
+    private ImageButton attachButton;
     private FirebaseAuth firebaseAuth;
     public static final String NEED_HELP_ID_EXTRA = "needhelpidextra", TITLE_EXTRA = "titleextra", THIS_USER_ID_EXTRA = "useridextra",
             OTHER_USER_NAME_EXTRA = "usernameextra", CHAT_ID_EXTRA = "chatidextra", CHAT_TYPE_EXTRA = "chattypeextra";
@@ -102,7 +109,10 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
         messageList.setLayoutManager(linearLayoutManager);
         messageEdit = findViewById(R.id.message_edit_text);
         sendButton = findViewById(R.id.send_button);
-
+        attachButton = findViewById(R.id.attach_button);
+        attachButton.setOnClickListener(view -> CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON).setCropShape(CropImageView.CropShape.RECTANGLE)
+                .start(this));
 
         //New functionality
         performerActionsLinearLayout = findViewById(R.id.performer_actions_linear_layout);
@@ -134,9 +144,9 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
         messageList.setAdapter(messageAdapter);
 
         sendButton.setOnClickListener(v -> {
-            if (messageEdit.getText().toString().trim().equals("") || messageEdit.getText().equals(null))
+            if (messageEdit.getText().toString().trim().equals("") || messageEdit.getText() == null)
                 return;
-            sendMessage(userId, messageEdit.getText().toString().trim());
+            sendMessage(userId, messageEdit.getText().toString().trim(), "Text");
         });
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -150,7 +160,27 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
         readMessages();
     }
 
-    private void sendMessage(String sender, String message) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if (resultCode == RESULT_OK) {
+
+                Uri resultUri = result.getUri();
+
+                sendMessage(userId, resultUri.toString(), "Image");
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, result.getError().getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void sendMessage(String sender, String message, String type) {
 
         if (messages.size() == 0) {
             DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(userId)
@@ -176,8 +206,25 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
         messageMap.put("userId", sender);
         messageMap.put("message", message);
         messageMap.put("time", localToUTC("HH:mm", format.format(new Date())));
+        messageMap.put("type", type);
 
-        reference.child("Chats").child(chatId).push().setValue(messageMap);
+
+
+        if (type.equals("Image")) {
+
+            StorageReference storage = FirebaseStorage.getInstance().getReference().child("chats/" + chatId + "/" + Uri.parse(message).getLastPathSegment());
+
+
+            storage.putFile(Uri.parse(message)).addOnSuccessListener(taskSnapshot -> {
+                Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
+                reference.child("Chats").child(chatId).push().setValue(messageMap);
+            }).addOnFailureListener(e -> {
+                Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            });
+
+        }else{
+            reference.child("Chats").child(chatId).push().setValue(messageMap);
+        }
 
         messageEdit.setText("");
     }
@@ -185,6 +232,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
     private void readMessages() {
 
         reference = FirebaseDatabase.getInstance().getReference("Chats").child(chatId);
+
         messagesEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -195,8 +243,22 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                     ChatMessage message = snap.getValue(ChatMessage.class);
                     Objects.requireNonNull(message).setTime(uTCToLocal("HH:mm", "HH:mm", message.getTime()));
                     messages.add(message);
-                    messageAdapter.notifyDataSetChanged();
+
+                    if(message.getType().equals("Image")){
+
+                        StorageReference storage = FirebaseStorage.getInstance().getReference()
+                                .child("chats/" + chatId + "/" + Uri.parse(message.getMessage()).getLastPathSegment());
+
+                        storage.getDownloadUrl().addOnSuccessListener(uri -> {
+                            message.setMessage(uri.toString());
+                            messageAdapter.notifyDataSetChanged();
+                        });
+
+                    }else{
+                        messageAdapter.notifyDataSetChanged();
+                    }
                 }
+
                 loadingDialog.DismissDialog();
 
                 messageList.scrollToPosition(messages.size() - 1);
@@ -261,14 +323,25 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
 
     @Override
     public void onMessageClick(int position) {
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-            intent.setData(Uri.parse(messages.get(position).getMessage()));
-            startActivity(intent);
-        } catch (Exception ignored) {
 
+        if (messages.get(position).getType().equals("Image")) {
+
+            Intent intent = new Intent(this, FullscreenImageActivity.class);
+            intent.putExtra("image", messages.get(position).getMessage());
+            startActivity(intent);
+
+        } else {
+
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                intent.setData(Uri.parse(messages.get(position).getMessage()));
+                startActivity(intent);
+            } catch (Exception ignored) {
+
+            }
         }
+
     }
 
 
@@ -440,7 +513,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
 
             List<ConfirmedUser> confirmedUserList = confirmedUsers.stream().filter(u -> u.getUserId().equals(userId)).collect(Collectors.toList());
 
-            if(confirmedUserList.size() > 0) {
+            if (confirmedUserList.size() > 0) {
                 ConfirmedUser confirmedUser = confirmedUserList.get(0);
 
                 performerActionsLinearLayout.setVisibility(View.VISIBLE);
@@ -478,7 +551,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
         });
     }
 
-    private void cancelPerformer(){
+    private void cancelPerformer() {
         Map<String, Object> needHelpMap = new HashMap<>();
         needHelpMap.put("PerformerId", "");
         needHelpMap.put("Status", "Available");
@@ -494,7 +567,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
         });
     }
 
-    private void cancelWork(){
+    private void cancelWork() {
 
         Map<String, Object> needHelpMap = new HashMap<>();
         needHelpMap.put("Status", "Canceled");
@@ -526,7 +599,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
         ratingDialog.show(getSupportFragmentManager(), null);
     }
 
-    private void acceptCanceledWork(){
+    private void acceptCanceledWork() {
         RatingDialog ratingDialog = new RatingDialog(otherUserId, userId, this);
         ratingDialog.setCancelable(false);
         ratingDialog.show(getSupportFragmentManager(), null);
@@ -566,9 +639,9 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
     @Override
     public void ratingChanged() {
 
-        if(chatType.equals("NH")) {
+        if (chatType.equals("NH")) {
 
-            if(needHelp.getStatus().equals("Canceled")){
+            if (needHelp.getStatus().equals("Canceled")) {
 
                 needHelp.setStatus("Available");
                 needHelp.setPerformerId(null);
@@ -579,14 +652,14 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
 
                 FirebaseFirestore.getInstance().collection("announcement").document(Id).update(needHelpMap);
 
-            }else {
+            } else {
                 FirebaseFirestore.getInstance().collection("announcement").document(Id).update("Status", "Closed");
                 //performerActionsLinearLayout.setVisibility(View.GONE);
             }
 
             checkDataNeedHelp();
 
-        }else if(chatType.equals("WTH")){
+        } else if (chatType.equals("WTH")) {
             performerActionsLinearLayout.setVisibility(View.GONE);
         }
     }

@@ -21,6 +21,17 @@
                 android:layout_margin="@dimen/little_margin"
         />
 
+        <ImageView
+            android:id="@+id/message_image_view"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_margin="@dimen/little_margin"
+            android:paddingStart="10dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="20dp"
+            android:visibility="gone"/>
+
         <TextView
                 android:id="@+id/message_text_view"
                 android:layout_width="wrap_content"

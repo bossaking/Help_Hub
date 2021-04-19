@@ -85,12 +85,20 @@
 
 
     <LinearLayout
-            android:id="@+id/linearLayout"
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/dark_blue"
         android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/attach_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_attach_clip"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/little_margin"/>
 
         <EditText
             android:id="@+id/message_edit_text"

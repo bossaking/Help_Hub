@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,18 +25,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.*;
-import com.example.help_hub.Activities.LoginActivity;
-import com.example.help_hub.Activities.MainActivity;
-import com.example.help_hub.Activities.UserDataChangeActivity;
-import com.example.help_hub.Activities.UserPortfolioPhotosActivity;
+import com.example.help_hub.Activities.*;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.OtherClasses.PortfolioImage;
 import com.example.help_hub.OtherClasses.User;
@@ -56,7 +49,8 @@ public class UserProfile extends Fragment {
 
     public UserPortfolioImagesDatabase userPortfolioImagesDatabase;
 
-    TextView mUserName, mUserPhoneNumber, mUserCity, showAllPortfolioPhotos, mUserPortfolioDescription, logoutButton;
+    TextView mUserName, mUserPhoneNumber, mUserCity, showAllPortfolioPhotos, mUserPortfolioDescription, logoutButton
+            ,opinionsCountTextView;
     LinearLayout firstImagesLayout;
 
     ImageView profileImage;
@@ -66,6 +60,8 @@ public class UserProfile extends Fragment {
 
     UserDatabase userDatabase;
 
+
+    private RatingBar ratingBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,6 +108,10 @@ public class UserProfile extends Fragment {
         mUserName = view.findViewById(R.id.user_name);
         mUserCity = view.findViewById(R.id.user_city);
         mUserPortfolioDescription = view.findViewById(R.id.portfolio_description);
+
+        ratingBar = view.findViewById(R.id.rating_bar);
+        opinionsCountTextView = view.findViewById(R.id.opinions_count_text_view);
+
 
         return view;
     }
@@ -267,22 +267,44 @@ public class UserProfile extends Fragment {
 
     private void GetUserInformation() {
 
-        User user = userDatabase.getUser();
+        try {
 
-        mUserName.setText(user.getName());
-        mUserPhoneNumber.setText(user.getPhoneNumber());
-        mUserCity.setText(user.getCity());
-        mUserPortfolioDescription.setText(user.getDescription() == null ? "" : user.getDescription());
-        if (mUserPortfolioDescription.getText().toString().isEmpty()) {
-            mUserPortfolioDescription.setVisibility(View.GONE);
-        } else {
-            mUserPortfolioDescription.setVisibility(View.VISIBLE);
+            User user = userDatabase.getUser();
+
+            mUserName.setText(user.getName());
+            mUserPhoneNumber.setText(user.getPhoneNumber());
+            mUserCity.setText(user.getCity());
+            mUserPortfolioDescription.setText(user.getDescription() == null ? "" : user.getDescription());
+            if (mUserPortfolioDescription.getText().toString().isEmpty()) {
+                mUserPortfolioDescription.setVisibility(View.GONE);
+            } else {
+                mUserPortfolioDescription.setVisibility(View.VISIBLE);
+            }
+
+            if (user.getUserRating() == 0) {
+                ratingBar.setVisibility(View.GONE);
+                opinionsCountTextView.setVisibility(View.GONE);
+            } else {
+                ratingBar.setRating(user.getUserRating());
+                opinionsCountTextView.setText("(" + (int) user.getAllOpinionsCount() + " " + getString(R.string.opinions) + ")");
+                opinionsCountTextView.setOnClickListener(v -> showAllOpinions(user));
+            }
+        }catch (Exception e){
+
         }
+
         dataLoadingDialog.DismissDialog();
     }
 
+    private void showAllOpinions(User user){
+        Intent intent = new Intent(myContext, AllOpinionsActivity.class);
+        intent.putExtra(AllOpinionsActivity.USER_ID, user.getId());
+        intent.putExtra(AllOpinionsActivity.USER_NAME, user.getName());
+        myActivity.startActivity(intent);
+    }
+
     private void SetProfileImage(Uri imageUri) {
-        Glide.with(getActivity()).load(imageUri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24).into(profileImage);
+
         imageLoadingDialog.DismissDialog();
     }
 

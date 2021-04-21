@@ -61,7 +61,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
     NeedHelpAdapter adapter;
 
     int photoLoadingAttempts;
-
+    private View selectedSubcategory, previousSelectedSubcategory, previousView;
 
     //FILTER BY BELONGING ORDERS
     private Spinner filterOrdersSpinner;
@@ -102,10 +102,10 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
         setHasOptionsMenu(true);
+
         needHelpList = new ArrayList<>();
         fullNeedHelpList = new ArrayList<>();
         filterIndex = 0;
@@ -113,7 +113,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         searchPhrase = "";
 
         city = "";
-
 
         informationText = view.findViewById(R.id.informationText);
 
@@ -125,7 +124,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         recyclerView = view.findViewById(R.id.order_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(myContext));
 
-
         categories = new ArrayList<>();
 
         snapshotListener = firebaseFirestore.collection("announcement").addSnapshotListener((queryDocumentSnapshots, e) -> {
@@ -135,17 +133,32 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
                 switch (dc.getType()) {
                     case ADDED:
                         needHelp = dc.getDocument().toObject(NeedHelp.class);
-                        needHelp.setId(dc.getDocument().getId());
-                        fullNeedHelpList.add(dc.getNewIndex(), needHelp);
+                        if (needHelp.getStatus() == null || needHelp.getStatus().equals("Available")) {
+                            needHelp.setId(dc.getDocument().getId());
+                            fullNeedHelpList.add(needHelp);
+                        }
                         break;
                     case MODIFIED:
                         needHelp = dc.getDocument().toObject(NeedHelp.class);
                         needHelp.setId(dc.getDocument().getId());
-                        fullNeedHelpList.remove(dc.getOldIndex());
-                        fullNeedHelpList.add(dc.getOldIndex(), needHelp);
+                        int index = fullNeedHelpList.indexOf(new NeedHelp() {
+                            @Override
+                            public boolean equals(@Nullable Object obj) {
+                                NeedHelp nh = (NeedHelp) obj;
+                                return nh.getId().equals(needHelp.getId());
+                            }
+                        });
+                        if(index == -1) {
+                            return;
+                        }
+                        if (needHelp.getStatus() == null || needHelp.getStatus().equals("Available")) {
+                            fullNeedHelpList.set(index, needHelp);
+                        }
                         break;
                     case REMOVED:
-                        fullNeedHelpList.remove(dc.getOldIndex());
+                        needHelp = dc.getDocument().toObject(NeedHelp.class);
+                        needHelp.setId(dc.getDocument().getId());
+                        fullNeedHelpList.removeIf(nh -> nh.getId().equals(needHelp.getId()));
                 }
             }
             adapter = new NeedHelpAdapter();
@@ -161,7 +174,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
     public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
         inflater.inflate(R.menu.main_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
-
 
         MenuItem searchItem = menu.findItem(R.id.search);
         searchView = (SearchView) searchItem.getActionView();
@@ -186,7 +198,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
             }
         });
 
-
         //TODO NEW IMPLEMENTATION
         backButton = menu.findItem(R.id.category_back_button);
         backButton.setVisible(false);
@@ -201,13 +212,15 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
                 filtersDialog.show(getActivity().getSupportFragmentManager(), null);
                 break;
 
-                //TODO NEW IMPLEMENTATION
+            //TODO NEW IMPLEMENTATION
             case R.id.category_back_button:
-
-                if(subcategory != null){
+                if (previousSelectedSubcategory != null) {
+                    previousSelectedSubcategory.setVisibility(previousView.INVISIBLE);
+                }
+                if (subcategory != null) {
                     subcategory = null;
                     searchOrders();
-                }else if(category != null){
+                } else if (category != null) {
                     category = null;
                     mainViewCategoriesAdapter.showCategories();
                     searchOrders();
@@ -222,16 +235,13 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         return true;
     }
 
-
     //FILTER BY SEARCH METHOD
     private void searchOrders() {
 
         needHelpList.clear();
 
         if (searchPhrase.isEmpty()) {
-
             needHelpList.addAll(fullNeedHelpList);
-
         } else {
             searchPhrase = searchPhrase.toLowerCase();
             for (NeedHelp nh : fullNeedHelpList) {
@@ -353,8 +363,8 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
             return;
         }
 
-        for(NeedHelp nh : ordersList){
-            if(!nh.getSubcategory().equals(subcategory.getTitle())){
+        for (NeedHelp nh : ordersList) {
+            if (!nh.getSubcategory().equals(subcategory.getTitle())) {
                 needHelpList.remove(nh);
             }
         }
@@ -374,7 +384,6 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
     private class MainViewCategoriesHolder extends RecyclerView.ViewHolder {
 
         private RecyclerView mainViewCategoriesRecyclerView;
-
 
         public MainViewCategoriesHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -453,15 +462,16 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
             title = needHelp.getTitle();
             desc = needHelp.getDescription();
             showsCount = needHelp.getShowsCount();
-            if (title.length() > 18)
-                title = title.substring(0, 18) + "...";
-            if (desc.length() > 30)
-                desc = desc.substring(0, 30) + "...";
+
+            if (title.length() > 18) title = title.substring(0, 18) + "...";
+            if (desc.length() > 30) desc = desc.substring(0, 30) + "...";
+
             needHelpTitle.setText(title);
             needHelpPrice.setText(getResources().getString(R.string.budget) + " " + needHelp.getPrice() + " " + getString(R.string.new_notice_currency));
             needHelpDescription.setText(desc);
-            if (showsCount != null)
-                needHelpShowsCount.setText(showsCount.toString());
+
+            if (showsCount != null) needHelpShowsCount.setText(showsCount.toString());
+
             photoLoadingAttempts = 0;
             getImage();
         }
@@ -513,6 +523,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
                 map.put("ShowsCount", shows);
                 ref.update(map);
             });
+
 
             Intent intent = new Intent(view.getContext(), NeedHelpDetails.class);
             intent.putExtra(NeedHelpDetails.EXTRA_NEED_HELP_ID, needHelp.getId());
@@ -576,10 +587,11 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         if (searchView != null)
             searchView.clearFocus();
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        snapshotListener.remove();
+        //snapshotListener.remove();
     }
 
     public class MainViewCategoriesAdapter extends RecyclerView.Adapter {
@@ -614,9 +626,23 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 //                getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
                 //((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+                selectedSubcategory = v.findViewById(R.id.selectedSubcategory);
+
+                if (previousSelectedSubcategory != null) {
+                    previousSelectedSubcategory.setVisibility(v.INVISIBLE);
+                }
+
+                previousView = v;
+
+                previousSelectedSubcategory = selectedSubcategory;
+                selectedSubcategory.setVisibility(v.VISIBLE);
+
                 //TODO NEW IMPLEMENTATION
-                if(category == null){
+                if (category == null) {
                     backButton.setVisible(true);
+                    if (previousSelectedSubcategory != null) {
+                        previousSelectedSubcategory.setVisibility(previousView.INVISIBLE);
+                    }
                 }
 
                 if (isCategory) {
@@ -639,14 +665,14 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
         }
 
         //TODO NEW IMPLEMENTATION
-        public void showCategories(){
+        public void showCategories() {
             isCategory = true;
             actualCategories = new ArrayList<>(categoryList);
             notifyDataSetChanged();
         }
 
         //TODO NEW IMPLEMENTATION
-        public void showSubcategories(List<Category> categories, int position){
+        public void showSubcategories(List<Category> categories, int position) {
             actualCategories = categories.get(position).subcategories;
             notifyDataSetChanged();
         }

@@ -27,6 +27,7 @@ import com.example.help_hub.Activities.ChatActivity;
 import com.example.help_hub.Activities.NeedHelpDetails;
 import com.example.help_hub.Activities.WantToHelpDetails;
 import com.example.help_hub.Adapters.SliderAdapter;
+import com.example.help_hub.AlertDialogues.ReportDialog;
 import com.example.help_hub.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -150,9 +151,10 @@ public class WantToHelpDetailsFragment extends Fragment {
             intent.putExtra(ChatActivity.TITLE_EXTRA, bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_TITLE));
             intent.putExtra(ChatActivity.THIS_USER_ID_EXTRA, userId);
             intent.putExtra(ChatActivity.OTHER_USER_NAME_EXTRA, userNameTextView.getText().toString());
+            intent.putExtra(ChatActivity.CHAT_TYPE_EXTRA, "WTH");
 
             CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("users")
-                    .document(userId).collection("chats");
+                    .document(FirebaseAuth.getInstance().getUid()).collection("chats");
             collectionReference.get().addOnSuccessListener(queryDocumentSnapshots -> {
                 for (DocumentSnapshot ds : queryDocumentSnapshots) {
 
@@ -194,6 +196,7 @@ public class WantToHelpDetailsFragment extends Fragment {
         if(userId != null) {
             if (userId.equals(FirebaseAuth.getInstance().getUid())) {
                 menu.findItem(R.id.add_to_bookmark_button).setVisible(false);
+                menu.findItem(R.id.report_button).setVisible(false);
             } else {
                 checkOffers(menu);
             }
@@ -219,6 +222,11 @@ public class WantToHelpDetailsFragment extends Fragment {
             case R.id.share_button:
                 share();
                 return true;
+
+            //NEW FUNCTIONALITY
+            case R.id.report_button:
+                report();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -232,6 +240,13 @@ public class WantToHelpDetailsFragment extends Fragment {
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
         shareIntent.putExtra(Intent.EXTRA_TEXT, body);
         startActivity(Intent.createChooser(shareIntent, "Share"));
+    }
+
+    private void report(){
+
+        ReportDialog reportDialog = new ReportDialog(myContext, offerId, "WTH");
+        reportDialog.show(getChildFragmentManager(), null);
+
     }
 
     private void addOfferToObserved() {

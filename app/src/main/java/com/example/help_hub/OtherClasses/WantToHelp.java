@@ -4,7 +4,7 @@ import java.net.Inet4Address;
 
 public class WantToHelp {
 
-    private String Title, Price, Description, Id, UserId, Category, Subcategory, City;
+    private String Title, Price, Description, Id, UserId, Category, Subcategory, City, PerformerId, Status;
     private Integer ShowsCount;
 
     public WantToHelp() {
@@ -80,5 +80,21 @@ public class WantToHelp {
 
     public String getCity() {
         return City;
+    }
+
+    public void setPerformerId(String performerId) {
+        PerformerId = performerId;
+    }
+
+    public String getPerformerId() {
+        return PerformerId;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
+
+    public String getStatus() {
+        return Status;
     }
 }

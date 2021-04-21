@@ -5,6 +5,7 @@ import android.net.Uri;
 public class User {
 
     private String Name, PhoneNumber, City, Description, Id, Role;
+    private float AllRating, UserRating, AllOpinionsCount;
     private Uri ProfileImage;
 
     public User(String Id) {
@@ -66,5 +67,29 @@ public class User {
 
     public void setRole(String role) {
         Role = role;
+    }
+
+    public void setAllRating(float allRating) {
+        AllRating = allRating;
+    }
+
+    public float getAllRating() {
+        return AllRating;
+    }
+
+    public void setUserRating(float userRating) {
+        UserRating = userRating;
+    }
+
+    public float getUserRating() {
+        return UserRating;
+    }
+
+    public void setAllOpinionsCount(float allOpinionsCount) {
+        AllOpinionsCount = allOpinionsCount;
+    }
+
+    public float getAllOpinionsCount() {
+        return AllOpinionsCount;
     }
 }

@@ -2,7 +2,7 @@ package com.example.help_hub.OtherClasses;
 
 public class ChatMessage {
 
-    private String message, userId, time;
+    private String message, userId, time, type;
 
     public ChatMessage(String message, String userId, String time) {
         this.message = message;
@@ -26,5 +26,13 @@ public class ChatMessage {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

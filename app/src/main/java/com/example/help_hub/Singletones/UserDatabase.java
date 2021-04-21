@@ -103,6 +103,12 @@ public class UserDatabase {
             user.setCity(documentSnapshot.getString("City"));
             user.setDescription(documentSnapshot.getString("Description"));
             user.setRole(documentSnapshot.getString("Role"));
+            if(documentSnapshot.contains("UserRating")) {
+                user.setUserRating(documentSnapshot.getLong("UserRating"));
+                user.setAllOpinionsCount(documentSnapshot.getLong("AllOpinionsCount"));
+            }else{
+                user.setUserRating(0);
+            }
             if (profileDataLoaded != null) {
                 profileDataLoaded.ProfileDataLoaded();
             }

@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.view.*;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,7 +51,7 @@ public class OtherUserProfileFragment extends Fragment {
 
     public UserPortfolioImagesDatabase userPortfolioImagesDatabase;
 
-    TextView mUserName, mUserPhoneNumber, mUserCity, mUserPortfolioDescription;
+    TextView mUserName, mUserPhoneNumber, mUserCity, mUserPortfolioDescription, opinionsCountTextView;;
     LinearLayout firstImagesLayout;
 
     ImageView profileImage;
@@ -63,6 +64,8 @@ public class OtherUserProfileFragment extends Fragment {
     private boolean inBookmarks = false;
 
     String userId;
+
+    private RatingBar ratingBar;
 
     public OtherUserProfileFragment(String userId) {
         this.userId = userId;
@@ -96,6 +99,9 @@ public class OtherUserProfileFragment extends Fragment {
         mUserName = view.findViewById(R.id.user_name);
         mUserCity = view.findViewById(R.id.user_city);
         mUserPortfolioDescription = view.findViewById(R.id.portfolio_description);
+
+        ratingBar = view.findViewById(R.id.rating_bar);
+        opinionsCountTextView = view.findViewById(R.id.opinions_count_text_view);
         return view;
     }
 
@@ -179,7 +185,24 @@ public class OtherUserProfileFragment extends Fragment {
         } else {
             mUserPortfolioDescription.setVisibility(View.VISIBLE);
         }
+
+        if (user.getUserRating() == 0) {
+            ratingBar.setVisibility(View.GONE);
+            opinionsCountTextView.setVisibility(View.GONE);
+        } else {
+            ratingBar.setRating(user.getUserRating());
+            opinionsCountTextView.setText("(" + (int) user.getAllOpinionsCount() + " " + getString(R.string.opinions) + ")");
+            opinionsCountTextView.setOnClickListener(v -> showAllOpinions(user));
+        }
+
         dataLoadingDialog.DismissDialog();
+    }
+
+    private void showAllOpinions(User user){
+        Intent intent = new Intent(myContext, AllOpinionsActivity.class);
+        intent.putExtra(AllOpinionsActivity.USER_ID, user.getId());
+        intent.putExtra(AllOpinionsActivity.USER_NAME, user.getName());
+        myActivity.startActivity(intent);
     }
 
     private void SetProfileImage(Uri imageUri) {

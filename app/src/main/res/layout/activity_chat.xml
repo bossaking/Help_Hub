@@ -40,11 +40,44 @@
         android:textStyle="bold"
         android:textSize="16sp"/>
 
+    <LinearLayout
+            android:id="@+id/performer_actions_linear_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_below="@id/title_text_view"
+            android:layout_marginTop="@dimen/little_margin"
+            android:visibility="gone">
+
+        <TextView
+                android:id="@+id/performer_actions_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/assign_as_a_performer"
+                android:layout_marginHorizontal="@dimen/little_margin"
+                android:textColor="@color/black"/>
+
+        <Button
+            android:id="@+id/performer_actions_second_button"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:visibility="gone"
+            android:background="@color/redColor"
+            android:text="@string/cancel"/>
+        <Button
+                android:id="@+id/performer_actions_button"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:background="@color/greenButtonColor"
+                android:text="@string/assign"/>
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/messages_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/title_text_view"
+            android:layout_below="@id/performer_actions_linear_layout"
             android:padding="10sp"
             android:layout_marginTop="10dp"
             android:layout_above="@id/linearLayout"/>
@@ -52,12 +85,20 @@
 
 
     <LinearLayout
-            android:id="@+id/linearLayout"
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/dark_blue"
         android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/attach_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_attach_clip"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/little_margin"/>
 
         <EditText
             android:id="@+id/message_edit_text"

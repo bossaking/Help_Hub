@@ -6,7 +6,7 @@ public class Chat {
     private String otherUserId;
     private String offerId;
     private String offerTitle;
-    private String otherUserName;
+    private String otherUserName, chatType;
 
     public Chat() { }
 
@@ -52,5 +52,13 @@ public class Chat {
 
     public void setOtherUserName(String otherUserName) {
         this.otherUserName = otherUserName;
+    }
+
+    public void setChatType(String chatType) {
+        this.chatType = chatType;
+    }
+
+    public String getChatType() {
+        return chatType;
     }
 }

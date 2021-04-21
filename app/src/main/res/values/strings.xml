@@ -135,7 +135,6 @@
     <string name="added_to_observed" translatable="false">Added to observed</string>
     <string name="removed_from_observed" translatable="false">Removed from observed</string>
 
-    <string name="send" translatable="false">Send</string>
     <string name="message_hint" translatable="false">Enter your message</string>
     <string name="item_message_box_title_placeholder" translatable="false">Title of the notice or tender</string>
     <string name="item_message_box_user_name_placeholder" translatable="false">Marian Luj</string>
@@ -150,10 +149,53 @@
     <string name="all">ALL</string>
     <string name="example_category">EXAMPLE CATEGORY</string>
     <string name="back">Back</string>
+    <string name="assign_as_a_performer">Assign as a performer?</string>
+    <string name="yes">Yes</string>
+    <string name="assign">assign</string>
+    <string name="this_user_assigned_as_the_performer">This user is assigned as the performer.</string>
+    <string name="another_performer">You have already assigned another performer.</string>
+    <string name="done">Done</string>
+    <string name="you_are_assigned_as_the_performer">You are assigned as the performer.</string>
+    <string name="performer_assigned">Performer assigned succesfully</string>
+    <string name="wait_while_work_confirmed">Please wait while the work is confirmed</string>
+    <string name="word_is_done">Work is done!</string>
+    <string name="work_is_done">Work is done!</string>
+    <string name="accept">Accept</string>
+    <string name="send">Send</string>
+    <string name="success">Success</string>
+    <string name="minimum_rating">Minimum rating is 1</string>
+    <string name="optional_comment">Optional comment</string>
+    <string name="announcement_closed">Announcement closed</string>
+    <string name="performer_selected">The performer has been selected.</string>
+    <string name="help_this_person_question">Do you want to help this person?</string>
+    <string name="help">Help</string>
+    <string name="already_agree_to_help">You have already agreed to help this person.</string>
+    <string name="rate_help_level">Please rate the level of help received.</string>
+    <string name="rate">Rate</string>
+    <string name="already_rate_performer">You have already rated this performer.</string>
+    <string name="thank_for_help">Thank you for your help.</string>
+    <string name="opinions">opinions</string>
+    <string name="cancel_work">The work has been canceled</string>
+    <string name="work_canceled_by_performer">Work has been canceled by performer</string>
 
     <string-array name="orders_filters">
         <item>All</item>
         <item>Only my own</item>
     </string-array>
+    <string name="title_activity_fullscreen_image">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="report">Report</string>
+    <string name="report_message">Thank you for helping improve our community.</string>
 
+    <string-array name="report_causes">
+        <item>Inappropriate content.</item>
+        <item>Offensive content.</item>
+        <item>False information.</item>
+        <item>Call for suicide.</item>
+        <item>Spam.</item>
+        <item>Terrorism.</item>
+        <item>Violation of intellectual property rights.</item>
+    </string-array>
+    
 </resources>

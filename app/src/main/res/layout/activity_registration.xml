@@ -48,35 +48,89 @@
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/registration_header" />
 
-    <EditText
+<!--    <EditText-->
+<!--        android:id="@+id/registration_password"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:background="@drawable/login_edit_text"-->
+<!--        android:drawableRight="@drawable/login_password_eye"-->
+<!--        android:hint="@string/password_hint"-->
+<!--        android:inputType="textPassword"-->
+<!--        android:padding="16dp"-->
+<!--        android:textColorHint="@color/login_form_details"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/guideline_right"-->
+<!--        app:layout_constraintStart_toStartOf="@id/guideline_left"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/registration_email" />-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/registration_repeat_password"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:background="@drawable/login_edit_text"-->
+<!--        android:drawableRight="@drawable/login_password_eye"-->
+<!--        android:hint="@string/repeat_password_hint"-->
+<!--        android:inputType="textPassword"-->
+<!--        android:padding="16dp"-->
+<!--        android:textColorHint="@color/login_form_details"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/guideline_right"-->
+<!--        app:layout_constraintStart_toStartOf="@id/guideline_left"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/registration_password" />-->
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/registration_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/login_edit_text"
-        android:drawableRight="@drawable/login_password_eye"
-        android:hint="@string/password_hint"
-        android:inputType="textPassword"
-        android:padding="16dp"
         android:textColorHint="@color/login_form_details"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/registration_email" />
+        app:layout_constraintTop_toBottomOf="@id/registration_email"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/white">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/registration_password_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_edit_text"
+            android:hint="@string/password_hint"
+            android:inputType="textPassword"
+            android:padding="16dp"
+            android:textColorHint="@color/login_form_details"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/registration_repeat_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/login_edit_text"
-        android:drawableRight="@drawable/login_password_eye"
-        android:hint="@string/repeat_password_hint"
-        android:inputType="textPassword"
-        android:padding="16dp"
         android:textColorHint="@color/login_form_details"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/registration_password" />
+        app:layout_constraintTop_toBottomOf="@id/registration_password"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/white">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/registration_repeat_password_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_edit_text"
+            android:hint="@string/repeat_password_hint"
+            android:inputType="textPassword"
+            android:padding="16dp"
+            android:textColorHint="@color/login_form_details"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/registration_button"

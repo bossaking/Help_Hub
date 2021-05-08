@@ -1,15 +1,0 @@
-
-b
-java:S1128"GRemove this unused import 'com.example.help_hub.OtherClasses.Category'.(åð˜Ãÿÿÿÿÿ
-b	java:S100 "NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û·± 
-h	java:S100e"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(•®çøýÿÿÿÿ
-V	java:S110"<This class has 9 parents which is greater than 5 authorized.(™ë‚çþÿÿÿÿ
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Œí´È
-c	java:S100$"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¿ÙØ©
-„
-java:S1104"iMake onForbiddenWordsLoadsListener a static final constant or non-public and provide accessors if needed.(³å—æùÿÿÿÿ
-b	java:S100E"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Œèê
-X
-java:S2259N"BA "NullPointerException" could be thrown; "data" is nullable here.(½¶õµ
-}
-java:S1104"bMake onTitleChangedListener a static final constant or non-public and provide accessors if needed.(´ïèêÿÿÿÿÿ

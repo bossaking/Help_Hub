@@ -1,17 +1,0 @@
-
-}
-java:S1450"[Remove the "recyclerView" field and declare it as a local variable in the relevant methods.(¿á© ıÿÿÿÿ8ãÀÈã.
-`
-java:S1128">Remove this unused import 'org.jetbrains.annotations.NotNull'.(éš®ïøÿÿÿÿ8ãÀÈã.
-X	java:S110"<This class has 9 parents which is greater than 5 authorized.(Û€æŸ8ãÀÈã.
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Œí´È
-K
-java:S3740"/Provide the parametrized type for this generic.(á¸Æ!8ãÀÈã.
-[
-java:S1128">Remove this unused import 'com.google.android.gms.tasks.Task'.(¦âÏô8ãÀÈã.
-P
-java:S1659#".Declare "subcategoryTitle" on a separate line.(«½Àİıÿÿÿÿ8ãÀÈã.
-U
-java:S1128"8Remove this unused import 'androidx.annotation.NonNull'.(ˆÛúÜ8ãÀÈã.
-n
-java:S1128"LRemove this unused import 'com.google.android.gms.tasks.OnCompleteListener'.(Çğ¸Òÿÿÿÿÿ8ãÀÈã.

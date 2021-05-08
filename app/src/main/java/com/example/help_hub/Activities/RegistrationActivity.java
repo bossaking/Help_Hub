@@ -49,10 +49,10 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
 
         mEmail.addTextChangedListener(this);
 
-        mPassword = findViewById(R.id.registration_password);
+        mPassword = findViewById(R.id.registration_password_text);
         mPassword.addTextChangedListener(this);
 
-        mRepeatPassword = findViewById(R.id.registration_repeat_password);
+        mRepeatPassword = findViewById(R.id.registration_repeat_password_text);
         mRepeatPassword.addTextChangedListener(this);
 
         signUpButton = findViewById(R.id.registration_button);

@@ -1,6 +1,7 @@
 package com.example.help_hub.Fragments;
 
 import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +40,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -98,9 +101,9 @@ public class MessageBoxFragment extends Fragment {
         dataLoadingDialog = new LoadingDialog(getActivity());
         dataLoadingDialog.StartLoadingDialog();
         chatsRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
-            if(queryDocumentSnapshots.getDocumentChanges().size() == 0){
+            if (queryDocumentSnapshots.getDocumentChanges().size() == 0) {
                 dataLoadingDialog.DismissDialog();
-            }else {
+            } else {
                 for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
                     switch (dc.getType()) {
                         case ADDED:
@@ -187,9 +190,7 @@ public class MessageBoxFragment extends Fragment {
                                 .into(holder.avatar);
                     });
 
-                    if(position == chatListMain.size() - 1){
-                        dataLoadingDialog.DismissDialog();
-                    }
+                    dataLoadingDialog.DismissDialog();
                 }
             });
         }

@@ -113,7 +113,7 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
         needHelpDescription = findViewById(R.id.new_notice_description_edit_text);
 
         needHelpTitle.setText(needHelp.getTitle());
-        needHelpPrice.setText(needHelp.getPrice() + " " + getString(R.string.new_notice_currency));
+        needHelpPrice.setText(needHelp.getPrice());
         needHelpDescription.setText(needHelp.getDescription());
 
         defaultBackground = needHelpTitle.getBackground();
@@ -133,7 +133,6 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
         editButton.setOnClickListener(v -> {
             title = needHelpTitle.getText().toString().trim();
             price = needHelpPrice.getText().toString().trim();
-            price = price.substring(0, price.length() - 2).trim();
             description = needHelpDescription.getText().toString().trim();
             editNeedHelp();
         });

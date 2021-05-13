@@ -71,7 +71,7 @@ public class EditWantToHelpActivity extends NewOfferNoticeCategory implements Te
         wantToHelpDescription = findViewById(R.id.new_offer_description_edit_text);
 
         wantToHelpTitle.setText(wantToHelp.getTitle());
-        wantToHelpPrice.setText(wantToHelp.getPrice() + " " + getString(R.string.new_notice_currency));
+        wantToHelpPrice.setText(wantToHelp.getPrice());
         wantToHelpDescription.setText(wantToHelp.getDescription());
 
         defaultBackground = wantToHelpTitle.getBackground();
@@ -91,7 +91,6 @@ public class EditWantToHelpActivity extends NewOfferNoticeCategory implements Te
         editButton.setOnClickListener(v -> {
             title = wantToHelpTitle.getText().toString().trim();
             price = wantToHelpPrice.getText().toString().trim();
-            price = price.substring(0, price.length() - 2).trim();
             description = wantToHelpDescription.getText().toString().trim();
             editWantToHelp();
         });

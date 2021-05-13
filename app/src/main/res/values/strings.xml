@@ -187,6 +187,8 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="report">Report</string>
     <string name="report_message">Thank you for helping improve our community.</string>
+    <string name="_0">0</string>
+    <string name="pln">PLN</string>
 
     <string-array name="report_causes">
         <item>Inappropriate content.</item>

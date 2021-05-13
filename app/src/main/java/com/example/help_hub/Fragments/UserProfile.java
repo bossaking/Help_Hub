@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.help_hub.*;
 import com.example.help_hub.Activities.*;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
@@ -186,8 +187,13 @@ public class UserProfile extends Fragment {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                SetProfileImage(resultUri);
+                //SetProfileImage(resultUri);
                 userDatabase.SetUserProfileImage(resultUri);
+                userDatabase.profileImageChanged = uri -> {
+                    Glide.with(getActivity()).load(resultUri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true).into(profileImage);
+                };
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(getContext(), "Error: " + result.getError(), Toast.LENGTH_LONG).show();
                 imageLoadingDialog.DismissDialog();
@@ -305,8 +311,12 @@ public class UserProfile extends Fragment {
 
     private void SetProfileImage(Uri imageUri) {
 
+        Glide.with(getActivity()).load(imageUri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true).into(profileImage);
         imageLoadingDialog.DismissDialog();
     }
+
 
     private void DeletePortfolioImage(int position) {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();

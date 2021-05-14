@@ -120,4 +120,16 @@
     <string name="report">Zgłoś</string>
     <string name="report_message">Dziękujemy za pomoc w ulepszeniu naszej społeczności.</string>
     <string name="pln">zł</string>
+    <string name="Options">Opcje</string>
+    <string name="error">błąd:</string>
+    <string name="Updated">Zaktualizowano</string>
+    <string name="forbidden_words_error">Twoja oferta zawiera zakazane słowa!</string>
+    <string name="User_created">Użytkownik stworzony</string>
+    <string name="Change_password_link">Link został wysłany na twój adres e-mail</string>
+    <string name="Reset_password">Link resetujący został wysłany na twój adres e-mail</string>
+    <string name="No_needHelp_offerts">Wygląda na to że nie poprosiłeś jeszcze o pomoc</string>
+    <string name="delete_confirmation">Jesteś pewien że chcesz to usunąć?</string>
+    <string name="confirm">Tak</string>
+    <string name="decline">Nie</string>
+    <string name="no_wantHelp_offerts">Wygląda na to że nie zaogerowałeś jeszcze pomocy</string>
 </resources>

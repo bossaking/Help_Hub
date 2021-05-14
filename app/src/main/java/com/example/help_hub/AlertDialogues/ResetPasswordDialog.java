@@ -63,12 +63,12 @@ public class ResetPasswordDialog implements TextWatcher {
                 FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(myActivity.getApplicationContext(), "Reset link sent to your e-mail", Toast.LENGTH_LONG).show();
+                        Toast.makeText(myActivity.getApplicationContext(), R.string.Reset_password, Toast.LENGTH_LONG).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(myActivity.getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(myActivity.getApplicationContext(), R.string.error + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
 

@@ -319,7 +319,7 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
         }
 
         if (wantToHelpList.size() == 0) {
-            informationText.setText("Wow...It looks like you haven't asked for help yet");
+            informationText.setText(getString(R.string.no_wantHelp_offerts));
             informationText.setVisibility(View.VISIBLE);
         } else {
             informationText.setVisibility(View.GONE);
@@ -472,14 +472,14 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
         //DELETE ORDER
         private void deleteOrder(WantToHelp wantToHelp) {
             AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-            alertDialog.setTitle("Delete");
-            alertDialog.setMessage("Are you sure you want to delete this?");
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes",
+            alertDialog.setTitle(getString(R.string.Delete));
+            alertDialog.setMessage(getString(R.string.delete_confirmation));
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm),
                     (dialog, which) -> {
                         firebaseFirestore.collection("offers").document(wantToHelp.getId()).delete();
                         dialog.dismiss();
                     });
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.decline),
                     ((dialog, which) -> dialog.dismiss()));
             alertDialog.show();
         }

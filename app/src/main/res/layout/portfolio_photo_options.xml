@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Options"
+            android:text="@string/Options"
             android:textAlignment="center"
             android:textSize="25sp" />
 
@@ -22,7 +22,7 @@
             android:id="@+id/delete_portfolio_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Delete" />
+            android:text="@string/Delete" />
 
     </LinearLayout>
 

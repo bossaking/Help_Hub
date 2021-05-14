@@ -96,9 +96,9 @@ public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextW
         offerMap.put("City", userCity);
 
         firebaseFirestore.collection("offers").document().set(offerMap).addOnSuccessListener(v -> {
-            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.success), Toast.LENGTH_SHORT).show();
             finish();
-        }).addOnFailureListener(v -> Toast.makeText(getApplicationContext(), "Error: " + v.getLocalizedMessage(), Toast.LENGTH_LONG).show());
+        }).addOnFailureListener(v -> Toast.makeText(getApplicationContext(), getString(R.string.error) + v.getLocalizedMessage(), Toast.LENGTH_LONG).show());
     }
 
     private boolean validateData() {

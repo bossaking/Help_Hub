@@ -195,7 +195,7 @@ public class UserProfile extends Fragment {
                             .skipMemoryCache(true).into(profileImage);
                 };
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Toast.makeText(getContext(), "Error: " + result.getError(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getString(R.string.error) + result.getError(), Toast.LENGTH_LONG).show();
                 imageLoadingDialog.DismissDialog();
             } else {
                 imageLoadingDialog.DismissDialog();

@@ -60,4 +60,6 @@
     <string name="new_offer_currency" translatable="false">zł</string>
     <string name="cost_placeholder" translatable="false">Koszt</string>
     <string name="budget_placeholder" translatable="false">Budżet</string>
+    <string name="Apply">Potwierdź</string>
+    <string name="Delete">Usuń</string>
 </resources>

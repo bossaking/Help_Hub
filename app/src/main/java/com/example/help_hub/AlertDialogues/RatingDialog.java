@@ -103,7 +103,7 @@ public class RatingDialog extends DialogFragment {
                         ratingChangedListener.ratingChanged();
                         this.dismiss();
                     }).addOnFailureListener(e -> {
-                        Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(),R.string.error +  e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     });
                 });
 

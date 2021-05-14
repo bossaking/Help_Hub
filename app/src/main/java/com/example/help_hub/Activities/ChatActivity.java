@@ -175,7 +175,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                 sendMessage(userId, resultUri.toString(), "Image");
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Toast.makeText(this, result.getError().getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.error + result.getError().getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -219,7 +219,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
                 reference.child("Chats").child(chatId).push().setValue(messageMap);
             }).addOnFailureListener(e -> {
-                Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             });
 
         }else{
@@ -547,7 +547,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                     Toast.makeText(getApplicationContext(), getString(R.string.performer_assigned), Toast.LENGTH_SHORT).show();
                     checkDataNeedHelp();
                 }).addOnFailureListener(e -> {
-            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.error + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -563,7 +563,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                     Toast.makeText(getApplicationContext(), "Performer removed. Announcement available.", Toast.LENGTH_SHORT).show();
                     checkDataNeedHelp();
                 }).addOnFailureListener(e -> {
-            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),R.string.error + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -578,7 +578,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                     Toast.makeText(getApplicationContext(), getString(R.string.cancel_work), Toast.LENGTH_SHORT).show();
                     checkDataNeedHelp();
                 }).addOnFailureListener(e -> {
-            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),R.string.error + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -589,7 +589,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                     Toast.makeText(getApplicationContext(), getString(R.string.wait_while_work_confirmed), Toast.LENGTH_SHORT).show();
                     checkDataNeedHelp();
                 }).addOnFailureListener(e -> {
-            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.error + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -619,7 +619,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                 .set(confirmedUser).addOnCompleteListener(task -> {
             Toast.makeText(getApplicationContext(), getString(R.string.thank_for_help), Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
-            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
         });
     }
 
@@ -632,7 +632,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
             Toast.makeText(getApplicationContext(), getString(R.string.thank_for_help), Toast.LENGTH_SHORT).show();
             acceptWork();
         }).addOnFailureListener(e -> {
-            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
         });
     }
 

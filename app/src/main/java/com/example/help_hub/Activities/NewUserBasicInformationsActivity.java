@@ -124,10 +124,10 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(NewUserBasicInformationsActivity.this, "User created", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewUserBasicInformationsActivity.this, R.string.User_created, Toast.LENGTH_SHORT).show();
                     SaveUserData(name, phoneNumber, city);
                 } else {
-                    Toast.makeText(NewUserBasicInformationsActivity.this, "Error: " + task.getException(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewUserBasicInformationsActivity.this, getString(R.string.error) + task.getException(), Toast.LENGTH_SHORT).show();
                     loadingDialog.DismissDialog();
                 }
             }
@@ -136,7 +136,7 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
             //Jeżeli się nie udało
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(NewUserBasicInformationsActivity.this, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(NewUserBasicInformationsActivity.this, R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                 loadingDialog.DismissDialog();
             }
         });
@@ -155,10 +155,10 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
         userMap.put("Role", "User");
 
         documentReference.set(userMap).addOnSuccessListener(aVoid -> {
-            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.success, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
-        }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
+        }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
 
 
     }

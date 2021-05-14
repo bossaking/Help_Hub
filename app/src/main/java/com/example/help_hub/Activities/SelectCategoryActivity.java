@@ -61,7 +61,7 @@ public class SelectCategoryActivity extends AppCompatActivity implements Categor
                 }
                 categoriesAdapter.notifyDataSetChanged();
             } else {
-                Toast.makeText(getApplicationContext(), "Error: " + task.getException(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.error) + task.getException(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -82,7 +82,7 @@ public class SelectCategoryActivity extends AppCompatActivity implements Categor
 
                 categoriesAdapter.notifyDataSetChanged();
             } else {
-                Toast.makeText(getApplicationContext(), "Error: " + task.getException(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.error) + task.getException(), Toast.LENGTH_LONG).show();
             }
         });
     }

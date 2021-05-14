@@ -74,9 +74,9 @@ public class UserDataChangeActivity extends AppCompatActivity {
         userMap.put("Description", user.getDescription());
 
         documentReference.update(userMap).addOnCompleteListener(task -> {
-            Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.Updated, Toast.LENGTH_SHORT).show();
             finish();
-        }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
+        }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
 
     }
 }

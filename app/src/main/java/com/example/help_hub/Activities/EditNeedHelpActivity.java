@@ -162,9 +162,9 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
         editMap.put("Subcategory", subCategoryTitle);
 
         documentReference.update(editMap).addOnCompleteListener(task -> {
-            Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.Updated, Toast.LENGTH_SHORT).show();
             finish();
-        }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
+        }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
 
 
         for (int i = 0; i < imagesCount; i++) {
@@ -181,9 +181,9 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
             PortfolioImage portfolioImage = needHelpImages.get(i);
             StorageReference imgRef = FirebaseStorage.getInstance().getReference().child("announcement/" + needHelp.getId() + "/images/photo" + i);
             imgRef.putBytes(portfolioImage.getImageBytes()).addOnSuccessListener(taskSnapshot -> {
-                Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show();
             }).addOnFailureListener(e -> {
-                Toast.makeText(context, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             });
         }
 
@@ -258,7 +258,7 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
                         needHelpImage.setImageBytes(imageBytes);
                     } catch (IOException e) {
                         e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     }
 
 
@@ -287,7 +287,7 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
                             imagesCount++;
                             adapter.notifyDataSetChanged();
                         }).addOnFailureListener(e -> {
-                            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                         });
                     }).addOnCompleteListener(task -> {
                     });

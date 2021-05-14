@@ -190,7 +190,7 @@
     <string name="Options">Opcje</string>
     <string name="error">"error: "</string>
     <string name="Updated">Updated</string>
-    <string name="forbidden_words_error">\"Your ad contains forbidden words!\"</string>
+    <string name="forbidden_words_error">\"Your offer contains forbidden words!\"</string>
     <string name="User_created">User created</string>
     <string name="Change_password_link">Link  was sent to your e-mail</string>
     <string name="Reset_password">Reset link sent to your e-mail</string>

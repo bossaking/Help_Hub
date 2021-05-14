@@ -120,4 +120,16 @@
     <string name="report">.</string>
     <string name="report_message">.</string>
     <string name="pln">.</string>
+    <string name="Options">.</string>
+    <string name="error">.</string>
+    <string name="Updated">.</string>
+    <string name="User_created">.</string>
+    <string name="forbidden_words_error">.</string>
+    <string name="Change_password_link">.</string>
+    <string name="Reset_password">.</string>
+    <string name="No_needHelp_offerts">.</string>
+    <string name="delete_confirmation">.</string>
+    <string name="confirm">.</string>
+    <string name="decline">.</string>
+    <string name="no_wantHelp_offerts">.</string>
 </resources>

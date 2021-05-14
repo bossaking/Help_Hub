@@ -38,12 +38,12 @@
     <string name="new_notice_add_notice_button" translatable="false">Добавить предложение</string>
     <string name="new_notice_description_hint" translatable="false">Запишите, в чем ваша проблема. Добавление фотографий - очень хорошая идея. Используй эту возможность, и ты не пожалеешь об этом.</string>
     <string name="cost">Стоимость:</string>
-    <string name="new_notice_currency" translatable="false">руб</string>
+    <string name="new_notice_currency" translatable="false">PLN</string>
     <string name="new_notice_budget_placeholder" translatable="false">0 руб</string>
     <string name="new_notice_budget" translatable="false">Бюджет:</string>
     <string name="new_offer_cost_placeholder" translatable="false">0 руб</string>
     <string name="new_offer_cost" translatable="false">Стоимость:</string>
-    <string name="new_offer_currency" translatable="false">руб</string>
+    <string name="new_offer_currency" translatable="false">PLN</string>
     <string name="login_title">.</string>
     <string name="login_button">.</string>
     <string name="no_account_question">.</string>
@@ -132,4 +132,6 @@
     <string name="confirm">.</string>
     <string name="decline">.</string>
     <string name="no_wantHelp_offerts">.</string>
+    <string name="Delete">.</string>
+    <string name="remove_performer">.</string>
 </resources>

@@ -194,11 +194,13 @@
     <string name="User_created">User created</string>
     <string name="Change_password_link">Link  was sent to your e-mail</string>
     <string name="Reset_password">Reset link sent to your e-mail</string>
-    <string name="No_needHelp_offerts">Wow...It looks like you haven\'t asked for help yet</string>
+    <string name="No_needHelp_offerts">Wow...It looks like there is no offerts.</string>
     <string name="delete_confirmation">Are you sure you want to delete this?</string>
     <string name="confirm">Yes</string>
     <string name="decline">No</string>
-    <string name="no_wantHelp_offerts">Wow...It looks like you haven\'t offered help yet</string>
+    <string name="no_wantHelp_offerts">Wow...It looks like there is no offerts.</string>
+    <string name="Delete">Delete</string>
+    <string name="remove_performer">Performer removed. Announcement available.</string>
 
     <string-array name="report_causes">
         <item>Inappropriate content.</item>

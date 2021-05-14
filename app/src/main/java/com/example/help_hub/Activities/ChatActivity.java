@@ -560,7 +560,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                 .addOnSuccessListener(unused -> {
                     needHelp.setPerformerId(null);
                     needHelp.setStatus("Available");
-                    Toast.makeText(getApplicationContext(), "Performer removed. Announcement available.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.remove_performer), Toast.LENGTH_SHORT).show();
                     checkDataNeedHelp();
                 }).addOnFailureListener(e -> {
             Toast.makeText(getApplicationContext(),R.string.error + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();

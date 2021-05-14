@@ -37,8 +37,6 @@
     <string name="new_notice_description_title" translatable="false">Описание:</string>
     <string name="new_notice_add_notice_button" translatable="false">Добавить предложение</string>
     <string name="new_notice_description_hint" translatable="false">Запишите, в чем ваша проблема. Добавление фотографий - очень хорошая идея. Используй эту возможность, и ты не пожалеешь об этом.</string>
-    <string name="title_placeholder" translatable="false">Название</string>
-    <string name="description_placeholder" translatable="false">Описание</string>
     <string name="cost">Стоимость:</string>
     <string name="new_notice_currency" translatable="false">руб</string>
     <string name="new_notice_budget_placeholder" translatable="false">0 руб</string>
@@ -46,6 +44,80 @@
     <string name="new_offer_cost_placeholder" translatable="false">0 руб</string>
     <string name="new_offer_cost" translatable="false">Стоимость:</string>
     <string name="new_offer_currency" translatable="false">руб</string>
-    <string name="cost_placeholder" translatable="false">Стоимость</string>
-    <string name="budget_placeholder" translatable="false">Бюджет</string>
+    <string name="login_title">.</string>
+    <string name="login_button">.</string>
+    <string name="no_account_question">.</string>
+    <string name="go_to_registration_text">.</string>
+    <string name="forgot_password_question">.</string>
+    <string name="login_error">.</string>
+    <string name="reset_password_title">.</string>
+    <string name="reset_password_message">.</string>
+    <string name="reset_positive_button">.</string>
+    <string name="change_password_title">.</string>
+    <string name="change_password_message">.</string>
+    <string name="change_positive_button">.</string>
+    <string name="empty_field_error">.</string>
+    <string name="portfolio_title">.</string>
+    <string name="add_new_portfolio_photo">.</string>
+    <string name="show_all_portfolio_photos">.</string>
+    <string name="logout_title">.</string>
+    <string name="title_need_help">.</string>
+    <string name="title_want_to_help">.</string>
+    <string name="title_messages">.</string>
+    <string name="title_user_profile">.</string>
+    <string name="title_administration_panel">.</string>
+    <string name="new_offer_select_category">.</string>
+    <string name="new_offer_title_hint">.</string>
+    <string name="new_notice_title_hint">.</string>
+    <string name="example_category_title">.</string>
+    <string name="need_help_dialog">.</string>
+    <string name="want_to_help_dialog">.</string>
+    <string name="bookmark">.</string>
+    <string name="added_to_bookmarks">.</string>
+    <string name="removed_from_bookmarks">.</string>
+    <string name="added_to_observed">.</string>
+    <string name="removed_from_observed">.</string>
+    <string name="message_hint">.</string>
+    <string name="search">.</string>
+    <string name="type_something">.</string>
+    <string name="filters">.</string>
+    <string name="apply">.</string>
+    <string name="cancel">.</string>
+    <string name="city">.</string>
+    <string name="only_observable">.</string>
+    <string name="only_my_own">.</string>
+    <string name="all">.</string>
+    <string name="example_category">.</string>
+    <string name="back">.</string>
+    <string name="assign_as_a_performer">.</string>
+    <string name="yes">.</string>
+    <string name="assign">.</string>
+    <string name="this_user_assigned_as_the_performer">.</string>
+    <string name="another_performer">.</string>
+    <string name="done">.</string>
+    <string name="you_are_assigned_as_the_performer">.</string>
+    <string name="performer_assigned">.</string>
+    <string name="wait_while_work_confirmed">.</string>
+    <string name="word_is_done">.</string>
+    <string name="work_is_done">.</string>
+    <string name="accept">.</string>
+    <string name="send">.</string>
+    <string name="success">.</string>
+    <string name="minimum_rating">.</string>
+    <string name="optional_comment">.</string>
+    <string name="announcement_closed">.</string>
+    <string name="performer_selected">.</string>
+    <string name="help_this_person_question">.</string>
+    <string name="help">.</string>
+    <string name="already_agree_to_help">.</string>
+    <string name="rate_help_level">.</string>
+    <string name="rate">.</string>
+    <string name="already_rate_performer">.</string>
+    <string name="thank_for_help">.</string>
+    <string name="opinions">.</string>
+    <string name="cancel_work">.</string>
+    <string name="work_canceled_by_performer">.</string>
+    <string name="report">.</string>
+    <string name="report_message">.</string>
+    <string name="pln">.</string>
 </resources>

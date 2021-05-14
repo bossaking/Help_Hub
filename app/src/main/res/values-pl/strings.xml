@@ -8,9 +8,9 @@
     <string name="email_empty_error">Pole nie może być puste</string>
     <string name="loading_dialog_title">Ładowanie...</string>
     <string name="go_to_login_text"><u>Zaloguj się</u></string>
-    <string name="email_validate_error">Nieprawidłowy e-mail</string>
+    <string name="email_validate_error">Nieprawidłowy adres e-mail</string>
     <string name="password_length_error">Hasło musi zawierać co najmniej 8 znaków</string>
-    <string name="email_exists_error">Użytkownik z podanym e-mail już istnieje</string>
+    <string name="email_exists_error">Użytkownik z podanym adresem e-mail już istnieje</string>
     <string name="have_account_question">Masz już konto?</string>
     <string name="registration_button" translatable="false">Zarejestruj</string>
     <string name="password_match_error">Hasła są różne</string>
@@ -39,8 +39,6 @@
     <string name="title">Tytuł:</string>
     <string name="budget">Budżet:</string>
     <string name="write_button">Napisz</string>
-    <string name="title_placeholder" translatable="false">Tytuł</string>
-    <string name="description_placeholder" translatable="false">Opis</string>
     <string name="cost">Koszt:</string>
     <string name="new_notice_currency" translatable="false">zł</string>
     <string name="new_notice_budget_placeholder" translatable="false">0 zł</string>
@@ -58,6 +56,68 @@
     <string name="need_help_dialog" translatable="false">POTRZEBUJĘ POMOCY</string>
     <string name="want_to_help_dialog" translatable="false">OFERUJĘ POMOC</string>
     <string name="new_offer_currency" translatable="false">zł</string>
-    <string name="cost_placeholder" translatable="false">Koszt</string>
-    <string name="budget_placeholder" translatable="false">Budżet</string>
+    <string name="login_title" translatable="false">Logowanie</string>
+    <string name="login_button">Zaloguj</string>
+    <string name="no_account_question">Nie masz konta?</string>
+    <string name="go_to_registration_text">"<u>Zarejestruj</u>     "</string>
+    <string name="forgot_password_question">Zapomniałeś hasła?</string>
+    <string name="login_error">Nieprawidłowy adres e-mail lub hasło</string>
+    <string name="reset_password_title" translatable="false">Zresetuj hasło</string>
+    <string name="reset_password_message" translatable="false">Podaj adres e-mail</string>
+    <string name="reset_positive_button" translatable="false">Reset</string>
+    <string name="change_password_title" translatable="false">Zmień hasło</string>
+    <string name="change_password_message" translatable="false">Podaj stare hasło</string>
+    <string name="change_positive_button" translatable="false">Zmień</string>
+    <string name="empty_field_error" translatable="false">Pole nie może być puste</string>
+    <string name="title_messages" translatable="false">Wiadomości</string>
+    <string name="title_administration_panel" translatable="false">Administracja</string>
+    <string name="example_category_title" translatable="false">Przykładowy tytuł kategorii</string>
+    <string name="bookmark" translatable="false">Zakładka</string>
+    <string name="added_to_bookmarks" translatable="false">Dodaj do zakładek</string>
+    <string name="removed_from_bookmarks" translatable="false">Usuń z zakładek</string>
+    <string name="added_to_observed" translatable="false">Dodaj do obserwowanych</string>
+    <string name="removed_from_observed" translatable="false">Usuń z obserwowanych</string>
+    <string name="message_hint" translatable="false">Podaj wiadomość</string>
+    <string name="search">Szukaj</string>
+    <string name="type_something">Wpisz coś</string>
+    <string name="filters">filtry</string>
+    <string name="apply">ZASTOSUJ</string>
+    <string name="cancel">ANULUJ</string>
+    <string name="city">Miasto</string>
+    <string name="only_observable">TYLKO OBSERWOWANE</string>
+    <string name="only_my_own">TYLKO WŁASNE</string>
+    <string name="all">WSZYSTKIE</string>
+    <string name="example_category">PRZYKŁADOWA KATEGORIA</string>
+    <string name="back">Powrót</string>
+    <string name="assign_as_a_performer">Przypisać jako wykonawcę?</string>
+    <string name="yes">Tak</string>
+    <string name="assign">przypisz</string>
+    <string name="this_user_assigned_as_the_performer">Ten użytkownik jest przypisany jako wykonawca.</string>
+    <string name="another_performer">Już przypisałeś innego wykonawcę.</string>
+    <string name="done">Zrobione</string>
+    <string name="you_are_assigned_as_the_performer">Jesteś przypisany jako wykonawca.</string>
+    <string name="performer_assigned">Wykonawca przypisany pomyślnie</string>
+    <string name="wait_while_work_confirmed">Proszę poczekać na potwierdzenie pracy</string>
+    <string name="word_is_done">Praca wykonana!</string>
+    <string name="work_is_done">Praca wykonana!</string>
+    <string name="accept">Akceptuj</string>
+    <string name="send">Wyślij</string>
+    <string name="success">Sukces</string>
+    <string name="minimum_rating">Ocena minimalna to 1</string>
+    <string name="optional_comment">Opcjonalny kometarz</string>
+    <string name="announcement_closed">Ogłoszenie zamknięte</string>
+    <string name="performer_selected">Wykonwaca został wybrany.</string>
+    <string name="help_this_person_question">Czy  chcesz pomóc tej osobie?</string>
+    <string name="help">Pomoc</string>
+    <string name="already_agree_to_help">Już zgodziłeś się pomóc tej osobie.</string>
+    <string name="rate_help_level">Proszę oceń poziom otrzymanej pomocy.</string>
+    <string name="rate">Oceń</string>
+    <string name="already_rate_performer">Już oceniłeś tego wykonawcę.</string>
+    <string name="thank_for_help">Dziękujemy za twoją pomoc.</string>
+    <string name="opinions">opinie</string>
+    <string name="cancel_work">Praca została anulowana</string>
+    <string name="work_canceled_by_performer">Praca została anulowana przez wykonawcę</string>
+    <string name="report">Zgłoś</string>
+    <string name="report_message">Dziękujemy za pomoc w ulepszeniu naszej społeczności.</string>
+    <string name="pln">zł</string>
 </resources>

@@ -20,29 +20,27 @@
     <string name="password_match_error">Passwords do not match</string>
 
     <!--LOGIN ACTIVITY-->
-    <string name="login_title" translatable="false">Login</string>
-    <string name="login_button" translatable="false">Sign In</string>
-    <string name="no_account_question" translatable="false">Not registered yet?</string>
-    <string name="go_to_registration_text" translatable="false">
-        <u>Sign Up</u>
-    </string>
-    <string name="forgot_password_question" translatable="false">Forgot password?</string>
+    <string name="login_title">Login</string>
+    <string name="login_button">Sign In</string>
+    <string name="no_account_question">Not registered yet?</string>
+    <string name="go_to_registration_text">" <u>Sign Up</u>     "</string>
+    <string name="forgot_password_question">Forgot password?</string>
 
     <!--LOGIN ERRORS-->
-    <string name="login_error" translatable="false">Invalid e-mail address or password</string>
+    <string name="login_error">Invalid e-mail address or password</string>
 
     <!--LOADING DIALOG-->
     <string name="loading_dialog_title">Loading…</string>
 
     <!--RESET PASSWORD DIALOG-->
-    <string name="reset_password_title" translatable="false">Reset password</string>
-    <string name="reset_password_message" translatable="false">Enter your e-mail address</string>
-    <string name="reset_positive_button" translatable="false">Reset</string>
+    <string name="reset_password_title">Reset password</string>
+    <string name="reset_password_message">Enter your e-mail address</string>
+    <string name="reset_positive_button">Reset</string>
 
     <!--CHANGE PASSWORD DIALOG-->
-    <string name="change_password_title" translatable="false">Change password</string>
-    <string name="change_password_message" translatable="false">Enter your old password</string>
-    <string name="change_positive_button" translatable="false">Change</string>
+    <string name="change_password_title">Change password</string>
+    <string name="change_password_message">Enter your old password</string>
+    <string name="change_positive_button">Change</string>
 
     <!-- NEW USER BASIC INFORMATION ACTIVITY-->
     <string name="new_user_header">Input necessary data</string>
@@ -51,7 +49,7 @@
     <string name="new_user_city">City</string>
 
     <!--EMPTY FIELD ERROR-->
-    <string name="empty_field_error" translatable="false">The field cannot be empty</string>
+    <string name="empty_field_error">The field cannot be empty</string>
 
     <!-- SAVE AND EDIT BUTTONS-->
     <string name="edit_button">Edit</string>
@@ -61,51 +59,51 @@
     <string name="user_data_change_new_password_button">Change password</string>
 
     <!--USER PROFILE FRAGMENT-->
-    <string name="portfolio_title" translatable="false">
+    <string name="portfolio_title">
         <u>Portfolio</u>
     </string>
-    <string name="add_new_portfolio_photo" translatable="false">Add new photos</string>
-    <string name="show_all_portfolio_photos" translatable="false">Show all</string>
-    <string name="logout_title" translatable="false">
+    <string name="add_new_portfolio_photo">Add new photos</string>
+    <string name="show_all_portfolio_photos">Show all</string>
+    <string name="logout_title">
         <u>Logout</u>
     </string>
 
     <!--BOTTOM NAVIGATION BAR-->
     <string name="title_activity_main" translatable="false">MainActivity</string>
-    <string name="title_need_help" translatable="false">I need help</string>
-    <string name="title_want_to_help" translatable="false">I want to help</string>
-    <string name="title_messages" translatable="false">Messages</string>
-    <string name="title_user_profile" translatable="false">Profile</string>
-    <string name="title_administration_panel" translatable="false">Administration</string>
+    <string name="title_need_help">I need help</string>
+    <string name="title_want_to_help">I want to help</string>
+    <string name="title_messages">Messages</string>
+    <string name="title_user_profile">Profile</string>
+    <string name="title_administration_panel">Administration</string>
 
     <!--ADD OFFER-->
     <string name="add_new_offer_header">Offer help</string>
     <string name="new_offer_title">Title of the offer</string>
     <string name="new_offer_category">Category</string>
-    <string name="new_offer_select_category" translatable="false">Select category</string>
-    <string name="new_offer_cost" translatable="false">Cost:</string>
-    <string name="new_offer_cost_placeholder" translatable="false">0 €</string>
+    <string name="new_offer_select_category">Select category</string>
+    <string name="new_offer_cost">Cost:</string>
+    <string name="new_offer_cost_placeholder">0 €</string>
     <string name="new_offer_description_title">Description:</string>
     <string name="new_offer_add_offer_button">Offer</string>
-    <string name="new_offer_title_hint" translatable="false">e.g. I will fix your washing machine</string>
+    <string name="new_offer_title_hint">e.g. I will fix your washing machine</string>
     <string name="new_offer_description_hint">Write what you are good at and what you offer.</string>
-    <string name="new_offer_currency" translatable="false">PLN</string>
+    <string name="new_offer_currency">PLN</string>
 
     <!--ADD NOTICE-->
     <string name="add_new_notice_header">Ask for help</string>
     <string name="new_notice_title">Title of the problem</string>
     <string name="new_notice_category">Category</string>
     <string name="new_notice_select_category">Select category</string>
-    <string name="new_notice_budget" translatable="false">Budget:</string>
-    <string name="new_notice_budget_placeholder" translatable="false">0 €</string>
+    <string name="new_notice_budget">Budget:</string>
+    <string name="new_notice_budget_placeholder">0 €</string>
     <string name="new_notice_description_title">Description:</string>
     <string name="new_notice_add_notice_button">Ask</string>
-    <string name="new_notice_title_hint" translatable="false">e.g. Washing machine broken</string>
+    <string name="new_notice_title_hint">e.g. Washing machine broken</string>
     <string name="new_notice_description_hint">Write what your problem is. Adding photos is a very good idea. Take this
         opportunity and you will certainly not regret it.
     </string>
-    <string name="example_category_title" translatable="false">Example Category Title</string>
-    <string name="new_notice_currency" translatable="false">PLN</string>
+    <string name="example_category_title">Example Category Title</string>
+    <string name="new_notice_currency">PLN</string>
 
     <!--NEED HELP DETAILS-->
     <string name="title">Title:</string>
@@ -119,23 +117,23 @@
     <string name="budget_placeholder" translatable="false">Budget</string>
 
     <!--WANT TO HELP DETAILS-->
-    <string name="cost" translatable="false">Cost:</string>
+    <string name="cost">Cost:</string>
     <string name="cost_placeholder" translatable="false">Cost</string>
 
     <!--TYPE DIALOG-->
-    <string name="need_help_dialog" translatable="false">I NEED HELP</string>
-    <string name="want_to_help_dialog" translatable="false">I WANT TO HELP</string>
+    <string name="need_help_dialog">I NEED HELP</string>
+    <string name="want_to_help_dialog">I WANT TO HELP</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-    <string name="bookmark" translatable="false">Bookmark</string>
+    <string name="bookmark">Bookmark</string>
 
-    <string name="added_to_bookmarks" translatable="false">Added to bookmarks</string>
-    <string name="removed_from_bookmarks" translatable="false">Removed from bookmarks</string>
+    <string name="added_to_bookmarks">Added to bookmarks</string>
+    <string name="removed_from_bookmarks">Removed from bookmarks</string>
 
-    <string name="added_to_observed" translatable="false">Added to observed</string>
-    <string name="removed_from_observed" translatable="false">Removed from observed</string>
+    <string name="added_to_observed">Added to observed</string>
+    <string name="removed_from_observed">Removed from observed</string>
 
-    <string name="message_hint" translatable="false">Enter your message</string>
+    <string name="message_hint">Enter your message</string>
     <string name="item_message_box_title_placeholder" translatable="false">Title of the notice or tender</string>
     <string name="item_message_box_user_name_placeholder" translatable="false">Marian Luj</string>
     <string name="search">Search</string>
@@ -157,7 +155,7 @@
     <string name="done">Done</string>
     <string name="you_are_assigned_as_the_performer">You are assigned as the performer.</string>
     <string name="performer_assigned">Performer assigned succesfully</string>
-    <string name="wait_while_work_confirmed">Please wait while the work is confirmed</string>
+    <string name="wait_while_work_confirmed">Please wait for the work confirmation</string>
     <string name="word_is_done">Work is done!</string>
     <string name="work_is_done">Work is done!</string>
     <string name="accept">Accept</string>
@@ -182,12 +180,12 @@
         <item>All</item>
         <item>Only my own</item>
     </string-array>
-    <string name="title_activity_fullscreen_image">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_fullscreen_image" translatable="false">FullscreenActivity</string>
+    <string name="dummy_button" translatable="false">Dummy Button</string>
+    <string name="dummy_content" translatable="false">DUMMY\nCONTENT</string>
     <string name="report">Report</string>
     <string name="report_message">Thank you for helping improve our community.</string>
-    <string name="_0">0</string>
+    <string name="_0" translatable="false">0</string>
     <string name="pln">PLN</string>
 
     <string-array name="report_causes">

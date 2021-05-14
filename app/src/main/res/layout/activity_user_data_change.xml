@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20sp"
-                android:text="Apply" />
+                android:text="@string/apply" />
 
             <Button
                 android:id="@+id/user_data_change_new_password_button"

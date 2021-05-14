@@ -137,17 +137,17 @@ public class AddNewNoticeActivity extends NewOfferNoticeCategory implements Text
 
         String id = firebaseFirestore.collection("announcement").document().getId();
         firebaseFirestore.collection("announcement").document(id).set(noticeMap).addOnSuccessListener(v -> {
-            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.success), Toast.LENGTH_SHORT).show();
             finish();
-        }).addOnFailureListener(v -> Toast.makeText(getApplicationContext(), "Error: " + v.getLocalizedMessage(), Toast.LENGTH_LONG).show());
+        }).addOnFailureListener(v -> Toast.makeText(getApplicationContext(), getString(R.string.error) + v.getLocalizedMessage(), Toast.LENGTH_LONG).show());
 
         for (int i = 0; i < noticeImages.size() - 1; i++) {
             PortfolioImage portfolioImage = noticeImages.get(i);
             StorageReference imgRef = FirebaseStorage.getInstance().getReference().child("announcement/" + id + "/images/photo" + i);
             imgRef.putFile(portfolioImage.getImageUri()).addOnSuccessListener(taskSnapshot -> {
-                Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, getString(R.string.success), Toast.LENGTH_SHORT).show();
             }).addOnFailureListener(e -> {
-                Toast.makeText(context, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, getString(R.string.error) + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             });
         }
     }

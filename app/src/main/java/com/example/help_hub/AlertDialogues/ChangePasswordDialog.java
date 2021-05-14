@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.InputType;
@@ -52,12 +53,12 @@ public class ChangePasswordDialog implements TextWatcher {
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     firebaseAuth.sendPasswordResetEmail(email).addOnSuccessListener(x -> {
-                        Toast.makeText(myActivity.getApplicationContext(), "Change link sent to your e-mail", Toast.LENGTH_LONG).show();
+                        Toast.makeText(myActivity.getApplicationContext(), R.string.Change_password_link, Toast.LENGTH_LONG).show();
                     }).addOnFailureListener(e -> {
-                        Toast.makeText(myActivity.getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(myActivity.getApplicationContext(), R.string.error + e.getMessage(), Toast.LENGTH_LONG).show();
                     });
                 } else {
-                    Toast.makeText(myActivity.getApplicationContext(), "Error: " + task.getException(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(myActivity.getApplicationContext(), myActivity.getApplicationContext().getString(R.string.error) + task.getException(), Toast.LENGTH_LONG).show();
                 }
             });
             dialog.dismiss();

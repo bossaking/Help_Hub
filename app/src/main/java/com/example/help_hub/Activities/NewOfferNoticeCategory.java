@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.OtherClasses.Category;
+import com.example.help_hub.R;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -94,7 +95,7 @@ public class NewOfferNoticeCategory extends AppCompatActivity {
                 }
                 forbiddenWordsLoads();
             } else {
-                Toast.makeText(getApplicationContext(), "Error: " + task.getException(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.error) + task.getException(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -107,7 +108,7 @@ public class NewOfferNoticeCategory extends AppCompatActivity {
         for (String word : forbiddenWords) {
             if (title.toLowerCase().contains(word) || description.toLowerCase().contains(word)) {
                 loadingDialog.DismissDialog();
-                Toast.makeText(this, "Your ad contains forbidden words!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.forbidden_words_error, Toast.LENGTH_LONG).show();
                 return false;
             }
         }

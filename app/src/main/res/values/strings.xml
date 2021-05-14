@@ -89,7 +89,7 @@
     <string name="new_offer_add_offer_button">Offer</string>
     <string name="new_offer_title_hint" translatable="false">e.g. I will fix your washing machine</string>
     <string name="new_offer_description_hint">Write what you are good at and what you offer.</string>
-    <string name="new_offer_currency" translatable="false">€</string>
+    <string name="new_offer_currency" translatable="false">PLN</string>
 
     <!--ADD NOTICE-->
     <string name="add_new_notice_header">Ask for help</string>
@@ -105,7 +105,7 @@
         opportunity and you will certainly not regret it.
     </string>
     <string name="example_category_title" translatable="false">Example Category Title</string>
-    <string name="new_notice_currency" translatable="false">€</string>
+    <string name="new_notice_currency" translatable="false">PLN</string>
 
     <!--NEED HELP DETAILS-->
     <string name="title">Title:</string>
@@ -187,6 +187,8 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="report">Report</string>
     <string name="report_message">Thank you for helping improve our community.</string>
+    <string name="_0">0</string>
+    <string name="pln">PLN</string>
 
     <string-array name="report_causes">
         <item>Inappropriate content.</item>

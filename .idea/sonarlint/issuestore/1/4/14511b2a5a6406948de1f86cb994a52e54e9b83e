@@ -1,15 +1,0 @@
-
-J
-java:S1128"/Remove this unused import 'android.app.Dialog'.(·‚Àúÿÿÿÿ
-c	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‡‰¼æ
-k
-java:S1450"URemove the "dialog" field and declare it as a local variable in the relevant methods.(ÿ›ÿ
-B
-java:S16028",Remove useless curly braces around statement(úÌä 
-œ
-java:S1186O"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(×åó«øÿÿÿÿ
-B
-java:S16026",Remove useless curly braces around statement(ŒŸ®¼
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ßµÂ¨
-—
-java:S1186E"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(á¬‡İ

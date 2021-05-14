@@ -1,11 +1,0 @@
-
-w
-java:S1104
-"\Make parentCategoryId a static final constant or non-public and provide accessors if needed.(Àıüúÿÿÿÿ
-g
-java:S1104"QMake title a static final constant or non-public and provide accessors if needed.(Å¬õ
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ğ€¥È
-i
-java:S1104	"NMake id a static final constant or non-public and provide accessors if needed.(Â¥Šˆøÿÿÿÿ
-o
-java:S1104"YMake subcategories a static final constant or non-public and provide accessors if needed.(Î›§ˆ

@@ -22,6 +22,10 @@ public class UserDatabase {
         void ProfileImageLoaded(Uri uri);
     }
 
+    public interface ProfileImageChanged{
+        void ProfileImageChanged(Uri uri);
+    }
+
     StorageReference storageReference;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
@@ -36,6 +40,7 @@ public class UserDatabase {
 
     public ProfileDataLoaded profileDataLoaded;
     public ProfileImageLoaded profileImageLoaded;
+    public ProfileImageChanged profileImageChanged;
 
     private UserDatabase(Activity myActivity, String userId) {
 
@@ -142,6 +147,9 @@ public class UserDatabase {
         StorageReference fileRef = storageReference.child("users/" + userId + "/profile.jpg");
         fileRef.putFile(user.getProfileImage()).addOnSuccessListener(taskSnapshot -> {
             Toast.makeText(context, "Photo has been loaded", Toast.LENGTH_SHORT).show();
+            if(profileImageChanged != null){
+                profileImageChanged.ProfileImageChanged(user.getProfileImage());
+            }
         }).addOnFailureListener(e -> {
             Toast.makeText(context, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
         });

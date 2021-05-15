@@ -64,7 +64,7 @@
     <string name="login_error">Nieprawidłowy adres e-mail lub hasło</string>
     <string name="reset_password_title" translatable="false">Zresetuj hasło</string>
     <string name="reset_password_message" translatable="false">Podaj adres e-mail</string>
-    <string name="reset_positive_button" translatable="false">Reset</string>
+    <string name="reset_positive_button" translatable="false">Zresetuj</string>
     <string name="change_password_title" translatable="false">Zmień hasło</string>
     <string name="change_password_message" translatable="false">Podaj stare hasło</string>
     <string name="change_positive_button" translatable="false">Zmień</string>
@@ -104,9 +104,9 @@
     <string name="send">Wyślij</string>
     <string name="success">Sukces</string>
     <string name="minimum_rating">Ocena minimalna to 1</string>
-    <string name="optional_comment">Opcjonalny kometarz</string>
+    <string name="optional_comment">Opcjonalny komentarz</string>
     <string name="announcement_closed">Ogłoszenie zamknięte</string>
-    <string name="performer_selected">Wykonwaca został wybrany.</string>
+    <string name="performer_selected">Wykonawca został wybrany.</string>
     <string name="help_this_person_question">Czy  chcesz pomóc tej osobie?</string>
     <string name="help">Pomoc</string>
     <string name="already_agree_to_help">Już zgodziłeś się pomóc tej osobie.</string>
@@ -134,4 +134,12 @@
     <string name="Delete">Usuń</string>
     <string name="No_needHelp_offerts">Wygląda na to że nie ma żadnej oferty.</string>
     <string name="remove_performer">Wykonawca został usunięty. Ogłoszenie ponownie dostępne.</string>
+    <string name="example_user_name" translatable="false">Tomasz Kwasigroch</string>
+    <string name="example_user_phone_number" translatable="false">123456789</string>
+    <string name="title_placeholder" translatable="false">Tytuł</string>
+    <string name="description_placeholder" translatable="false">Opis</string>
+    <string name="budget_placeholder" translatable="false">Budżet</string>
+    <string name="cost_placeholder" translatable="false">Koszt</string>
+    <string name="placeholder" translatable="false">Placeholder</string>
+    <string name="_0" translatable="false">0</string>
 </resources>

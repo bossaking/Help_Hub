@@ -82,7 +82,7 @@
     <string name="new_offer_category">Category</string>
     <string name="new_offer_select_category">Select category</string>
     <string name="new_offer_cost">Cost:</string>
-    <string name="new_offer_cost_placeholder">0 €</string>
+    <string name="new_offer_cost_placeholder">0 zł</string>
     <string name="new_offer_description_title">Description:</string>
     <string name="new_offer_add_offer_button">Offer</string>
     <string name="new_offer_title_hint">e.g. I will fix your washing machine</string>
@@ -95,7 +95,7 @@
     <string name="new_notice_category">Category</string>
     <string name="new_notice_select_category">Select category</string>
     <string name="new_notice_budget">Budget:</string>
-    <string name="new_notice_budget_placeholder">0 €</string>
+    <string name="new_notice_budget_placeholder">0 zł</string>
     <string name="new_notice_description_title">Description:</string>
     <string name="new_notice_add_notice_button">Ask</string>
     <string name="new_notice_title_hint">e.g. Washing machine broken</string>
@@ -107,18 +107,18 @@
 
     <!--NEED HELP DETAILS-->
     <string name="title">Title:</string>
-    <string name="placeholder" translatable="false">Placeholder</string>
+    <string name="placeholder">Placeholder</string>
     <string name="budget">Budget:</string>
     <string name="write_button">Write</string>
-    <string name="example_user_name" translatable="false">Tomasz Kwasigroch</string>
-    <string name="example_user_phone_number" translatable="false">123456789</string>
-    <string name="title_placeholder" translatable="false">Title</string>
-    <string name="description_placeholder" translatable="false">Description</string>
-    <string name="budget_placeholder" translatable="false">Budget</string>
+    <string name="example_user_name">John Walker</string>
+    <string name="example_user_phone_number">123456789</string>
+    <string name="title_placeholder">Title</string>
+    <string name="description_placeholder">Description</string>
+    <string name="budget_placeholder">Budget</string>
 
     <!--WANT TO HELP DETAILS-->
     <string name="cost">Cost:</string>
-    <string name="cost_placeholder" translatable="false">Cost</string>
+    <string name="cost_placeholder">Cost</string>
 
     <!--TYPE DIALOG-->
     <string name="need_help_dialog">I NEED HELP</string>
@@ -185,9 +185,9 @@
     <string name="dummy_content" translatable="false">DUMMY\nCONTENT</string>
     <string name="report">Report</string>
     <string name="report_message">Thank you for helping improve our community.</string>
-    <string name="_0" translatable="false">0</string>
+    <string name="_0">0</string>
     <string name="pln">PLN</string>
-    <string name="Options">Opcje</string>
+    <string name="Options">Options</string>
     <string name="error">"error: "</string>
     <string name="Updated">Updated</string>
     <string name="forbidden_words_error">\"Your offer contains forbidden words!\"</string>

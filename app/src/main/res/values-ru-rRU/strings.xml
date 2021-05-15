@@ -2,36 +2,36 @@
 <resources>
     <string name="app_name">Help_Hub</string>
     <string name="registration_header">Регистрация</string>
-    <string name="email_hint">Адрес E-mail</string>
+    <string name="email_hint">Электронная почта</string>
     <string name="password_hint">Пароль</string>
     <string name="repeat_password_hint">Повторите пароль</string>
     <string name="email_empty_error">Поле не может быть пустым</string>
     <string name="loading_dialog_title">Загрузка...</string>
     <string name="password_match_error" translatable="false">Пароли не совпадают</string>
     <string name="password_length_error" translatable="false">Пароль должен состоять минимум из 8 знаков</string>
-    <string name="email_exists_error" translatable="false">Пользователь с таким e-mail уже существует</string>
-    <string name="email_validate_error" translatable="false">Недействительный e-mail</string>
+    <string name="email_exists_error" translatable="false">Пользователь с данным адресом электронной почты уже существует</string>
+    <string name="email_validate_error" translatable="false">Неверный адрес электронной почты</string>
     <string name="have_account_question">Уже есть аккаунт?</string>
     <string name="go_to_login_text"><u>Войти</u></string>
     <string name="registration_button">Зарегистрироваться</string>
     <string name="new_user_header">Введите необходимые данные</string>
     <string name="new_user_user_name">Имя пользователя</string>
     <string name="new_user_phone_number">Телефонный номер</string>
-    <string name="new_user_city">город</string>
+    <string name="new_user_city">Город</string>
     <string name="save_button">Сохранить</string>
-    <string name="edit_button">редактировать</string>
-    <string name="user_data_change_new_password_button">Сменить пароль</string>
-    <string name="add_new_offer_header">Добавить новое предложение</string>
+    <string name="edit_button">Редактировать</string>
+    <string name="user_data_change_new_password_button">Изменить пароль</string>
+    <string name="add_new_offer_header">Предложи помощь</string>
     <string name="title">Название:</string>
     <string name="budget">Бюджет:</string>
     <string name="write_button">Написать</string>
     <string name="new_offer_title" translatable="false">Заголовок предложения</string>
-    <string name="new_offer_category" translatable="false">Выберите категорию</string>
+    <string name="new_offer_category" translatable="false">Категория</string>
     <string name="new_offer_description_title" translatable="false">Описание:</string>
     <string name="new_offer_add_offer_button" translatable="false">Добавить предложение</string>
     <string name="new_offer_description_hint" translatable="false">Запишите, в чем вы хороши и что вы предлагаете.</string>
-    <string name="add_new_notice_header" translatable="false">Добавить новое объявление</string>
-    <string name="new_notice_title" translatable="false">Название уведомления</string>
+    <string name="add_new_notice_header" translatable="false">Попроси помощи</string>
+    <string name="new_notice_title" translatable="false">Заголовок проблемы</string>
     <string name="new_notice_category" translatable="false">Категория</string>
     <string name="new_notice_select_category" translatable="false">Выберите категорию</string>
     <string name="new_notice_description_title" translatable="false">Описание:</string>
@@ -39,99 +39,107 @@
     <string name="new_notice_description_hint" translatable="false">Запишите, в чем ваша проблема. Добавление фотографий - очень хорошая идея. Используй эту возможность, и ты не пожалеешь об этом.</string>
     <string name="cost">Стоимость:</string>
     <string name="new_notice_currency" translatable="false">PLN</string>
-    <string name="new_notice_budget_placeholder" translatable="false">0 руб</string>
+    <string name="new_notice_budget_placeholder" translatable="false">0 zł</string>
     <string name="new_notice_budget" translatable="false">Бюджет:</string>
-    <string name="new_offer_cost_placeholder" translatable="false">0 руб</string>
+    <string name="new_offer_cost_placeholder" translatable="false">0 zł</string>
     <string name="new_offer_cost" translatable="false">Стоимость:</string>
     <string name="new_offer_currency" translatable="false">PLN</string>
-    <string name="login_title">.</string>
-    <string name="login_button">.</string>
-    <string name="no_account_question">.</string>
-    <string name="go_to_registration_text">.</string>
-    <string name="forgot_password_question">.</string>
-    <string name="login_error">.</string>
-    <string name="reset_password_title">.</string>
-    <string name="reset_password_message">.</string>
-    <string name="reset_positive_button">.</string>
-    <string name="change_password_title">.</string>
-    <string name="change_password_message">.</string>
-    <string name="change_positive_button">.</string>
-    <string name="empty_field_error">.</string>
-    <string name="portfolio_title">.</string>
-    <string name="add_new_portfolio_photo">.</string>
-    <string name="show_all_portfolio_photos">.</string>
-    <string name="logout_title">.</string>
-    <string name="title_need_help">.</string>
-    <string name="title_want_to_help">.</string>
-    <string name="title_messages">.</string>
-    <string name="title_user_profile">.</string>
-    <string name="title_administration_panel">.</string>
-    <string name="new_offer_select_category">.</string>
-    <string name="new_offer_title_hint">.</string>
-    <string name="new_notice_title_hint">.</string>
-    <string name="example_category_title">.</string>
-    <string name="need_help_dialog">.</string>
-    <string name="want_to_help_dialog">.</string>
-    <string name="bookmark">.</string>
-    <string name="added_to_bookmarks">.</string>
-    <string name="removed_from_bookmarks">.</string>
-    <string name="added_to_observed">.</string>
-    <string name="removed_from_observed">.</string>
-    <string name="message_hint">.</string>
-    <string name="search">.</string>
-    <string name="type_something">.</string>
-    <string name="filters">.</string>
-    <string name="apply">.</string>
-    <string name="cancel">.</string>
-    <string name="city">.</string>
-    <string name="only_observable">.</string>
-    <string name="only_my_own">.</string>
-    <string name="all">.</string>
-    <string name="example_category">.</string>
-    <string name="back">.</string>
-    <string name="assign_as_a_performer">.</string>
-    <string name="yes">.</string>
-    <string name="assign">.</string>
-    <string name="this_user_assigned_as_the_performer">.</string>
-    <string name="another_performer">.</string>
-    <string name="done">.</string>
-    <string name="you_are_assigned_as_the_performer">.</string>
-    <string name="performer_assigned">.</string>
-    <string name="wait_while_work_confirmed">.</string>
-    <string name="word_is_done">.</string>
-    <string name="work_is_done">.</string>
-    <string name="accept">.</string>
-    <string name="send">.</string>
-    <string name="success">.</string>
-    <string name="minimum_rating">.</string>
-    <string name="optional_comment">.</string>
-    <string name="announcement_closed">.</string>
-    <string name="performer_selected">.</string>
-    <string name="help_this_person_question">.</string>
-    <string name="help">.</string>
-    <string name="already_agree_to_help">.</string>
-    <string name="rate_help_level">.</string>
-    <string name="rate">.</string>
-    <string name="already_rate_performer">.</string>
-    <string name="thank_for_help">.</string>
-    <string name="opinions">.</string>
-    <string name="cancel_work">.</string>
-    <string name="work_canceled_by_performer">.</string>
-    <string name="report">.</string>
-    <string name="report_message">.</string>
-    <string name="pln">.</string>
-    <string name="Options">.</string>
-    <string name="error">.</string>
-    <string name="Updated">.</string>
-    <string name="User_created">.</string>
-    <string name="forbidden_words_error">.</string>
-    <string name="Change_password_link">.</string>
-    <string name="Reset_password">.</string>
-    <string name="No_needHelp_offerts">.</string>
-    <string name="delete_confirmation">.</string>
-    <string name="confirm">.</string>
-    <string name="decline">.</string>
-    <string name="no_wantHelp_offerts">.</string>
-    <string name="Delete">.</string>
-    <string name="remove_performer">.</string>
+    <string name="login_title">Вход</string>
+    <string name="login_button">Войди</string>
+    <string name="no_account_question">Нет аккаунта?</string>
+    <string name="go_to_registration_text">"<u>Регистр</u>     "</string>
+    <string name="forgot_password_question">Забыл пароль?</string>
+    <string name="login_error">Неверный адрес электронной почты или пароль</string>
+    <string name="reset_password_title">Сбросить пароль</string>
+    <string name="reset_password_message">Введите адрес электронной почты</string>
+    <string name="reset_positive_button">Сбросить</string>
+    <string name="change_password_title">Изменить пароль</string>
+    <string name="change_password_message">Введите старый пароль</string>
+    <string name="change_positive_button">Изменить</string>
+    <string name="empty_field_error">Поле не может быть пустым</string>
+    <string name="portfolio_title"><u>Портфолио</u></string>
+    <string name="add_new_portfolio_photo">Добавить новые фото</string>
+    <string name="show_all_portfolio_photos">Показать все</string>
+    <string name="logout_title"><u>Выйти</u></string>
+    <string name="title_need_help">Нужна помощь</string>
+    <string name="title_want_to_help">Предлагаю помощь</string>
+    <string name="title_messages">Сообщения</string>
+    <string name="title_user_profile">Профиль</string>
+    <string name="title_administration_panel">Администрация</string>
+    <string name="new_offer_select_category">"Bыберите категорию "</string>
+    <string name="new_offer_title_hint">например: Я отремонтирую вашу стиральную машину</string>
+    <string name="new_notice_title_hint">например: Стиральная машина сломалась</string>
+    <string name="example_category_title">Пример названия категории</string>
+    <string name="need_help_dialog">МНЕ НУЖНА ПОМОЩЬ</string>
+    <string name="want_to_help_dialog">ПРЕДЛАГАЮ ПОМОЩЬ</string>
+    <string name="bookmark">Закладка</string>
+    <string name="added_to_bookmarks">Добавить в закладки</string>
+    <string name="removed_from_bookmarks">Удалить из закладок</string>
+    <string name="added_to_observed">Добавить в наблюданные</string>
+    <string name="removed_from_observed">Удалить из наблюдаемых</string>
+    <string name="message_hint">Введите ваше сообщение</string>
+    <string name="search">Поиск</string>
+    <string name="type_something">Введите что-нибудь</string>
+    <string name="filters">фильтры</string>
+    <string name="apply">"ПРИМЕНЯТЬ "</string>
+    <string name="cancel">ОТМЕНИТЬ</string>
+    <string name="city">Город</string>
+    <string name="only_observable">ТОЛЬКО НАБЛЮДАЕМЫЕ</string>
+    <string name="only_my_own">ТОЛЬКО СОБСТВЕННЫЕ</string>
+    <string name="all">ВСЕ</string>
+    <string name="example_category">ОБРАЗЕЦ КАТЕГОРИИ</string>
+    <string name="back">Возвращаться</string>
+    <string name="assign_as_a_performer">Назначить подрядчиком?</string>
+    <string name="yes">Да</string>
+    <string name="assign">назначать</string>
+    <string name="this_user_assigned_as_the_performer">Этот пользователь назначенный исполнителем.</string>
+    <string name="another_performer">Вы уже назначили другого подрядчика.</string>
+    <string name="done">Сделанный</string>
+    <string name="you_are_assigned_as_the_performer">Вы назначены исполнителем.</string>
+    <string name="performer_assigned">Подрядчик назначен успешно</string>
+    <string name="wait_while_work_confirmed">Подождите подтверждения работы</string>
+    <string name="work_is_done">Работа сделана!</string>
+    <string name="accept">Принимать</string>
+    <string name="send">Послать</string>
+    <string name="success">Успех</string>
+    <string name="minimum_rating">Минимальная оценка это 1</string>
+    <string name="optional_comment">Дополнительный комментарий</string>
+    <string name="announcement_closed">Объявление закрыто</string>
+    <string name="performer_selected">Подрядчик выбран.</string>
+    <string name="help_this_person_question">Вы хотите помочь этому человеку?</string>
+    <string name="help">Помощь</string>
+    <string name="already_agree_to_help">Вы уже согласились помочь этому человеку.</string>
+    <string name="rate_help_level">Оцените, пожалуйста, уровень полученной помощи.</string>
+    <string name="rate">Оцените</string>
+    <string name="already_rate_performer">Вы уже оценили этого исполнителя.</string>
+    <string name="thank_for_help">Спасибо за вашу помощь.</string>
+    <string name="opinions">мнения</string>
+    <string name="cancel_work">Работа отменена</string>
+    <string name="work_canceled_by_performer">Работа отменена подрядчиком</string>
+    <string name="report">3аявить</string>
+    <string name="report_message">Спасибо за помощь в улучшении нашего сообщества.</string>
+    <string name="pln">PLN</string>
+    <string name="Options">Параметры</string>
+    <string name="error">ошибка:</string>
+    <string name="Updated">Обновлено</string>
+    <string name="User_created">Пользователь создан</string>
+    <string name="forbidden_words_error">Ваше предложение содержит запрещенные слова!</string>
+    <string name="Change_password_link">Ссылка была отправлена ​​на ваш электронный адрес</string>
+    <string name="Reset_password">Ссылка для сброса была отправлена ​​на ваш адрес электронной почты.</string>
+    <string name="No_needHelp_offerts">Вроде нет предложения.</string>
+    <string name="delete_confirmation">Вы уверены, что хотите удалить это?</string>
+    <string name="confirm">Да</string>
+    <string name="decline">Нет</string>
+    <string name="no_wantHelp_offerts">Вроде нет предложения.</string>
+    <string name="Delete">Удалить</string>
+    <string name="remove_performer">Подрядчик удален. Объявление снова доступно.</string>
+    <string name="example_user_name" translatable="false">"Томаш Квасигрох "</string>
+    <string name="example_user_phone_number" translatable="false">123456789</string>
+    <string name="placeholder" translatable="false">"Заполнитель "</string>
+    <string name="cost_placeholder" translatable="false">Стоимость</string>
+    <string name="budget_placeholder" translatable="false">Бюджет</string>
+    <string name="description_placeholder" translatable="false">Описание</string>
+    <string name="title_placeholder" translatable="false">Заголовок</string>
+    <string name="word_is_done">Работа сделана!</string>
+    <string name="_0" translatable="false">0</string>
 </resources>

@@ -188,7 +188,7 @@
     <string name="_0">0</string>
     <string name="pln">PLN</string>
     <string name="Options">Options</string>
-    <string name="error">"error: "</string>
+    <string name="error">"Error: "</string>
     <string name="Updated">Updated</string>
     <string name="forbidden_words_error">\"Your offer contains forbidden words!\"</string>
     <string name="User_created">User created</string>

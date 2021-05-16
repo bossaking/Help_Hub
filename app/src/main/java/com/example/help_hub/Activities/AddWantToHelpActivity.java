@@ -24,7 +24,7 @@ public class AddWantToHelpActivity extends NewOfferNoticeCategory implements Tex
 
     private EditText mNewOfferTitle;
     private EditText mNewOfferDescription;
-    private EditText mNewNoticePrice;
+    private EditText needHelpPrice;
     private Button addNewOfferButton, categoriesButton;
 
     private FirebaseFirestore firebaseFirestore;
@@ -60,7 +60,7 @@ public class AddWantToHelpActivity extends NewOfferNoticeCategory implements Tex
         });
 
         mNewOfferTitle = findViewById(R.id.new_offer_title_edit_text);
-        mNewNoticePrice = findViewById(R.id.new_offer_cost);
+        needHelpPrice = findViewById(R.id.new_offer_cost);
         mNewOfferDescription = findViewById(R.id.new_offer_description_edit_text);
 
         defaultBackground = mNewOfferTitle.getBackground();
@@ -75,7 +75,7 @@ public class AddWantToHelpActivity extends NewOfferNoticeCategory implements Tex
         addNewOfferButton = findViewById(R.id.new_offer_add_offer_button);
         addNewOfferButton.setOnClickListener(v -> {
             title = mNewOfferTitle.getText().toString().trim();
-            price = mNewNoticePrice.getText().toString().trim();
+            price = needHelpPrice.getText().toString().trim();
             description = mNewOfferDescription.getText().toString().trim();
             addNewOffer();
         });
@@ -108,8 +108,8 @@ public class AddWantToHelpActivity extends NewOfferNoticeCategory implements Tex
             return false;
         }
         if (price.isEmpty()) {
-            mNewNoticePrice.setBackgroundResource(R.drawable.edit_error_border);
-            mNewNoticePrice.setError(getString(R.string.empty_field_error));
+            needHelpPrice.setBackgroundResource(R.drawable.edit_error_border);
+            needHelpPrice.setError(getString(R.string.empty_field_error));
             return false;
         }
         if (categoryTitle.isEmpty()) {

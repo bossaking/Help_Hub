@@ -12,6 +12,6 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/alicja"/>
+        android:src="@drawable/alicja" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

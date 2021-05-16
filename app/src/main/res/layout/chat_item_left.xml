@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layoutDirection="ltr"
-             android:layout_margin="@dimen/little_margin"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/little_margin"
+    android:layoutDirection="ltr">
 
     <FrameLayout
-            android:background="@drawable/incoming_speech"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/incoming_speech">
 
         <TextView
-                android:id="@+id/message_time_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10:55"
-                android:textSize="12sp"
-                android:textColor="@color/grayColor"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="@dimen/little_margin"
-        />
+            android:id="@+id/message_time_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/little_margin"
+            android:text="10:55"
+            android:textColor="@color/grayColor"
+            android:textSize="12sp" />
 
         <ImageView
             android:id="@+id/message_image_view"
@@ -30,24 +30,22 @@
             android:paddingTop="4dp"
             android:paddingEnd="10dp"
             android:paddingBottom="20dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
-                android:id="@+id/message_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/little_margin"
-                android:textSize="15sp"
-                android:lineSpacingExtra="2dp"
-                android:paddingStart="20dp"
-                android:paddingTop="4dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="15dp"
-                android:textColor="@color/blackColor"
-                android:autoLink="web"
-                android:text="asdasdadsd"/>
-
-
+            android:id="@+id/message_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/little_margin"
+            android:autoLink="web"
+            android:lineSpacingExtra="2dp"
+            android:paddingStart="20dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="15dp"
+            android:text="asdasdadsd"
+            android:textColor="@color/blackColor"
+            android:textSize="15sp" />
 
     </FrameLayout>
 

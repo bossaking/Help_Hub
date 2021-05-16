@@ -293,7 +293,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
     @Override
     public void onMessageClick(int position) {
         if (messages.get(position).getType().equals("Image")) {
-            Intent intent = new Intent(this, FullscreenImageActivity.class);
+            Intent intent = new Intent(this, FullScreenImageActivity.class);
             intent.putExtra("image", messages.get(position).getMessage());
             startActivity(intent);
         } else {

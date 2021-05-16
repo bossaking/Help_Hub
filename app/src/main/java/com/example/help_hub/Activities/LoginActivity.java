@@ -21,10 +21,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity implements TextWatcher {
 
-    EditText mEmail, mPassword;
-    Button mLoginButton;
-    TextView goToRegistration, loginErrorSpan, forgotPassword;
-    Drawable defaultTextView;
+    private EditText mEmail, mPassword;
+    private Button mLoginButton;
+    private TextView goToRegistration, loginErrorSpan, forgotPassword;
+    private Drawable defaultTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
         mLoginButton.setOnClickListener(v -> {
             String email = mEmail.getText().toString().trim();
             String password = mPassword.getText().toString().trim();
+
             final LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
             loadingDialog.StartLoadingDialog();
 
@@ -66,20 +67,21 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
                 return;
             }
 
-
-            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Toast.makeText(LoginActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    finish();
-                } else {
-                    Toast.makeText(LoginActivity.this, getString(R.string.error) + task.getException(), Toast.LENGTH_LONG).show();
-                    loadingDialog.DismissDialog();
-                }
-            }).addOnFailureListener(e -> {
-                loginErrorSpan.setVisibility(View.VISIBLE);
-                loadingDialog.DismissDialog();
-            });
+            firebaseAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(LoginActivity.this, getString(R.string.error) + task.getException(), Toast.LENGTH_LONG).show();
+                            loadingDialog.DismissDialog();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        loginErrorSpan.setVisibility(View.VISIBLE);
+                        loadingDialog.DismissDialog();
+                    });
         });
 
         forgotPassword.setOnClickListener(v -> {
@@ -90,7 +92,6 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
     }
 
     @Override
@@ -102,11 +103,9 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-
     }
 
     private boolean ValidateEmail(String email) {
-
         if (email.isEmpty()) {
             mEmail.setError(getString(R.string.email_empty_error));
             mEmail.setBackgroundResource(R.drawable.edit_error_border);
@@ -123,7 +122,6 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
     }
 
     private boolean ValidatePassword(String password) {
-
         if (password.length() < 8) {
             mPassword.setError(getString(R.string.password_length_error));
             mPassword.setBackgroundResource(R.drawable.edit_error_border);

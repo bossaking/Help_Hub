@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.AddNeedHelpActivity;
 import com.example.help_hub.Activities.EditNeedHelpActivity;
-import com.example.help_hub.Activities.NeedHelpDetails;
+import com.example.help_hub.Activities.DetailsNeedHelpActivity;
 import com.example.help_hub.AlertDialogues.FiltersDialog;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.OtherClasses.Category;
@@ -517,12 +517,12 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
             });
 
 
-            Intent intent = new Intent(view.getContext(), NeedHelpDetails.class);
-            intent.putExtra(NeedHelpDetails.EXTRA_NEED_HELP_ID, needHelp.getId());
-            intent.putExtra(NeedHelpDetails.EXTRA_NEED_HELP_TITLE, needHelp.getTitle());
-            intent.putExtra(NeedHelpDetails.EXTRA_NEED_HELP_PRICE, needHelp.getPrice());
-            intent.putExtra(NeedHelpDetails.EXTRA_NEED_HELP_DESCRIPTION, needHelp.getDescription());
-            intent.putExtra(NeedHelpDetails.EXTRA_NEED_HELP_USER_ID, needHelp.getUserId());
+            Intent intent = new Intent(view.getContext(), DetailsNeedHelpActivity.class);
+            intent.putExtra(DetailsNeedHelpActivity.EXTRA_NEED_HELP_ID, needHelp.getId());
+            intent.putExtra(DetailsNeedHelpActivity.EXTRA_NEED_HELP_TITLE, needHelp.getTitle());
+            intent.putExtra(DetailsNeedHelpActivity.EXTRA_NEED_HELP_PRICE, needHelp.getPrice());
+            intent.putExtra(DetailsNeedHelpActivity.EXTRA_NEED_HELP_DESCRIPTION, needHelp.getDescription());
+            intent.putExtra(DetailsNeedHelpActivity.EXTRA_NEED_HELP_USER_ID, needHelp.getUserId());
             startActivityForResult(intent, NEED_HELP_DETAILS_REQUEST_CODE);
         }
     }

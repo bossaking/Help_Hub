@@ -67,7 +67,7 @@
         <activity
             android:name=".Activities.UserDataChangeActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".Activities.NewUserBasicInformationsActivity" />
+        <activity android:name=".Activities.NewUserBasicInformationActivity" />
         <activity android:name=".Activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

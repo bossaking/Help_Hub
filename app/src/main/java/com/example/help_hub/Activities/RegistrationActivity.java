@@ -83,7 +83,7 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
                             mEmail.setBackgroundResource(R.drawable.edit_error_border);
                             mEmail.requestFocus();
                         } else {
-                            Intent intent = new Intent(getApplicationContext(), NewUserBasicInformationsActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), NewUserBasicInformationActivity.class);
                             intent.putExtra("USER_EMAIL", email);
                             intent.putExtra("USER_PASSWORD", password);
                             startActivity(intent);

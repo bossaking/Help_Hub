@@ -43,6 +43,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
@@ -54,33 +55,28 @@ import java.util.Map;
 
 public class EditNeedHelpActivity extends NewOfferNoticeCategory implements TextWatcher, PortfolioImagesRecyclerAdapter.OnClickListener, PortfolioImagesRecyclerAdapter.OnLongClickListener {
 
-    public static final String EXTRA_NEED_HELP_ID = "NEED_HELP_ID";
-    public static final String EXTRA_NEED_HELP_TITLE = "NEED_HELP_TITLE";
-    public static final String EXTRA_NEED_HELP_PRICE = "NEED_HELP_PRICE";
-    public static final String EXTRA_NEED_HELP_DESCRIPTION = "NEED_HELP_DESCRIPTION";
-    public static final String EXTRA_NEED_HELP_CATEGORY = "NEED_HELP_CATEGORY";
-    public static final String EXTRA_NEED_HELP_SUBCATEGORY = "NEED_HELP_SUBCATEGORY";
+    public static final String EXTRA_NEED_HELP_ID = "NEED_HELP_ID",
+            EXTRA_NEED_HELP_TITLE = "NEED_HELP_TITLE",
+            EXTRA_NEED_HELP_PRICE = "NEED_HELP_PRICE",
+            EXTRA_NEED_HELP_DESCRIPTION = "NEED_HELP_DESCRIPTION",
+            EXTRA_NEED_HELP_CATEGORY = "NEED_HELP_CATEGORY",
+            EXTRA_NEED_HELP_SUBCATEGORY = "NEED_HELP_SUBCATEGORY";
 
-    private EditText needHelpTitle;
-    private EditText needHelpPrice;
-    private EditText needHelpDescription;
+    private EditText needHelpTitle, needHelpPrice, needHelpDescription;
     private Button editButton, categoriesButton;
+    private Drawable defaultBackground;
+    private List<PortfolioImage> needHelpImages;
+    private int imagesCount = 0;
+
+    private NeedHelp needHelp;
 
     private FirebaseFirestore firebaseFirestore;
-    StorageReference storageReference;
-
-    private Drawable defaultBackground;
-
-    NeedHelp needHelp;
+    private StorageReference storageReference;
 
     private RecyclerView recyclerView;
     private PortfolioImagesRecyclerAdapter adapter;
 
-    private List<PortfolioImage> needHelpImages;
-
-    int imagesCount = 0;
-
-    Context context;
+    private Context context;
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -124,9 +120,8 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
         subCategoryTitle = needHelp.getSubcategory();
         categoriesButton.setText(needHelp.getCategory() + " / " + needHelp.getSubcategory());
         categoriesButton.setOnClickListener(v -> SelectCategory());
-        SetOnTitleChangedListener(() -> {
-            categoriesButton.setText(categoryTitle + " / " + subCategoryTitle);
-        });
+
+        SetOnTitleChangedListener(() -> categoriesButton.setText(categoryTitle + " / " + subCategoryTitle));
 
         editButton = findViewById(R.id.new_offer_add_offer_button);
         editButton.setText(getString(R.string.edit_button));
@@ -143,29 +138,25 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
 
         recyclerView = findViewById(R.id.new_notice_images);
         recyclerView.setHasFixedSize(true);
-
         recyclerView.setAdapter(adapter);
     }
 
     private void editNeedHelp() {
-        if (!validateData() || !CheckForbiddenWords()) {
-            return;
-        }
+        if (!validateData() || !CheckForbiddenWords()) return;
 
         DocumentReference documentReference = firebaseFirestore.collection("announcement").document(needHelp.getId());
 
-        Map<String, Object> editMap = new HashMap<>();
-        editMap.put("Title", title);
-        editMap.put("Price", price);
-        editMap.put("Description", description);
-        editMap.put("Category", categoryTitle);
-        editMap.put("Subcategory", subCategoryTitle);
+        Map<String, Object> editNeedHelpMap = new HashMap<>();
+        editNeedHelpMap.put("Title", title);
+        editNeedHelpMap.put("Price", price);
+        editNeedHelpMap.put("Description", description);
+        editNeedHelpMap.put("Category", categoryTitle);
+        editNeedHelpMap.put("Subcategory", subCategoryTitle);
 
-        documentReference.update(editMap).addOnCompleteListener(task -> {
+        documentReference.update(editNeedHelpMap).addOnCompleteListener(task -> {
             Toast.makeText(getApplicationContext(), R.string.Updated, Toast.LENGTH_SHORT).show();
             finish();
         }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
-
 
         for (int i = 0; i < imagesCount; i++) {
             StorageReference imageRef = storageReference.child("announcement/" + needHelp.getId() + "/images/photo" + i);
@@ -175,20 +166,16 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
         loadImagesToDatabase();
     }
 
-    private void loadImagesToDatabase(){
-
+    private void loadImagesToDatabase() {
         for (int i = 0; i < needHelpImages.size() - 1; i++) {
             PortfolioImage portfolioImage = needHelpImages.get(i);
             StorageReference imgRef = FirebaseStorage.getInstance().getReference().child("announcement/" + needHelp.getId() + "/images/photo" + i);
-            imgRef.putBytes(portfolioImage.getImageBytes()).addOnSuccessListener(taskSnapshot -> {
-                Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show();
-            }).addOnFailureListener(e -> {
-                Toast.makeText(context, R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-            });
+
+            imgRef.putBytes(portfolioImage.getImageBytes())
+                    .addOnSuccessListener(taskSnapshot -> Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(context, R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
         }
-
     }
-
 
     private boolean validateData() {
         if (title.isEmpty()) {
@@ -205,13 +192,12 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
             Toast.makeText(this, getString(R.string.empty_field_error), Toast.LENGTH_LONG).show();
             return false;
         }
+
         return true;
     }
 
-
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
     }
 
     @Override
@@ -221,7 +207,6 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
 
     @Override
     public void afterTextChanged(Editable editable) {
-
     }
 
     @Override
@@ -242,13 +227,12 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
 
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             ClipData clipData = data.getClipData();
+
             if (clipData != null) {
                 for (int i = 0; i < clipData.getItemCount(); i++) {
-
                     Uri imageUri = clipData.getItemAt(i).getUri();
 
-                    PortfolioImage needHelpImage = new PortfolioImage(
-                            DocumentFile.fromSingleUri(getApplicationContext(), imageUri).getName(), imageUri);
+                    PortfolioImage needHelpImage = new PortfolioImage(DocumentFile.fromSingleUri(getApplicationContext(), imageUri).getName(), imageUri);
 
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
@@ -261,53 +245,51 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
                         Toast.makeText(getApplicationContext(), R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     }
 
-
                     AddImage(needHelpImage);
                 }
             }
         }
+
         adapter.notifyDataSetChanged();
     }
 
     public void getAllPhotos() {
-
         StorageReference imagesRef = storageReference.child("announcement/" + needHelp.getId() + "/images");
+
         needHelpImages = new ArrayList<>();
         AddImage(new PortfolioImage("DefaultImage", Uri.parse("android.resource://" + context.getPackageName() + "/drawable/add_a_photo_24")));
 
         imagesRef.listAll().addOnSuccessListener(listResult -> {
+
             for (StorageReference fileRef : listResult.getItems()) {
                 fileRef.getMetadata().addOnSuccessListener(storageMetadata -> {
                     String name = storageMetadata.getName();
-                    fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        fileRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
-                            PortfolioImage image = new PortfolioImage(name, uri);
-                            image.setImageBytes(bytes);
-                            AddImage(image);
-                            imagesCount++;
-                            adapter.notifyDataSetChanged();
-                        }).addOnFailureListener(e -> {
-                            Toast.makeText(getApplicationContext(),R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                        });
-                    }).addOnCompleteListener(task -> {
-                    });
+                    fileRef.getDownloadUrl()
+                            .addOnSuccessListener(uri -> fileRef.getBytes(Long.MAX_VALUE)
+                                    .addOnSuccessListener(bytes -> {
+                                        PortfolioImage image = new PortfolioImage(name, uri);
+                                        image.setImageBytes(bytes);
+                                        AddImage(image);
+                                        imagesCount++;
+                                        adapter.notifyDataSetChanged();
+                                    })
+                                    .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show()))
+                            .addOnCompleteListener(task -> {
+                            });
                 });
             }
         });
     }
 
     public void AddImage(PortfolioImage portfolioImage) {
-        if (getNeedHelpImagesCount() == 0) {
+        if (getNeedHelpImagesCount() == 0)
             needHelpImages.add(needHelpImages.size(), portfolioImage);
-        } else {
-            needHelpImages.add(needHelpImages.size() - 1, portfolioImage);
-        }
+        else needHelpImages.add(needHelpImages.size() - 1, portfolioImage);
     }
 
     @Override
     public void onImageClick(int position) {
-        if (position == getNeedHelpImagesCount() - 1)
-            addNewNeedHelpPhotos();
+        if (position == getNeedHelpImagesCount() - 1) addNewNeedHelpPhotos();
     }
 
     private void addNewNeedHelpPhotos() {
@@ -318,14 +300,14 @@ public class EditNeedHelpActivity extends NewOfferNoticeCategory implements Text
         } catch (Exception e) {
             intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         }
+
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         startActivityForResult(intent, 100);
     }
 
     @Override
     public void onImageLongClick(int position) {
-        if (position == getNeedHelpImagesCount() - 1)
-            return;
+        if (position == getNeedHelpImagesCount() - 1) return;
 
         LayoutInflater layoutInflater = getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.portfolio_photo_options, null);

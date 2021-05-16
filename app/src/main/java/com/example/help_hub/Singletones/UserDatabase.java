@@ -22,19 +22,18 @@ public class UserDatabase {
         void ProfileImageLoaded(Uri uri);
     }
 
-    public interface ProfileImageChanged{
+    public interface ProfileImageChanged {
         void ProfileImageChanged(Uri uri);
     }
 
-    StorageReference storageReference;
+    private String userId;
+    private User user;
+
+    private StorageReference storageReference;
+    private FirebaseFirestore firebaseFirestore;
     FirebaseAuth firebaseAuth;
-    FirebaseFirestore firebaseFirestore;
 
-    String userId;
-
-    Context context;
-
-    User user;
+    private Context context;
 
     public static UserDatabase instance;
 
@@ -43,7 +42,6 @@ public class UserDatabase {
     public ProfileImageChanged profileImageChanged;
 
     private UserDatabase(Activity myActivity, String userId) {
-
         this.context = myActivity.getApplicationContext();
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -53,19 +51,16 @@ public class UserDatabase {
     }
 
     public static UserDatabase getInstance(Activity activity, String userId) {
+        if (instance == null) instance = new UserDatabase(activity, userId);
 
-        if (instance == null) {
-            instance = new UserDatabase(activity, userId);
-        }
         return instance;
     }
 
-    public static void ClearInstance() {
+    public static void clearInstance() {
         instance = null;
     }
 
-    public User getOtherUserInformations(String userId){
-
+   /* public User getOtherUserInformations(String userId) {
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
         User user = new User(userId);
         documentReference.addSnapshotListener((documentSnapshot, e) -> {
@@ -96,63 +91,56 @@ public class UserDatabase {
         });
 
         return user;
-    }
+    }*/
 
     public void getUserFromFirebase(String userId) {
-
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
         user = new User(userId);
+
         documentReference.addSnapshotListener((documentSnapshot, e) -> {
             user.setName(documentSnapshot.getString("Name"));
             user.setPhoneNumber(documentSnapshot.getString("Phone number"));
             user.setCity(documentSnapshot.getString("City"));
             user.setDescription(documentSnapshot.getString("Description"));
             user.setRole(documentSnapshot.getString("Role"));
-            if(documentSnapshot.contains("UserRating")) {
+
+            if (documentSnapshot.contains("UserRating")) {
                 user.setUserRating(documentSnapshot.getLong("UserRating"));
                 user.setAllOpinionsCount(documentSnapshot.getLong("AllOpinionsCount"));
-            }else{
-                user.setUserRating(0);
-            }
-            if (profileDataLoaded != null) {
-                profileDataLoaded.ProfileDataLoaded();
-            }
+            } else user.setUserRating(0);
 
+            if (profileDataLoaded != null) profileDataLoaded.ProfileDataLoaded();
         });
 
         //PROFILE IMAGE
         StorageReference profileRef = storageReference.child("users/" + userId + "/profile.jpg");
-        profileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            user.setProfileImage(uri);
-            if (profileImageLoaded != null) {
-                profileImageLoaded.ProfileImageLoaded(uri);
-            }
-        }).addOnFailureListener(e -> {
-            user.setProfileImage(Uri.parse("android.resource://" + context.getPackageName() + "/drawable/default_user_image"));
-            if (profileImageLoaded != null) {
-                profileImageLoaded.ProfileImageLoaded(user.getProfileImage());
-            }
-            Toast.makeText(context, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-        });
-
+        profileRef.getDownloadUrl()
+                .addOnSuccessListener(uri -> {
+                    user.setProfileImage(uri);
+                    if (profileImageLoaded != null) profileImageLoaded.ProfileImageLoaded(uri);
+                })
+                .addOnFailureListener(e -> {
+                    user.setProfileImage(Uri.parse("android.resource://" + context.getPackageName() + "/drawable/default_user_image"));
+                    if (profileImageLoaded != null)
+                        profileImageLoaded.ProfileImageLoaded(user.getProfileImage());
+                    //Toast.makeText(context, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                });
     }
 
-    public void SetUserProfileImage(Uri imageUri) {
+    public void setUserProfileImage(Uri imageUri) {
         user.setProfileImage(imageUri);
-        LoadUserProfileImageToFirebase();
+        loadUserProfileImageToFirebase();
     }
 
-    private void LoadUserProfileImageToFirebase() {
-
+    private void loadUserProfileImageToFirebase() {
         StorageReference fileRef = storageReference.child("users/" + userId + "/profile.jpg");
-        fileRef.putFile(user.getProfileImage()).addOnSuccessListener(taskSnapshot -> {
-            Toast.makeText(context, "Photo has been loaded", Toast.LENGTH_SHORT).show();
-            if(profileImageChanged != null){
-                profileImageChanged.ProfileImageChanged(user.getProfileImage());
-            }
-        }).addOnFailureListener(e -> {
-            Toast.makeText(context, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-        });
+        fileRef.putFile(user.getProfileImage())
+                .addOnSuccessListener(taskSnapshot -> {
+                    Toast.makeText(context, "Photo has been loaded", Toast.LENGTH_SHORT).show();
+                    if (profileImageChanged != null)
+                        profileImageChanged.ProfileImageChanged(user.getProfileImage());
+                })
+                .addOnFailureListener(e -> Toast.makeText(context, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
     }
 
     public User getUser() {

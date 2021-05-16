@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.AddWantToHelpActivity;
 import com.example.help_hub.Activities.EditWantToHelpActivity;
-import com.example.help_hub.Activities.WantToHelpDetails;
+import com.example.help_hub.Activities.DetailsWantToHelpActivity;
 import com.example.help_hub.AlertDialogues.FiltersDialog;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.OtherClasses.Category;
@@ -504,12 +504,12 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
                 ref.update(map);
             });
 
-            Intent intent = new Intent(view.getContext(), WantToHelpDetails.class);
-            intent.putExtra(WantToHelpDetails.EXTRA_WANT_TO_HELP_ID, wantToHelp.getId());
-            intent.putExtra(WantToHelpDetails.EXTRA_WANT_TO_HELP_TITLE, wantToHelp.getTitle());
-            intent.putExtra(WantToHelpDetails.EXTRA_WANT_TO_HELP_PRICE, wantToHelp.getPrice());
-            intent.putExtra(WantToHelpDetails.EXTRA_WANT_TO_HELP_DESCRIPTION, wantToHelp.getDescription());
-            intent.putExtra(WantToHelpDetails.EXTRA_WANT_TO_HELP_USER_ID, wantToHelp.getUserId());
+            Intent intent = new Intent(view.getContext(), DetailsWantToHelpActivity.class);
+            intent.putExtra(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_ID, wantToHelp.getId());
+            intent.putExtra(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_TITLE, wantToHelp.getTitle());
+            intent.putExtra(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_PRICE, wantToHelp.getPrice());
+            intent.putExtra(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_DESCRIPTION, wantToHelp.getDescription());
+            intent.putExtra(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_USER_ID, wantToHelp.getUserId());
             startActivityForResult(intent, WANT_TO_HELP_DETAILS_REQUEST_CODE);
         }
     }

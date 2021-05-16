@@ -20,7 +20,7 @@
         <activity android:name=".Activities.FullScreenImageActivity"></activity>
         <activity android:name=".Activities.AllOpinionsActivity" />
         <activity
-            android:name=".Activities.WantToHelpDetails"
+            android:name=".Activities.DetailsWantToHelpActivity"
             android:label="@string/app_name">
             <intent-filter
                 android:autoVerify="true"

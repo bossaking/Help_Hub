@@ -12,14 +12,13 @@ import android.view.MenuItem;
 import com.example.help_hub.Fragments.WantToHelpDetailsFragment;
 import com.example.help_hub.R;
 
-public class WantToHelpDetails extends AppCompatActivity {
+public class DetailsWantToHelpActivity extends AppCompatActivity {
 
-
-    public static final String EXTRA_WANT_TO_HELP_ID = "NEED_HELP_ID";
-    public static final String EXTRA_WANT_TO_HELP_TITLE = "NEED_HELP_TITLE";
-    public static final String EXTRA_WANT_TO_HELP_PRICE = "NEED_HELP_PRICE";
-    public static final String EXTRA_WANT_TO_HELP_DESCRIPTION = "NEED_HELP_DESCRIPTION";
-    public static final String EXTRA_WANT_TO_HELP_USER_ID = "NEED_HELP_USER_ID";
+    public static final String EXTRA_WANT_TO_HELP_ID = "NEED_HELP_ID",
+            EXTRA_WANT_TO_HELP_TITLE = "NEED_HELP_TITLE",
+            EXTRA_WANT_TO_HELP_PRICE = "NEED_HELP_PRICE",
+            EXTRA_WANT_TO_HELP_DESCRIPTION = "NEED_HELP_DESCRIPTION",
+            EXTRA_WANT_TO_HELP_USER_ID = "NEED_HELP_USER_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +49,8 @@ public class WantToHelpDetails extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0)
             getSupportFragmentManager().popBackStackImmediate();
-        } else {
-            super.onBackPressed();
-        }
+        else super.onBackPressed();
     }
 }

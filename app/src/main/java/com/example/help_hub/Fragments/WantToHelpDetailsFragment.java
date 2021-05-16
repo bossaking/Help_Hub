@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.ChatActivity;
-import com.example.help_hub.Activities.WantToHelpDetails;
+import com.example.help_hub.Activities.DetailsWantToHelpActivity;
 import com.example.help_hub.AlertDialogues.ReportDialog;
 import com.example.help_hub.R;
 import com.google.android.gms.tasks.Task;
@@ -103,11 +103,11 @@ public class WantToHelpDetailsFragment extends Fragment {
                     .document(getActivity().getIntent().getData().getQueryParameter("id"));
             Bundle finalBundle = bundle;
             reference.get().addOnSuccessListener(documentSnapshot -> {
-                finalBundle.putString(WantToHelpDetails.EXTRA_WANT_TO_HELP_TITLE, documentSnapshot.getString("Title"));
-                finalBundle.putString(WantToHelpDetails.EXTRA_WANT_TO_HELP_PRICE, documentSnapshot.getString("Price"));
-                finalBundle.putString(WantToHelpDetails.EXTRA_WANT_TO_HELP_DESCRIPTION, documentSnapshot.getString("Description"));
-                finalBundle.putString(WantToHelpDetails.EXTRA_WANT_TO_HELP_USER_ID, documentSnapshot.getString("UserId"));
-                finalBundle.putString(WantToHelpDetails.EXTRA_WANT_TO_HELP_ID, documentSnapshot.getId());
+                finalBundle.putString(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_TITLE, documentSnapshot.getString("Title"));
+                finalBundle.putString(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_PRICE, documentSnapshot.getString("Price"));
+                finalBundle.putString(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_DESCRIPTION, documentSnapshot.getString("Description"));
+                finalBundle.putString(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_USER_ID, documentSnapshot.getString("UserId"));
+                finalBundle.putString(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_ID, documentSnapshot.getId());
 
                 showOffer(finalBundle);
             });
@@ -123,11 +123,11 @@ public class WantToHelpDetailsFragment extends Fragment {
     }
 
     private void showOffer(Bundle bundle) {
-        titleTextView.setText(bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_TITLE));
-        priceTextView.setText(bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_PRICE) + " " + getString(R.string.new_notice_currency));
-        descriptionTextView.setText(bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_DESCRIPTION));
+        titleTextView.setText(bundle.getString(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_TITLE));
+        priceTextView.setText(bundle.getString(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_PRICE) + " " + getString(R.string.new_notice_currency));
+        descriptionTextView.setText(bundle.getString(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_DESCRIPTION));
 
-        userId = bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_USER_ID);
+        userId = bundle.getString(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_USER_ID);
 
 
         wantToHelpUserDataCardView.setOnClickListener(viewListener -> {
@@ -137,8 +137,8 @@ public class WantToHelpDetailsFragment extends Fragment {
 
         writeButton.setOnClickListener(viewListener -> {
             Intent intent = new Intent(myContext, ChatActivity.class);
-            intent.putExtra(ChatActivity.NEED_HELP_ID_EXTRA, bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_ID));
-            intent.putExtra(ChatActivity.TITLE_EXTRA, bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_TITLE));
+            intent.putExtra(ChatActivity.NEED_HELP_ID_EXTRA, bundle.getString(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_ID));
+            intent.putExtra(ChatActivity.TITLE_EXTRA, bundle.getString(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_TITLE));
             intent.putExtra(ChatActivity.THIS_USER_ID_EXTRA, userId);
             intent.putExtra(ChatActivity.OTHER_USER_NAME_EXTRA, userNameTextView.getText().toString());
             intent.putExtra(ChatActivity.CHAT_TYPE_EXTRA, "WTH");
@@ -148,7 +148,7 @@ public class WantToHelpDetailsFragment extends Fragment {
             collectionReference.get().addOnSuccessListener(queryDocumentSnapshots -> {
                 for (DocumentSnapshot ds : queryDocumentSnapshots) {
 
-                    if (ds.getString("offer id").equals(bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_ID))) {
+                    if (ds.getString("offer id").equals(bundle.getString(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_ID))) {
                         intent.putExtra(ChatActivity.CHAT_ID_EXTRA, ds.getId());
                         break;
                     }
@@ -158,7 +158,7 @@ public class WantToHelpDetailsFragment extends Fragment {
             });
         });
 
-        offerId = bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_ID);
+        offerId = bundle.getString(DetailsWantToHelpActivity.EXTRA_WANT_TO_HELP_ID);
 
         StorageReference imgUserRef = storageReference.child("users/" + userId + "/profile.jpg");
         imgUserRef.getDownloadUrl().addOnSuccessListener(v -> {

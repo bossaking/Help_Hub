@@ -4,8 +4,7 @@ public class Report {
 
     private String ReportID, Cause, UserID, Type;
 
-    public Report(){
-
+    public Report() {
     }
 
     public String getReportID() {

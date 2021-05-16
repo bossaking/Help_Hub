@@ -1,7 +1,5 @@
 package com.example.help_hub.OtherClasses;
 
-import java.net.Inet4Address;
-
 public class WantToHelp {
 
     private String Title, Price, Description, Id, UserId, Category, Subcategory, City, PerformerId, Status;

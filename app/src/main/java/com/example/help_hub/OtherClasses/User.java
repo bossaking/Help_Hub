@@ -11,7 +11,9 @@ public class User {
     public User(String Id) {
         this.Id = Id;
     }
-    public User(){}
+
+    public User() {
+    }
 
     public String getName() {
         return Name;

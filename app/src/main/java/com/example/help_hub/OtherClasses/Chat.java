@@ -2,13 +2,10 @@ package com.example.help_hub.OtherClasses;
 
 public class Chat {
 
-    private String chatId;
-    private String otherUserId;
-    private String offerId;
-    private String offerTitle;
-    private String otherUserName, chatType;
+    private String chatId, otherUserId, offerId, offerTitle, otherUserName, chatType;
 
-    public Chat() { }
+    public Chat() {
+    }
 
     public Chat(String chatId) {
         this.chatId = chatId;

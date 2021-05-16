@@ -4,7 +4,6 @@ public class City implements Comparable<City> {
 
     private String title;
 
-
     public void setTitle(String title) {
         this.title = title;
     }

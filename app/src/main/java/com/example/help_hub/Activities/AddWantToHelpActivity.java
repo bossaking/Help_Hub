@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddTheOfferActivity extends NewOfferNoticeCategory implements TextWatcher {
+public class AddWantToHelpActivity extends NewOfferNoticeCategory implements TextWatcher {
 
     private EditText mNewOfferTitle;
     private EditText mNewOfferDescription;

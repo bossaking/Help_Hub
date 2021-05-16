@@ -42,7 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AddNewNoticeActivity extends NewOfferNoticeCategory implements TextWatcher, PortfolioImagesRecyclerAdapter.OnClickListener, PortfolioImagesRecyclerAdapter.OnLongClickListener {
+public class AddNeedHelpActivity extends NewOfferNoticeCategory implements TextWatcher, PortfolioImagesRecyclerAdapter.OnClickListener, PortfolioImagesRecyclerAdapter.OnLongClickListener {
 
     private EditText mNewNoticeTitle;
     private EditText mNewNoticeDescription;

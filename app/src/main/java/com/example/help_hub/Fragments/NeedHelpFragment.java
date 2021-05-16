@@ -11,27 +11,19 @@ import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.help_hub.Activities.AddNewNoticeActivity;
+import com.example.help_hub.Activities.AddNeedHelpActivity;
 import com.example.help_hub.Activities.EditNeedHelpActivity;
-import com.example.help_hub.Activities.MainActivity;
 import com.example.help_hub.Activities.NeedHelpDetails;
-import com.example.help_hub.Adapters.CategoriesAdapter;
 import com.example.help_hub.AlertDialogues.FiltersDialog;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.OtherClasses.Category;
 import com.example.help_hub.OtherClasses.NeedHelp;
-import com.example.help_hub.OtherClasses.User;
 import com.example.help_hub.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
@@ -118,7 +110,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
 
         FloatingActionButton add = view.findViewById(R.id.floatingActionButton);
         add.setOnClickListener(v -> {
-            myActivity.startActivity(new Intent(myContext, AddNewNoticeActivity.class));
+            myActivity.startActivity(new Intent(myContext, AddNeedHelpActivity.class));
         });
 
         recyclerView = view.findViewById(R.id.order_recycler_view);

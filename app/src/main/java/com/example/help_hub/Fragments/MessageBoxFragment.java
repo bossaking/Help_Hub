@@ -1,7 +1,5 @@
 package com.example.help_hub.Fragments;
 
-import android.net.Uri;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +11,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,33 +18,21 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.ChatActivity;
-import com.example.help_hub.Activities.RegistrationActivity;
-import com.example.help_hub.Activities.WantToHelpDetails;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.OtherClasses.Chat;
 import com.example.help_hub.R;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 //import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MessageBoxFragment extends Fragment {
 

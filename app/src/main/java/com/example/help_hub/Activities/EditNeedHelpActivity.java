@@ -42,7 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EditNeedHelpActivity extends NewOfferNoticeCategory implements TextWatcher, PortfolioImagesRecyclerAdapter.OnClickListener, PortfolioImagesRecyclerAdapter.OnLongClickListener {
+public class EditNeedHelpActivity extends NewAnnouncementCategoryActivity implements TextWatcher, PortfolioImagesRecyclerAdapter.OnClickListener, PortfolioImagesRecyclerAdapter.OnLongClickListener {
 
     public static final String EXTRA_NEED_HELP_ID = "NEED_HELP_ID",
             EXTRA_NEED_HELP_TITLE = "NEED_HELP_TITLE",

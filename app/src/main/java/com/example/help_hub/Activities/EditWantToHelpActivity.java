@@ -21,7 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditWantToHelpActivity extends NewOfferNoticeCategory implements TextWatcher {
+public class EditWantToHelpActivity extends NewAnnouncementCategoryActivity implements TextWatcher {
 
     public static final String EXTRA_WANT_TO_HELP_ID = "WANT_TO_HELP_ID",
             EXTRA_WANT_TO_HELP_TITLE = "WANT_TO_HELP_TITLE",

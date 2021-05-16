@@ -131,7 +131,7 @@ public class EditNeedHelpActivity extends NewAnnouncementCategoryActivity implem
     }
 
     private void editNeedHelp() {
-        if (!validateData() || !CheckForbiddenWords()) return;
+        if (!validateData() || !checkForbiddenWords()) return;
 
         DocumentReference documentReference = firebaseFirestore.collection("announcement").document(needHelp.getId());
 
@@ -234,7 +234,7 @@ public class EditNeedHelpActivity extends NewAnnouncementCategoryActivity implem
                         Toast.makeText(getApplicationContext(), R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     }
 
-                    AddImage(needHelpImage);
+                    addImage(needHelpImage);
                 }
             }
         }
@@ -246,7 +246,7 @@ public class EditNeedHelpActivity extends NewAnnouncementCategoryActivity implem
         StorageReference imagesRef = storageReference.child("announcement/" + needHelp.getId() + "/images");
 
         needHelpImages = new ArrayList<>();
-        AddImage(new PortfolioImage("DefaultImage", Uri.parse("android.resource://" + context.getPackageName() + "/drawable/add_a_photo_24")));
+        addImage(new PortfolioImage("DefaultImage", Uri.parse("android.resource://" + context.getPackageName() + "/drawable/add_a_photo_24")));
 
         imagesRef.listAll().addOnSuccessListener(listResult -> {
 
@@ -258,7 +258,7 @@ public class EditNeedHelpActivity extends NewAnnouncementCategoryActivity implem
                                     .addOnSuccessListener(bytes -> {
                                         PortfolioImage image = new PortfolioImage(name, uri);
                                         image.setImageBytes(bytes);
-                                        AddImage(image);
+                                        addImage(image);
                                         imagesCount++;
                                         adapter.notifyDataSetChanged();
                                     })
@@ -270,7 +270,7 @@ public class EditNeedHelpActivity extends NewAnnouncementCategoryActivity implem
         });
     }
 
-    public void AddImage(PortfolioImage portfolioImage) {
+    public void addImage(PortfolioImage portfolioImage) {
         if (getNeedHelpImagesCount() == 0)
             needHelpImages.add(needHelpImages.size(), portfolioImage);
         else needHelpImages.add(needHelpImages.size() - 1, portfolioImage);

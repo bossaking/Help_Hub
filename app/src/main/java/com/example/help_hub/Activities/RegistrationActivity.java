@@ -57,7 +57,7 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
 
             String repeatPassword = mRepeatPassword.getText().toString().trim();
 
-            if (!ValidateEmail(email) || !ValidatePassword(password, repeatPassword)) return;
+            if (!validateEmail(email) || !validatePassword(password, repeatPassword)) return;
 
             final LoadingDialog loadingDialog = new LoadingDialog(RegistrationActivity.this);
             loadingDialog.StartLoadingDialog();
@@ -86,7 +86,7 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
         });
     }
 
-    private boolean ValidateEmail(String email) {
+    private boolean validateEmail(String email) {
         if (email.isEmpty()) {
             mEmail.setError(getString(R.string.email_empty_error));
             mEmail.setBackgroundResource(R.drawable.edit_error_border);
@@ -102,7 +102,7 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
         return true;
     }
 
-    private boolean ValidatePassword(String password, String repeatPassword) {
+    private boolean validatePassword(String password, String repeatPassword) {
         if (password.length() < 8) {
             mPassword.setError(getString(R.string.password_length_error));
             mPassword.setBackgroundResource(R.drawable.edit_error_border);

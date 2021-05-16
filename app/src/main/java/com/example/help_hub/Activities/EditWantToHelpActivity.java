@@ -91,7 +91,7 @@ public class EditWantToHelpActivity extends NewAnnouncementCategoryActivity impl
     }
 
     private void editWantToHelp() {
-        if (!validateData() || !CheckForbiddenWords()) return;
+        if (!validateData() || !checkForbiddenWords()) return;
 
         DocumentReference documentReference = firebaseFirestore.collection("offers").document(wantToHelp.getId());
 

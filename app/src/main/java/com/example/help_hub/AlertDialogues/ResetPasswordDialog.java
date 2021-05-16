@@ -57,7 +57,7 @@ public class ResetPasswordDialog implements TextWatcher {
             public void onClick(View v) {
                 String email = mEmail.getText().toString().trim();
 
-                if (!ValidateEmail(email)) {
+                if (!validateEmail(email)) {
                     return;
                 }
                 FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -77,7 +77,7 @@ public class ResetPasswordDialog implements TextWatcher {
         });
     }
 
-    private boolean ValidateEmail(String email) {
+    private boolean validateEmail(String email) {
 
 
         if (email.isEmpty()) {

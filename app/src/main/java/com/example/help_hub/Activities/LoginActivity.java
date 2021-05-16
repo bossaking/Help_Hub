@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
             final LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
             loadingDialog.StartLoadingDialog();
 
-            if (!ValidateEmail(email) || !ValidatePassword(password)) {
+            if (!validateEmail(email) || !validatePassword(password)) {
                 loadingDialog.DismissDialog();
                 return;
             }
@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
     public void afterTextChanged(Editable s) {
     }
 
-    private boolean ValidateEmail(String email) {
+    private boolean validateEmail(String email) {
         if (email.isEmpty()) {
             mEmail.setError(getString(R.string.email_empty_error));
             mEmail.setBackgroundResource(R.drawable.edit_error_border);
@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
         return true;
     }
 
-    private boolean ValidatePassword(String password) {
+    private boolean validatePassword(String password) {
         if (password.length() < 8) {
             mPassword.setError(getString(R.string.password_length_error));
             mPassword.setBackgroundResource(R.drawable.edit_error_border);

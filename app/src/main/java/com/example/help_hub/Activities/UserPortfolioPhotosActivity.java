@@ -30,9 +30,8 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
 
-    UserPortfolioImagesDatabase userPortfolioImagesDatabase;
+    private UserPortfolioImagesDatabase userPortfolioImagesDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,29 +43,24 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         userPortfolioImagesDatabase = UserPortfolioImagesDatabase.getInstance(this);
         adapter = new PortfolioImagesRecyclerAdapter(userPortfolioImagesDatabase.GetPortfolioImages(), this, this);
-        userPortfolioImagesDatabase.arrayChangedListener = () -> {
-            adapter.notifyDataSetChanged();
-        };
+        userPortfolioImagesDatabase.arrayChangedListener = () -> adapter.notifyDataSetChanged();
+
         recyclerView = findViewById(R.id.portfolio_images_recycler_view);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-
-
         recyclerView.setAdapter(adapter);
-
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             ClipData clipData = data.getClipData();
+
             if (clipData != null) {
                 for (int i = 0; i < clipData.getItemCount(); i++) {
-
                     PortfolioImage portfolioImage = new PortfolioImage(DocumentFile.fromSingleUri(getApplicationContext(),
                             clipData.getItemAt(i).getUri()).getName(), clipData.getItemAt(i).getUri());
 
@@ -75,11 +69,11 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
                 }
             }
         }
+
         adapter.notifyDataSetChanged();
     }
 
-    private void AddNewPortfolioPhotos() {
-
+    private void addNewPortfolioPhotos() {
         Intent intent;
 
         try {
@@ -87,21 +81,20 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
         } catch (Exception e) {
             intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         }
+
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         startActivityForResult(intent, 100);
-
     }
 
     @Override
     public void onImageClick(int position) {
         if (position == userPortfolioImagesDatabase.GetPortfolioImagesCount() - 1)
-            AddNewPortfolioPhotos();
+            addNewPortfolioPhotos();
     }
 
     @Override
     public void onImageLongClick(int position) {
-        if (position == userPortfolioImagesDatabase.GetPortfolioImagesCount() - 1)
-            return;
+        if (position == userPortfolioImagesDatabase.GetPortfolioImagesCount() - 1) return;
 
         LayoutInflater layoutInflater = getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.portfolio_photo_options, null);
@@ -123,7 +116,6 @@ public class UserPortfolioPhotosActivity extends AppCompatActivity implements Po
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         int id = item.getItemId();
 
         if (id == android.R.id.home) {

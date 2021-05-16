@@ -3,7 +3,6 @@ package com.example.help_hub.Activities;
 import android.content.Intent;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -14,25 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.help_hub.Adapters.CategoriesAdapter;
 import com.example.help_hub.OtherClasses.Category;
 import com.example.help_hub.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.*;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SelectCategoryActivity extends AppCompatActivity implements CategoriesAdapter.OnClickListener {
 
+    private String categoryTitle, subcategoryTitle;
     protected List<Category> categories;
+    private int state = 0;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter categoriesAdapter;
-
-    private int state = 0;
-
-    String categoryTitle, subcategoryTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +44,7 @@ public class SelectCategoryActivity extends AppCompatActivity implements Categor
     private void initializeItems() {
         categories.clear();
         CollectionReference collection = FirebaseFirestore.getInstance().collection("categories");
+
         collection.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot doc : task.getResult()) {
@@ -59,18 +53,20 @@ public class SelectCategoryActivity extends AppCompatActivity implements Categor
                     newCategory.setTitle(doc.getString("Title"));
                     categories.add(newCategory);
                 }
-                categoriesAdapter.notifyDataSetChanged();
-            } else {
-                Toast.makeText(getApplicationContext(), getString(R.string.error) + task.getException(), Toast.LENGTH_LONG).show();
-            }
-        });
 
+                categoriesAdapter.notifyDataSetChanged();
+            } else
+                Toast.makeText(getApplicationContext(), getString(R.string.error) + task.getException(), Toast.LENGTH_LONG).show();
+        });
     }
 
     private void getSubcategories(String parentId) {
         state++;
-        CollectionReference collection = FirebaseFirestore.getInstance().collection("categories").document(parentId)
+
+        CollectionReference collection = FirebaseFirestore.getInstance()
+                .collection("categories").document(parentId)
                 .collection("Subcategories");
+
         collection.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot doc : task.getResult()) {
@@ -81,15 +77,15 @@ public class SelectCategoryActivity extends AppCompatActivity implements Categor
                 }
 
                 categoriesAdapter.notifyDataSetChanged();
-            } else {
+            } else
                 Toast.makeText(getApplicationContext(), getString(R.string.error) + task.getException(), Toast.LENGTH_LONG).show();
-            }
         });
     }
 
     @Override
     public void onCategoryClick(int position) {
         Category category = categories.get(position);
+
         if (category.parentCategoryId.isEmpty()) {
             categoryTitle = category.getTitle();
             categories.clear();
@@ -107,9 +103,8 @@ public class SelectCategoryActivity extends AppCompatActivity implements Categor
 
     @Override
     public void onBackPressed() {
-        if (state == 0) {
-            finish();
-        } else if (state == 1) {
+        if (state == 0) finish();
+        else if (state == 1) {
             state--;
             initializeItems();
         }

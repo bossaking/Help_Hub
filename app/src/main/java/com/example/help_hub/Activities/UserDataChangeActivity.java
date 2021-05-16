@@ -20,11 +20,11 @@ import java.util.Map;
 
 public class UserDataChangeActivity extends AppCompatActivity {
 
+    private EditText mChangedDescription, mChangedName, mChangedPhoneNumber, mChangedCity;
     private Button changePassword, applyChanges;
-    EditText mChangedDescription, mChangedName, mChangedPhoneNumber, mChangedCity;
 
-    User user;
-    UserDatabase userDatabase;
+    private User user;
+    private UserDatabase userDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +38,13 @@ public class UserDataChangeActivity extends AppCompatActivity {
         applyChanges = findViewById(R.id.user_data_changes_apply);
 
         mChangedDescription = findViewById(R.id.changed_portfolio_description);
-        mChangedDescription.setText(user.getDescription());
-
         mChangedName = findViewById(R.id.changed_name);
-        mChangedName.setText(user.getName());
-
         mChangedCity = findViewById(R.id.changed_city);
-        mChangedCity.setText(user.getCity());
-
         mChangedPhoneNumber = findViewById(R.id.changed_phoneNumber);
+
+        mChangedDescription.setText(user.getDescription());
+        mChangedName.setText(user.getName());
+        mChangedCity.setText(user.getCity());
         mChangedPhoneNumber.setText(user.getPhoneNumber());
 
         changePassword.setOnClickListener(v -> {
@@ -64,7 +62,6 @@ public class UserDataChangeActivity extends AppCompatActivity {
     }
 
     public void UpdateUserDataFirebase() {
-
         DocumentReference documentReference = FirebaseFirestore.getInstance().collection("users").document(user.getId());
 
         Map<String, Object> userMap = new HashMap<>();
@@ -73,10 +70,11 @@ public class UserDataChangeActivity extends AppCompatActivity {
         userMap.put("City", user.getCity());
         userMap.put("Description", user.getDescription());
 
-        documentReference.update(userMap).addOnCompleteListener(task -> {
-            Toast.makeText(getApplicationContext(), R.string.Updated, Toast.LENGTH_SHORT).show();
-            finish();
-        }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
-
+        documentReference.update(userMap)
+                .addOnCompleteListener(task -> {
+                    Toast.makeText(getApplicationContext(), R.string.Updated, Toast.LENGTH_SHORT).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
     }
 }

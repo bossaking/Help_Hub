@@ -6,21 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.OtherClasses.PortfolioImage;
 import com.example.help_hub.R;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PortfolioImagesRecyclerAdapter extends RecyclerView.Adapter {
-
 
     public interface OnClickListener {
         void onImageClick(int position);
@@ -30,22 +25,23 @@ public class PortfolioImagesRecyclerAdapter extends RecyclerView.Adapter {
         void onImageLongClick(int position);
     }
 
-
     private List<PortfolioImage> images;
     private OnClickListener onClickListener;
     private OnLongClickListener onLongClickListener;
 
     public static class AdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-
         public ImageView imageView;
-        OnClickListener onClickListener;
-        OnLongClickListener onLongClickListener;
+        private OnClickListener onClickListener;
+        private OnLongClickListener onLongClickListener;
 
         public AdapterViewHolder(@NonNull View itemView, OnClickListener onClickListener, OnLongClickListener onLongClickListener) {
             super(itemView);
+
             imageView = itemView.findViewById(R.id.portfolio_image);
+
             this.onClickListener = onClickListener;
             this.onLongClickListener = onLongClickListener;
+
             imageView.setOnClickListener(this);
             imageView.setOnLongClickListener(this);
         }
@@ -58,6 +54,7 @@ public class PortfolioImagesRecyclerAdapter extends RecyclerView.Adapter {
         @Override
         public boolean onLongClick(View v) {
             onLongClickListener.onImageLongClick(getAdapterPosition());
+
             return true;
         }
     }
@@ -68,12 +65,12 @@ public class PortfolioImagesRecyclerAdapter extends RecyclerView.Adapter {
         this.onLongClickListener = onLongClickListener;
     }
 
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.portfolio_image_card, parent, false);
         AdapterViewHolder adapterViewHolder = new AdapterViewHolder(view, onClickListener, onLongClickListener);
+
         return adapterViewHolder;
     }
 
@@ -88,6 +85,4 @@ public class PortfolioImagesRecyclerAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return images.size();
     }
-
-
 }

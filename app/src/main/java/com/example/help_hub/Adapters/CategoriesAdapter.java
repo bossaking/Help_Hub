@@ -1,16 +1,13 @@
 package com.example.help_hub.Adapters;
 
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.help_hub.OtherClasses.Category;
 import com.example.help_hub.R;
 
@@ -18,8 +15,12 @@ import java.util.List;
 
 public class CategoriesAdapter extends RecyclerView.Adapter {
 
-    private static final int TYPE_SUBCATEGORY = 0;
-    private static final int TYPE_CATEGORY = 1;
+    private static final int TYPE_SUBCATEGORY = 0, TYPE_CATEGORY = 1;
+
+    private List<Category> categories;
+
+    private CategoriesAdapter.OnClickListener onClickListener;
+    //private CategoriesAdapter.OnLongClickListener onLongClickListener;
 
     public interface OnClickListener {
         void onCategoryClick(int position);
@@ -29,13 +30,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter {
         void onCategoryLongClick(int position);
     }
 
-
-    private List<Category> categories;
-    private CategoriesAdapter.OnClickListener onClickListener;
-//    private CategoriesAdapter.OnLongClickListener onLongClickListener;
-
     public static class AdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         public TextView textView;
         CategoriesAdapter.OnClickListener onClickListener;
         //PortfolioImagesRecyclerAdapter.OnLongClickListener onLongClickListener;
@@ -62,16 +57,15 @@ public class CategoriesAdapter extends RecyclerView.Adapter {
         this.onClickListener = onClickListener;
     }
 
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        if (viewType == TYPE_CATEGORY) {
+        if (viewType == TYPE_CATEGORY)
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_with_subcategories_card, parent, false);
-        } else {
+        else
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_without_subcategories_card, parent, false);
-        }
+
         CategoriesAdapter.AdapterViewHolder adapterViewHolder = new CategoriesAdapter.AdapterViewHolder(view, onClickListener);
         return adapterViewHolder;
     }
@@ -85,16 +79,12 @@ public class CategoriesAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (categories.get(position).parentCategoryId.isEmpty()) {
-            return TYPE_CATEGORY;
-        } else {
-            return TYPE_SUBCATEGORY;
-        }
+        if (categories.get(position).parentCategoryId.isEmpty()) return TYPE_CATEGORY;
+        else return TYPE_SUBCATEGORY;
     }
 
     @Override
     public int getItemCount() {
         return categories.size();
     }
-
 }

@@ -57,11 +57,11 @@ public class UserDataChangeActivity extends AppCompatActivity {
             user.setName(mChangedName.getText().toString());
             user.setPhoneNumber(mChangedPhoneNumber.getText().toString());
             user.setCity(mChangedCity.getText().toString());
-            UpdateUserDataFirebase();
+            updateUserDataFirebase();
         });
     }
 
-    public void UpdateUserDataFirebase() {
+    public void updateUserDataFirebase() {
         DocumentReference documentReference = FirebaseFirestore.getInstance().collection("users").document(user.getId());
 
         Map<String, Object> userMap = new HashMap<>();

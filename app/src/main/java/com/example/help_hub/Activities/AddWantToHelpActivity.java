@@ -84,7 +84,7 @@ public class AddWantToHelpActivity extends NewAnnouncementCategoryActivity imple
     }
 
     private void addNewWantToHelp() {
-        if (!validateData() || !CheckForbiddenWords()) return;
+        if (!validateData() || !checkForbiddenWords()) return;
 
         Map<String, Object> wantToHelpMap = new HashMap<>();
         wantToHelpMap.put("Title", title);

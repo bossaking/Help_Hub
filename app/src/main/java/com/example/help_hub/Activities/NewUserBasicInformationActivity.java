@@ -55,10 +55,10 @@ public class NewUserBasicInformationActivity extends AppCompatActivity implement
         userPhoneNumber.addTextChangedListener(this);
         userCity.addTextChangedListener(this);
 
-        saveButton.setOnClickListener(v -> Registration(email, password));
+        saveButton.setOnClickListener(v -> userRegistration(email, password));
     }
 
-    private boolean ValidateUserName(String mUserName) {
+    private boolean validateUserName(String mUserName) {
         if (mUserName.isEmpty()) {
             userName.setBackgroundResource(R.drawable.edit_error_border);
             userName.setError(getString(R.string.empty_field_error));
@@ -68,7 +68,7 @@ public class NewUserBasicInformationActivity extends AppCompatActivity implement
         return true;
     }
 
-    private boolean ValidatePhoneNumber(String phoneNumber) {
+    private boolean validatePhoneNumber(String phoneNumber) {
         if (phoneNumber.isEmpty()) {
             userPhoneNumber.setBackgroundResource(R.drawable.edit_error_border);
             userPhoneNumber.setError(getString(R.string.empty_field_error));
@@ -78,7 +78,7 @@ public class NewUserBasicInformationActivity extends AppCompatActivity implement
         return true;
     }
 
-    private boolean ValidateCity(String city) {
+    private boolean validateCity(String city) {
         if (city.isEmpty()) {
             userCity.setBackgroundResource(R.drawable.edit_error_border);
             userCity.setError(getString(R.string.empty_field_error));
@@ -88,12 +88,12 @@ public class NewUserBasicInformationActivity extends AppCompatActivity implement
         return true;
     }
 
-    private void Registration(String email, String password) {
+    private void userRegistration(String email, String password) {
         final String name = userName.getText().toString().trim();
         final String phoneNumber = userPhoneNumber.getText().toString().trim();
         final String city = userCity.getText().toString().trim();
 
-        if (!ValidateUserName(name) || !ValidatePhoneNumber(phoneNumber) || !ValidateCity(city))
+        if (!validateUserName(name) || !validatePhoneNumber(phoneNumber) || !validateCity(city))
             return;
 
         loadingDialog.StartLoadingDialog();
@@ -104,7 +104,7 @@ public class NewUserBasicInformationActivity extends AppCompatActivity implement
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(NewUserBasicInformationActivity.this, R.string.User_created, Toast.LENGTH_SHORT).show();
-                        SaveUserData(name, phoneNumber, city);
+                        saveUserData(name, phoneNumber, city);
                     } else {
                         Toast.makeText(NewUserBasicInformationActivity.this, getString(R.string.error) + task.getException(), Toast.LENGTH_SHORT).show();
                         loadingDialog.DismissDialog();
@@ -116,7 +116,7 @@ public class NewUserBasicInformationActivity extends AppCompatActivity implement
                 });
     }
 
-    private void SaveUserData(String name, String phoneNumber, String city) {
+    private void saveUserData(String name, String phoneNumber, String city) {
         String userId = firebaseAuth.getUid();
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
 

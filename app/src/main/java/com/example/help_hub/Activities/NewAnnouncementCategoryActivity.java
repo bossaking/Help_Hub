@@ -89,7 +89,7 @@ public class NewAnnouncementCategoryActivity extends AppCompatActivity {
         });
     }
 
-    protected boolean CheckForbiddenWords() {
+    protected boolean checkForbiddenWords() {
         LoadingDialog loadingDialog = new LoadingDialog(this);
         loadingDialog.StartLoadingDialog();
 

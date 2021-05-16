@@ -114,7 +114,7 @@ public class AddNeedHelpActivity extends NewAnnouncementCategoryActivity impleme
     }
 
     private void addNewNeedHelp() {
-        if (!validateData() || !CheckForbiddenWords()) return;
+        if (!validateData() || !checkForbiddenWords()) return;
 
         Map<String, Object> needHelpMap = new HashMap<>();
         needHelpMap.put("Title", title);

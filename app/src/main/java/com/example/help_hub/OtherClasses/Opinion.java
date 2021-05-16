@@ -5,8 +5,7 @@ public class Opinion {
     private String OpinionText, UserNickname, UserId;
     private float Rating;
 
-    public Opinion(){
-
+    public Opinion() {
     }
 
     public void setOpinionText(String opinionText) {

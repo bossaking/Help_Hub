@@ -10,15 +10,24 @@ public class ChatMessage {
         this.time = time;
     }
 
-    public ChatMessage() {}
+    public ChatMessage() {
+    }
 
-    public String getMessage() { return message; }
+    public String getMessage() {
+        return message;
+    }
 
-    public void setMessage(String message) { this.message = message; }
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-    public String getUserId() { return userId; }
+    public String getUserId() {
+        return userId;
+    }
 
-    public void setUserId(String userId) { this.userId = userId; }
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getTime() {
         return time;

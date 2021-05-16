@@ -55,10 +55,10 @@
         </activity>
         <activity android:name=".Activities.SelectCategoryActivity" />
         <activity
-            android:name=".Activities.AddNewNoticeActivity"
+            android:name=".Activities.AddNeedHelpActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Activities.AddTheOfferActivity"
+            android:name=".Activities.AddWantToHelpActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activities.UserPortfolioPhotosActivity"

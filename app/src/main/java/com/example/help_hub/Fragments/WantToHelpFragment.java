@@ -10,20 +10,17 @@ import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.help_hub.Activities.AddTheOfferActivity;
-import com.example.help_hub.Activities.EditNeedHelpActivity;
+import com.example.help_hub.Activities.AddWantToHelpActivity;
 import com.example.help_hub.Activities.EditWantToHelpActivity;
 import com.example.help_hub.Activities.WantToHelpDetails;
 import com.example.help_hub.AlertDialogues.FiltersDialog;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.OtherClasses.Category;
-import com.example.help_hub.OtherClasses.NeedHelp;
 import com.example.help_hub.OtherClasses.WantToHelp;
 import com.example.help_hub.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -124,7 +121,7 @@ public class WantToHelpFragment extends Fragment implements FiltersDialog.filter
 
         FloatingActionButton add = view.findViewById(R.id.floatingActionButton);
         add.setOnClickListener(v -> {
-            myActivity.startActivity(new Intent(myContext, AddTheOfferActivity.class));
+            myActivity.startActivity(new Intent(myContext, AddWantToHelpActivity.class));
         });
 
         recyclerView = view.findViewById(R.id.order_recycler_view);

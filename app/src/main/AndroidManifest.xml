@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.FullscreenImageActivity"></activity>
+        <activity android:name=".Activities.FullScreenImageActivity"></activity>
         <activity android:name=".Activities.AllOpinionsActivity" />
         <activity
             android:name=".Activities.WantToHelpDetails"

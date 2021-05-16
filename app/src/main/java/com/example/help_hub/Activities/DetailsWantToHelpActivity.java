@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.help_hub.Fragments.WantToHelpDetailsFragment;
+import com.example.help_hub.Fragments.DetailsWantToHelpFragment;
 import com.example.help_hub.R;
 
 public class DetailsWantToHelpActivity extends AppCompatActivity {
@@ -30,7 +30,7 @@ public class DetailsWantToHelpActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Fragment detailsFragment = new WantToHelpDetailsFragment();
+        Fragment detailsFragment = new DetailsWantToHelpFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.want_to_help_details_container, detailsFragment).commit();
     }

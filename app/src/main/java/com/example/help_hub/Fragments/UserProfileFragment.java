@@ -10,13 +10,13 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import android.widget.*;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -41,28 +41,23 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import static android.app.Activity.RESULT_OK;
 
-public class UserProfile extends Fragment {
+public class UserProfileFragment extends Fragment {
 
-    FragmentManager fragmentManager;
+    private TextView mUserName, mUserPhoneNumber, mUserCity, showAllPortfolioPhotos,
+            mUserPortfolioDescription, logoutButton, opinionsCountTextView;
+    private ImageView profileImage;
+    private RatingBar ratingBar;
 
-    Activity myActivity;
-    Context myContext;
+    private LoadingDialog dataLoadingDialog;
+    private LoadingDialog imageLoadingDialog;
 
+    private LinearLayout firstImagesLayout;
+
+    private UserDatabase userDatabase;
     public UserPortfolioImagesDatabase userPortfolioImagesDatabase;
 
-    TextView mUserName, mUserPhoneNumber, mUserCity, showAllPortfolioPhotos, mUserPortfolioDescription, logoutButton
-            ,opinionsCountTextView;
-    LinearLayout firstImagesLayout;
-
-    ImageView profileImage;
-
-    LoadingDialog dataLoadingDialog;
-    LoadingDialog imageLoadingDialog;
-
-    UserDatabase userDatabase;
-
-
-    private RatingBar ratingBar;
+    private Activity myActivity;
+    private Context myContext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,11 +65,9 @@ public class UserProfile extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
-
         myActivity = getActivity();
 
         setHasOptionsMenu(true);
@@ -87,9 +80,7 @@ public class UserProfile extends Fragment {
         firstImagesLayout = view.findViewById(R.id.first_images_layout);
 
         showAllPortfolioPhotos = view.findViewById(R.id.show_all_photos);
-        showAllPortfolioPhotos.setOnClickListener(c -> {
-            ShowAllPortfolioPhotos();
-        });
+        showAllPortfolioPhotos.setOnClickListener(c -> ShowAllPortfolioPhotos());
 
         profileImage = view.findViewById(R.id.Profile_Image);
         profileImage.setOnClickListener(view1 -> CropImage.activity()
@@ -109,10 +100,8 @@ public class UserProfile extends Fragment {
         mUserName = view.findViewById(R.id.user_name);
         mUserCity = view.findViewById(R.id.user_city);
         mUserPortfolioDescription = view.findViewById(R.id.portfolio_description);
-
         ratingBar = view.findViewById(R.id.rating_bar);
         opinionsCountTextView = view.findViewById(R.id.opinions_count_text_view);
-
 
         return view;
     }
@@ -125,12 +114,12 @@ public class UserProfile extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         int id = item.getItemId();
 
         if (id == R.id.user_menu_edit) {
             Intent intent = new Intent(getContext(), UserDataChangeActivity.class);
             startActivity(intent);
+
             return true;
         }
 
@@ -143,8 +132,6 @@ public class UserProfile extends Fragment {
         myActivity = getActivity();
         myContext = myActivity.getApplicationContext();
 
-        fragmentManager = getChildFragmentManager();
-
         Toolbar myToolbar = myActivity.findViewById(R.id.my_toolbar);
         ((AppCompatActivity) myActivity).setSupportActionBar(myToolbar);
         ((AppCompatActivity) myActivity).getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -156,7 +143,6 @@ public class UserProfile extends Fragment {
     }
 
     public void ShowAllPortfolioPhotos() {
-
         Intent intent = new Intent(getContext(), UserPortfolioPhotosActivity.class);
         startActivity(intent);
     }
@@ -171,9 +157,9 @@ public class UserProfile extends Fragment {
 
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             ClipData clipData = data.getClipData();
+
             if (clipData != null) {
                 for (int i = 0; i < clipData.getItemCount(); i++) {
-
                     PortfolioImage portfolioImage = new PortfolioImage(DocumentFile.fromSingleUri(myContext,
                             clipData.getItemAt(i).getUri()).getName(), clipData.getItemAt(i).getUri());
 
@@ -185,29 +171,24 @@ public class UserProfile extends Fragment {
 
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                //SetProfileImage(resultUri);
+                //setProfileImage(resultUri);
                 userDatabase.SetUserProfileImage(resultUri);
-                userDatabase.profileImageChanged = uri -> {
-                    Glide.with(getActivity()).load(resultUri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true).into(profileImage);
-                };
+                userDatabase.profileImageChanged = uri -> Glide.with(getActivity()).load(resultUri)
+                        .placeholder(R.drawable.image_with_progress)
+                        .error(R.drawable.broken_image_24)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true).into(profileImage);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(getContext(), getString(R.string.error) + result.getError(), Toast.LENGTH_LONG).show();
                 imageLoadingDialog.DismissDialog();
-            } else {
-                imageLoadingDialog.DismissDialog();
-            }
+            } else imageLoadingDialog.DismissDialog();
         } else if (requestCode == 100 && resultCode == RESULT_OK) {
-
-            LoadUserPortfolioPhotos();
+            loadUserPortfolioPhotos();
             imageLoadingDialog.DismissDialog();
-
-        } else {
-            imageLoadingDialog.DismissDialog();
-        }
+        } else imageLoadingDialog.DismissDialog();
     }
 
     @Override
@@ -215,46 +196,47 @@ public class UserProfile extends Fragment {
         super.onResume();
 
         userPortfolioImagesDatabase = UserPortfolioImagesDatabase.getInstance(myActivity);
-        userPortfolioImagesDatabase.arrayChangedListener = this::LoadUserPortfolioPhotos;
+        userPortfolioImagesDatabase.arrayChangedListener = this::loadUserPortfolioPhotos;
         userPortfolioImagesDatabase.Initialize(FirebaseAuth.getInstance().getUid());
-
 
         userDatabase = UserDatabase.getInstance(myActivity, FirebaseAuth.getInstance().getUid());
         userDatabase.getUserFromFirebase(FirebaseAuth.getInstance().getUid());
-        userDatabase.profileDataLoaded = this::GetUserInformation;
-        userDatabase.profileImageLoaded = this::SetProfileImage;
-
+        userDatabase.profileDataLoaded = this::getUserInformation;
+        userDatabase.profileImageLoaded = this::setProfileImage;
     }
 
-    private void LoadUserPortfolioPhotos() {
-
+    private void loadUserPortfolioPhotos() {
         ImageView imageView = null;
         firstImagesLayout.removeAllViews();
 
         for (int i = 0; i < userPortfolioImagesDatabase.GetPortfolioImagesCount() && i < 3; i++) {
-
             @SuppressLint("InflateParams")
             View view = LayoutInflater.from(getContext()).inflate(R.layout.portfolio_image_card, null);
             imageView = view.findViewById(R.id.portfolio_image);
+
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 300, 3f);
             layoutParams.setMargins(0, 10, 5, 5);
+
             view.setLayoutParams(layoutParams);
             firstImagesLayout.addView(view);
-            Glide.with(getActivity()).load(userPortfolioImagesDatabase.GetImage(i).getImageUri()).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
+
+            Glide.with(getActivity()).load(userPortfolioImagesDatabase.GetImage(i).getImageUri())
+                    .placeholder(R.drawable.image_with_progress)
+                    .error(R.drawable.broken_image_24)
                     .into(imageView);
+
             int finalI = i;
             imageView.setOnLongClickListener(c -> {
-                DeletePortfolioImage(finalI);
+                deletePortfolioImage(finalI);
                 return true;
             });
         }
 
-        if (userPortfolioImagesDatabase.GetPortfolioImagesCount() > 3) {
-
+        if (userPortfolioImagesDatabase.GetPortfolioImagesCount() > 3)
             showAllPortfolioPhotos.setVisibility(View.VISIBLE);
-
-        } else {
+        else {
             showAllPortfolioPhotos.setVisibility(View.GONE);
+
             imageView.setOnClickListener(v -> {
                 Intent intent;
 
@@ -263,6 +245,7 @@ public class UserProfile extends Fragment {
                 } catch (Exception e) {
                     intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                 }
+
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 getActivity().startActivityForResult(intent, 100);
             });
@@ -271,21 +254,18 @@ public class UserProfile extends Fragment {
         }
     }
 
-    private void GetUserInformation() {
-
+    private void getUserInformation() {
         try {
-
             User user = userDatabase.getUser();
 
             mUserName.setText(user.getName());
             mUserPhoneNumber.setText(user.getPhoneNumber());
             mUserCity.setText(user.getCity());
             mUserPortfolioDescription.setText(user.getDescription() == null ? "" : user.getDescription());
-            if (mUserPortfolioDescription.getText().toString().isEmpty()) {
+
+            if (mUserPortfolioDescription.getText().toString().isEmpty())
                 mUserPortfolioDescription.setVisibility(View.GONE);
-            } else {
-                mUserPortfolioDescription.setVisibility(View.VISIBLE);
-            }
+            else mUserPortfolioDescription.setVisibility(View.VISIBLE);
 
             if (user.getUserRating() == 0) {
                 ratingBar.setVisibility(View.GONE);
@@ -295,30 +275,31 @@ public class UserProfile extends Fragment {
                 opinionsCountTextView.setText("(" + (int) user.getAllOpinionsCount() + " " + getString(R.string.opinions) + ")");
                 opinionsCountTextView.setOnClickListener(v -> showAllOpinions(user));
             }
-        }catch (Exception e){
-
+        } catch (Exception e) {
         }
 
         dataLoadingDialog.DismissDialog();
     }
 
-    private void showAllOpinions(User user){
+    private void showAllOpinions(User user) {
         Intent intent = new Intent(myContext, AllOpinionsActivity.class);
         intent.putExtra(AllOpinionsActivity.USER_ID, user.getId());
         intent.putExtra(AllOpinionsActivity.USER_NAME, user.getName());
         myActivity.startActivity(intent);
     }
 
-    private void SetProfileImage(Uri imageUri) {
-
-        Glide.with(getActivity()).load(imageUri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
+    private void setProfileImage(Uri imageUri) {
+        Glide.with(getActivity()).load(imageUri)
+                .placeholder(R.drawable.image_with_progress)
+                .error(R.drawable.broken_image_24)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true).into(profileImage);
+
         imageLoadingDialog.DismissDialog();
     }
 
 
-    private void DeletePortfolioImage(int position) {
+    private void deletePortfolioImage(int position) {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.portfolio_photo_options, null);
 
@@ -329,7 +310,7 @@ public class UserProfile extends Fragment {
         Button deletePhoto = view.findViewById(R.id.delete_portfolio_photo);
         deletePhoto.setOnClickListener(c -> {
             userPortfolioImagesDatabase.DeletePortfolioImageFromFirebase(userPortfolioImagesDatabase.GetImage(position));
-            LoadUserPortfolioPhotos();
+            loadUserPortfolioPhotos();
             dialog.dismiss();
         });
 

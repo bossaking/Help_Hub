@@ -36,9 +36,12 @@ import java.util.stream.Collectors;
 
 public class ChatActivity extends AppCompatActivity implements MessagesAdapter.onMessageClickListener, RatingDialog.ratingChangedListener {
 
-    public static final String NEED_HELP_ID_EXTRA = "needhelpidextra", TITLE_EXTRA = "titleextra",
-            THIS_USER_ID_EXTRA = "useridextra", OTHER_USER_NAME_EXTRA = "usernameextra",
-            CHAT_ID_EXTRA = "chatidextra", CHAT_TYPE_EXTRA = "chattypeextra";
+    public static final String NEED_HELP_ID_EXTRA = "needhelpidextra",
+            TITLE_EXTRA = "titleextra",
+            THIS_USER_ID_EXTRA = "useridextra",
+            OTHER_USER_NAME_EXTRA = "usernameextra",
+            CHAT_ID_EXTRA = "chatidextra",
+            CHAT_TYPE_EXTRA = "chattypeextra";
 
     private ImageView avatarImage;
     private TextView nameText, titleText;

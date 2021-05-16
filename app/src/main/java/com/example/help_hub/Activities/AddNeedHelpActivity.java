@@ -70,8 +70,11 @@ public class AddNeedHelpActivity extends NewOfferNoticeCategory implements TextW
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        context = getApplicationContext();
+
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+
         userId = firebaseAuth.getUid();
 
         firebaseFirestore.collection("users").document(userId).get().addOnCompleteListener(task -> {
@@ -84,6 +87,7 @@ public class AddNeedHelpActivity extends NewOfferNoticeCategory implements TextW
         needHelpTitle = findViewById(R.id.new_notice_title_edit_text);
         needHelpPrice = findViewById(R.id.new_notice_budget);
         needHelpDescription = findViewById(R.id.new_notice_description_edit_text);
+
         defaultBackground = needHelpTitle.getBackground();
         needHelpTitle.addTextChangedListener(this);
 
@@ -98,8 +102,6 @@ public class AddNeedHelpActivity extends NewOfferNoticeCategory implements TextW
         categoriesButton = findViewById(R.id.new_notice_select_category_button);
         categoriesButton.setOnClickListener(v -> SelectCategory());
         SetOnTitleChangedListener(() -> categoriesButton.setText(categoryTitle + " / " + subCategoryTitle));
-
-        context = getApplicationContext();
 
         needHelpImages = new ArrayList<>();
         needHelpImages.add(new PortfolioImage("DefaultImage", Uri.parse("android.resource://" + context.getPackageName() + "/drawable/add_a_photo_24")));

@@ -15,7 +15,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.help_hub.OtherClasses.WantToHelp;
 import com.example.help_hub.R;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -24,28 +23,24 @@ import java.util.Map;
 
 public class EditWantToHelpActivity extends NewOfferNoticeCategory implements TextWatcher {
 
-    public static final String EXTRA_WANT_TO_HELP_ID = "WANT_TO_HELP_ID";
-    public static final String EXTRA_WANT_TO_HELP_TITLE = "WANT_TO_HELP_TITLE";
-    public static final String EXTRA_WANT_TO_HELP_PRICE = "WANT_TO_HELP_PRICE";
-    public static final String EXTRA_WANT_TO_HELP_DESCRIPTION = "WANT_TO_HELP_DESCRIPTION";
-    public static final String EXTRA_WANT_TO_HELP_CATEGORY = "WANT_TO_HELP_CATEGORY";
-    public static final String EXTRA_WANT_TO_HELP_SUBCATEGORY = "WANT_TO_HELP_SUBCATEGORY";
+    public static final String EXTRA_WANT_TO_HELP_ID = "WANT_TO_HELP_ID",
+            EXTRA_WANT_TO_HELP_TITLE = "WANT_TO_HELP_TITLE",
+            EXTRA_WANT_TO_HELP_PRICE = "WANT_TO_HELP_PRICE",
+            EXTRA_WANT_TO_HELP_DESCRIPTION = "WANT_TO_HELP_DESCRIPTION",
+            EXTRA_WANT_TO_HELP_CATEGORY = "WANT_TO_HELP_CATEGORY",
+            EXTRA_WANT_TO_HELP_SUBCATEGORY = "WANT_TO_HELP_SUBCATEGORY";
 
-    private EditText wantToHelpTitle;
-    private EditText wantToHelpPrice;
-    private EditText wantToHelpDescription;
+    private EditText wantToHelpTitle, wantToHelpPrice, wantToHelpDescription;
     private Button editButton, categoriesButton;
-
-    private FirebaseFirestore firebaseFirestore;
-
     private Drawable defaultBackground;
 
-    WantToHelp wantToHelp;
+    private WantToHelp wantToHelp;
+
+    private FirebaseFirestore firebaseFirestore;
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_add_want_to_help);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
@@ -82,9 +77,8 @@ public class EditWantToHelpActivity extends NewOfferNoticeCategory implements Te
         subCategoryTitle = wantToHelp.getSubcategory();
         categoriesButton.setText(wantToHelp.getCategory() + " / " + wantToHelp.getSubcategory());
         categoriesButton.setOnClickListener(v -> SelectCategory());
-        SetOnTitleChangedListener(() -> {
-            categoriesButton.setText(categoryTitle + " / " + subCategoryTitle);
-        });
+
+        SetOnTitleChangedListener(() -> categoriesButton.setText(categoryTitle + " / " + subCategoryTitle));
 
         editButton = findViewById(R.id.new_offer_add_offer_button);
         editButton.setText(getString(R.string.edit_button));
@@ -97,20 +91,18 @@ public class EditWantToHelpActivity extends NewOfferNoticeCategory implements Te
     }
 
     private void editWantToHelp() {
-        if (!validateData() || !CheckForbiddenWords()) {
-            return;
-        }
+        if (!validateData() || !CheckForbiddenWords()) return;
 
         DocumentReference documentReference = firebaseFirestore.collection("offers").document(wantToHelp.getId());
 
-        Map<String, Object> editMap = new HashMap<>();
-        editMap.put("Title", title);
-        editMap.put("Price", price);
-        editMap.put("Description", description);
-        editMap.put("Category", categoryTitle);
-        editMap.put("Subcategory", subCategoryTitle);
+        Map<String, Object> editWantToHelpMap = new HashMap<>();
+        editWantToHelpMap.put("Title", title);
+        editWantToHelpMap.put("Price", price);
+        editWantToHelpMap.put("Description", description);
+        editWantToHelpMap.put("Category", categoryTitle);
+        editWantToHelpMap.put("Subcategory", subCategoryTitle);
 
-        documentReference.update(editMap).addOnCompleteListener(task -> {
+        documentReference.update(editWantToHelpMap).addOnCompleteListener(task -> {
             Toast.makeText(getApplicationContext(), R.string.Updated, Toast.LENGTH_SHORT).show();
             finish();
         }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
@@ -131,12 +123,12 @@ public class EditWantToHelpActivity extends NewOfferNoticeCategory implements Te
             Toast.makeText(this, getString(R.string.empty_field_error), Toast.LENGTH_LONG).show();
             return false;
         }
+
         return true;
     }
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
     }
 
     @Override
@@ -146,7 +138,6 @@ public class EditWantToHelpActivity extends NewOfferNoticeCategory implements Te
 
     @Override
     public void afterTextChanged(Editable editable) {
-
     }
 
     @Override

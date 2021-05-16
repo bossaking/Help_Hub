@@ -90,8 +90,8 @@ public class UserProfileFragment extends Fragment {
         logoutButton = view.findViewById(R.id.user_logout_button);
         logoutButton.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            UserDatabase.ClearInstance();
-            UserPortfolioImagesDatabase.ClearInstance();
+            UserDatabase.clearInstance();
+            UserPortfolioImagesDatabase.clearInstance();
             startActivity(new Intent(myContext, LoginActivity.class));
             myActivity.finish();
         });
@@ -175,7 +175,7 @@ public class UserProfileFragment extends Fragment {
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
                 //setProfileImage(resultUri);
-                userDatabase.SetUserProfileImage(resultUri);
+                userDatabase.setUserProfileImage(resultUri);
                 userDatabase.profileImageChanged = uri -> Glide.with(getActivity()).load(resultUri)
                         .placeholder(R.drawable.image_with_progress)
                         .error(R.drawable.broken_image_24)

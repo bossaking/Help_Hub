@@ -18,11 +18,6 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
-    UserDatabase userDatabase;
-    BottomNavigationView navView;
-
-    LoadingDialog loadingDialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

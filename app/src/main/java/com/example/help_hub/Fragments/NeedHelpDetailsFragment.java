@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -24,13 +23,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.ChatActivity;
-import com.example.help_hub.Activities.NeedHelpDetails;
-import com.example.help_hub.Activities.WantToHelpDetails;
+import com.example.help_hub.Activities.DetailsNeedHelpActivity;
 import com.example.help_hub.Adapters.SliderAdapter;
 import com.example.help_hub.AlertDialogues.ReportDialog;
 import com.example.help_hub.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -119,11 +115,11 @@ public class NeedHelpDetailsFragment extends Fragment {
                     .document(getActivity().getIntent().getData().getQueryParameter("id"));
             Bundle finalBundle = bundle;
             reference.get().addOnSuccessListener(documentSnapshot -> {
-                finalBundle.putString(NeedHelpDetails.EXTRA_NEED_HELP_TITLE, documentSnapshot.getString("Title"));
-                finalBundle.putString(NeedHelpDetails.EXTRA_NEED_HELP_PRICE, documentSnapshot.getString("Price"));
-                finalBundle.putString(NeedHelpDetails.EXTRA_NEED_HELP_DESCRIPTION, documentSnapshot.getString("Description"));
-                finalBundle.putString(NeedHelpDetails.EXTRA_NEED_HELP_USER_ID, documentSnapshot.getString("UserId"));
-                finalBundle.putString(NeedHelpDetails.EXTRA_NEED_HELP_ID, documentSnapshot.getId());
+                finalBundle.putString(DetailsNeedHelpActivity.EXTRA_NEED_HELP_TITLE, documentSnapshot.getString("Title"));
+                finalBundle.putString(DetailsNeedHelpActivity.EXTRA_NEED_HELP_PRICE, documentSnapshot.getString("Price"));
+                finalBundle.putString(DetailsNeedHelpActivity.EXTRA_NEED_HELP_DESCRIPTION, documentSnapshot.getString("Description"));
+                finalBundle.putString(DetailsNeedHelpActivity.EXTRA_NEED_HELP_USER_ID, documentSnapshot.getString("UserId"));
+                finalBundle.putString(DetailsNeedHelpActivity.EXTRA_NEED_HELP_ID, documentSnapshot.getId());
 
                 showAnnouncement(finalBundle);
             });
@@ -136,11 +132,11 @@ public class NeedHelpDetailsFragment extends Fragment {
     }
 
     private void showAnnouncement(Bundle bundle){
-        titleTextView.setText(bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_TITLE));
-        priceTextView.setText(bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_PRICE) + " " + getString(R.string.new_notice_currency));
-        descriptionTextView.setText(bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_DESCRIPTION));
+        titleTextView.setText(bundle.getString(DetailsNeedHelpActivity.EXTRA_NEED_HELP_TITLE));
+        priceTextView.setText(bundle.getString(DetailsNeedHelpActivity.EXTRA_NEED_HELP_PRICE) + " " + getString(R.string.new_notice_currency));
+        descriptionTextView.setText(bundle.getString(DetailsNeedHelpActivity.EXTRA_NEED_HELP_DESCRIPTION));
 
-        userId = bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_USER_ID);
+        userId = bundle.getString(DetailsNeedHelpActivity.EXTRA_NEED_HELP_USER_ID);
 
 
         needHelpUserDataCardView.setOnClickListener(viewListener -> {
@@ -151,8 +147,8 @@ public class NeedHelpDetailsFragment extends Fragment {
         writeButton.setOnClickListener(viewListener -> {
 
             Intent intent = new Intent(myContext, ChatActivity.class);
-            intent.putExtra(ChatActivity.NEED_HELP_ID_EXTRA, bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_ID));
-            intent.putExtra(ChatActivity.TITLE_EXTRA, bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_TITLE));
+            intent.putExtra(ChatActivity.NEED_HELP_ID_EXTRA, bundle.getString(DetailsNeedHelpActivity.EXTRA_NEED_HELP_ID));
+            intent.putExtra(ChatActivity.TITLE_EXTRA, bundle.getString(DetailsNeedHelpActivity.EXTRA_NEED_HELP_TITLE));
             intent.putExtra(ChatActivity.THIS_USER_ID_EXTRA, userId);
             intent.putExtra(ChatActivity.OTHER_USER_NAME_EXTRA, userNameTextView.getText().toString());
             intent.putExtra(ChatActivity.CHAT_TYPE_EXTRA, "NH");
@@ -162,7 +158,7 @@ public class NeedHelpDetailsFragment extends Fragment {
             collectionReference.get().addOnSuccessListener(queryDocumentSnapshots -> {
                 for(DocumentSnapshot ds : queryDocumentSnapshots){
 
-                    if(ds.getString("offer id").equals(bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_ID))){
+                    if(ds.getString("offer id").equals(bundle.getString(DetailsNeedHelpActivity.EXTRA_NEED_HELP_ID))){
                         intent.putExtra(ChatActivity.CHAT_ID_EXTRA, ds.getId());
                         break;
                     }
@@ -173,7 +169,7 @@ public class NeedHelpDetailsFragment extends Fragment {
 
         });
 
-        announcementId = bundle.getString(NeedHelpDetails.EXTRA_NEED_HELP_ID);
+        announcementId = bundle.getString(DetailsNeedHelpActivity.EXTRA_NEED_HELP_ID);
 
 
         List<Uri> imagesUri = new ArrayList<>();

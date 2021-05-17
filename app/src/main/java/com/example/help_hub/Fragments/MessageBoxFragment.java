@@ -134,7 +134,9 @@ public class MessageBoxFragment extends Fragment {
                         DocumentSnapshot documentSnapshot = task1.getResult();
 
                         if (documentSnapshot.getString("Title") != null) {
-                            holder.offerTitle.setText(documentSnapshot.getString("Title"));
+                            String Title = documentSnapshot.getString("Title");
+                            if (Title.length() > 20) Title = Title.substring(0, 20) + "...";
+                            holder.offerTitle.setText(Title);
                             getOtherUserData(holder, position);
                         } else {
                             DocumentReference announcementRef = FirebaseFirestore.getInstance()
@@ -142,7 +144,9 @@ public class MessageBoxFragment extends Fragment {
                             announcementRef.get().addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
                                     DocumentSnapshot ds = task.getResult();
-                                    holder.offerTitle.setText(ds.getString("Title"));
+                                    String Title = ds.getString("Title");
+                                    if (Title.length() > 20) Title = Title.substring(0, 20) + "...";
+                                    holder.offerTitle.setText(Title);
                                     getOtherUserData(holder, position);
                                 }
                             });

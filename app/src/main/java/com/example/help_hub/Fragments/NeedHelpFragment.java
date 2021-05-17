@@ -427,7 +427,7 @@ public class NeedHelpFragment extends Fragment implements FiltersDialog.filtersD
             desc = needHelp.getDescription();
             showsCount = needHelp.getShowsCount();
 
-            if (title.length() > 18) title = title.substring(0, 18) + "...";
+            if (title.length() > 17) title = title.substring(0, 17) + "...";
             if (desc.length() > 30) desc = desc.substring(0, 30) + "...";
 
             needHelpTitle.setText(title);

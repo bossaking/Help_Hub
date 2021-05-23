@@ -20,8 +20,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -156,6 +159,15 @@ public class NewUserBasicInformationsActivity extends AppCompatActivity implemen
 
         documentReference.set(userMap).addOnSuccessListener(aVoid -> {
             Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(NewUserBasicInformationsActivity.this, instanceIdResult -> {
+                String token = instanceIdResult.getToken();
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid());
+                Map<String, Object> map = new HashMap<>();
+                map.put("token", token);
+                databaseReference.updateChildren(map);
+            });
+
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Error: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());

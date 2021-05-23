@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.help_hub.*;
 import com.example.help_hub.Activities.*;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
@@ -36,8 +37,14 @@ import com.example.help_hub.OtherClasses.User;
 import com.example.help_hub.Singletones.UserDatabase;
 import com.example.help_hub.Singletones.UserPortfolioImagesDatabase;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -98,6 +105,12 @@ public class UserProfile extends Fragment {
 
         logoutButton = view.findViewById(R.id.user_logout_button);
         logoutButton.setOnClickListener(v -> {
+            try {
+                FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid()).removeValue();
+                FirebaseInstanceId.getInstance().deleteInstanceId();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             FirebaseAuth.getInstance().signOut();
             UserDatabase.ClearInstance();
             UserPortfolioImagesDatabase.ClearInstance();
@@ -174,11 +187,14 @@ public class UserProfile extends Fragment {
             if (clipData != null) {
                 for (int i = 0; i < clipData.getItemCount(); i++) {
 
+                    userPortfolioImagesDatabase.imagesCount = clipData.getItemCount() + 1;
+
                     PortfolioImage portfolioImage = new PortfolioImage(DocumentFile.fromSingleUri(myContext,
                             clipData.getItemAt(i).getUri()).getName(), clipData.getItemAt(i).getUri());
 
                     userPortfolioImagesDatabase.AddNewImage(portfolioImage);
                     userPortfolioImagesDatabase.LoadPortfolioImageToDatabase(portfolioImage);
+
                 }
             }
         }
@@ -190,9 +206,9 @@ public class UserProfile extends Fragment {
                 //SetProfileImage(resultUri);
                 userDatabase.SetUserProfileImage(resultUri);
                 userDatabase.profileImageChanged = uri -> {
-                    Glide.with(getActivity()).load(resultUri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true).into(profileImage);
+                    Glide.with(getActivity()).load(uri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
+                            .apply(RequestOptions.skipMemoryCacheOf(true))
+                            .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)).into(profileImage);
                 };
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(getContext(), "Error: " + result.getError(), Toast.LENGTH_LONG).show();
@@ -228,6 +244,8 @@ public class UserProfile extends Fragment {
 
     private void LoadUserPortfolioPhotos() {
 
+        if(userPortfolioImagesDatabase.imagesCount != userPortfolioImagesDatabase.GetPortfolioImagesCount()) return;
+
         ImageView imageView = null;
         firstImagesLayout.removeAllViews();
 
@@ -240,8 +258,10 @@ public class UserProfile extends Fragment {
             layoutParams.setMargins(0, 10, 5, 5);
             view.setLayoutParams(layoutParams);
             firstImagesLayout.addView(view);
+
             Glide.with(getActivity()).load(userPortfolioImagesDatabase.GetImage(i).getImageUri()).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
-                    .into(imageView);
+                    .apply(RequestOptions.skipMemoryCacheOf(true))
+                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)).into(imageView);
             int finalI = i;
             imageView.setOnLongClickListener(c -> {
                 DeletePortfolioImage(finalI);
@@ -312,8 +332,9 @@ public class UserProfile extends Fragment {
     private void SetProfileImage(Uri imageUri) {
 
         Glide.with(getActivity()).load(imageUri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true).into(profileImage);
+                .apply(RequestOptions.skipMemoryCacheOf(true))
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)).into(profileImage);
+
         imageLoadingDialog.DismissDialog();
     }
 
@@ -329,6 +350,7 @@ public class UserProfile extends Fragment {
         Button deletePhoto = view.findViewById(R.id.delete_portfolio_photo);
         deletePhoto.setOnClickListener(c -> {
             userPortfolioImagesDatabase.DeletePortfolioImageFromFirebase(userPortfolioImagesDatabase.GetImage(position));
+            userPortfolioImagesDatabase.imagesCount--;
             LoadUserPortfolioPhotos();
             dialog.dismiss();
         });

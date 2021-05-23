@@ -139,6 +139,9 @@ public class WantToHelpDetailsFragment extends Fragment {
 
         userId = bundle.getString(WantToHelpDetails.EXTRA_WANT_TO_HELP_USER_ID);
 
+        if(userId.equals(FirebaseAuth.getInstance().getUid())){
+            writeButton.setVisibility(View.GONE);
+        }
 
         wantToHelpUserDataCardView.setOnClickListener(viewListener -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.want_to_help_details_container,

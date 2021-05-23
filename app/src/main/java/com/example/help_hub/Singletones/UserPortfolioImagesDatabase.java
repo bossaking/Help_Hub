@@ -34,6 +34,8 @@ public class UserPortfolioImagesDatabase {
 
     List<PortfolioImage> portfolioImages;
 
+    public int imagesCount = 1;
+
 
     public static UserPortfolioImagesDatabase instance = null;
 
@@ -88,6 +90,7 @@ public class UserPortfolioImagesDatabase {
                 Uri.parse("android.resource://" + context.getPackageName() + "/drawable/add_a_photo_24")));
 
         imagesRef.listAll().addOnSuccessListener(listResult -> {
+            imagesCount = listResult.getItems().size() + 1;
             for (StorageReference fileRef : listResult.getItems()) {
                 fileRef.getMetadata().addOnSuccessListener(storageMetadata -> {
                     String name = storageMetadata.getName();

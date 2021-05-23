@@ -7,6 +7,7 @@ public class Chat {
     private String offerId;
     private String offerTitle;
     private String otherUserName, chatType;
+    private boolean hasUnreadMessages;
 
     public Chat() { }
 
@@ -60,5 +61,13 @@ public class Chat {
 
     public String getChatType() {
         return chatType;
+    }
+
+    public boolean isHasUnreadMessages() {
+        return hasUnreadMessages;
+    }
+
+    public void setHasUnreadMessages(boolean hasUnreadMessages) {
+        this.hasUnreadMessages = hasUnreadMessages;
     }
 }

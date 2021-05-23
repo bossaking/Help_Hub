@@ -1,13 +1,22 @@
 package com.example.help_hub.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
+
 import com.example.help_hub.AlertDialogues.LoadingDialog;
+import com.example.help_hub.OtherClasses.MyApplication;
 import com.example.help_hub.R;
 import com.example.help_hub.Singletones.UserDatabase;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     LoadingDialog loadingDialog;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        calculateUnreadConversations();
+
     }
 
     @Override
@@ -43,5 +57,48 @@ public class MainActivity extends AppCompatActivity {
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         fragment.getChildFragmentManager().getFragments().get(0).onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void calculateUnreadConversations() {
+
+        FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getUid()).collection("chats")
+                .get().addOnSuccessListener(queryDocumentSnapshots -> {
+            int unreadConversations = 0;
+            for (DocumentSnapshot ds : queryDocumentSnapshots) {
+
+                if (ds.contains("has unread messages")) {
+                    if (ds.getBoolean("has unread messages")) {
+                        unreadConversations++;
+                    }
+                }
+            }
+            if(unreadConversations > 0){
+                BadgeDrawable badgeDrawable = ((BottomNavigationView)findViewById(R.id.nav_view)).getOrCreateBadge(R.id.messages);
+                badgeDrawable.setNumber(unreadConversations);
+            }else{
+                ((BottomNavigationView)findViewById(R.id.nav_view)).removeBadge(R.id.messages);
+            }
+        });
+
+    }
+
+    public void updateUnreadConversationsNumber(){
+        BadgeDrawable badgeDrawable = ((BottomNavigationView)findViewById(R.id.nav_view)).getOrCreateBadge(R.id.messages);
+        badgeDrawable.setNumber(badgeDrawable.getNumber() - 1);
+        if(badgeDrawable.getNumber() <= 0){
+            ((BottomNavigationView)findViewById(R.id.nav_view)).removeBadge(R.id.messages);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        MyApplication.getInstance().setCurrentActivity(this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        MyApplication.getInstance().setCurrentActivity(null);
+        super.onPause();
     }
 }

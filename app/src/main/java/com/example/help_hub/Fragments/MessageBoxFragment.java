@@ -1,10 +1,12 @@
 package com.example.help_hub.Fragments;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,9 +20,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.ChatActivity;
+import com.example.help_hub.Activities.MainActivity;
 import com.example.help_hub.Activities.RegistrationActivity;
 import com.example.help_hub.Activities.WantToHelpDetails;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
@@ -31,6 +35,9 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -108,12 +115,45 @@ public class MessageBoxFragment extends Fragment {
                     switch (dc.getType()) {
                         case ADDED:
                             QueryDocumentSnapshot doc = dc.getDocument();
-                            Chat chat = new Chat();
-                            chat.setChatId(doc.getId());
-                            chat.setOtherUserId(doc.getString("other user id"));
-                            chat.setOfferId(doc.getString("offer id"));
-                            chat.setChatType(doc.getString("chat type"));
-                            chatListMain.add(chat);
+                            DocumentReference documentReference;
+                            String type = doc.getString("chat type");
+                            String id = doc.getString("offer id");
+
+                            switch (type){
+
+                                case "NH":
+
+                                    documentReference = FirebaseFirestore.getInstance().collection("announcement").document(id);
+                                    documentReference.get().addOnSuccessListener(documentSnapshot -> {
+                                        if(documentSnapshot.exists()){
+                                            addNewChatItem(doc);
+                                        }else{
+                                            chatsRef.document(doc.getId()).delete();
+                                        }
+                                    });
+
+                                    break;
+                                case "WTH":
+                                    documentReference = FirebaseFirestore.getInstance().collection("offers").document(id);
+                                    documentReference.get().addOnSuccessListener(documentSnapshot -> {
+                                        if(documentSnapshot.exists()){
+                                            addNewChatItem(doc);
+                                        }else{
+                                            chatsRef.document(doc.getId()).delete();
+                                        }
+                                    });
+                                    break;
+                            }
+                            break;
+                        case MODIFIED:
+                            doc = dc.getDocument();
+                            if(doc.getBoolean("has unread messages") && chatListMain.size() > 0) {
+                                chatListMain.get(dc.getOldIndex()).setHasUnreadMessages(true);
+                            }else if(chatListMain.size() > 0){
+                                chatListMain.get(dc.getOldIndex()).setHasUnreadMessages(false);
+                                ((MaterialCardView)recyclerView.getChildAt(dc.getOldIndex()))
+                                        .setStrokeColor(ContextCompat.getColor(getContext(), R.color.fui_transparent));
+                            }
                             adapter.notifyDataSetChanged();
                             break;
                     }
@@ -173,6 +213,7 @@ public class MessageBoxFragment extends Fragment {
             }
         }
 
+        @SuppressLint("ResourceAsColor")
         private void getOtherUserData(ChatHolder holder, int position) {
 
             Chat chat = chatListMain.get(position);
@@ -190,6 +231,10 @@ public class MessageBoxFragment extends Fragment {
                                 .into(holder.avatar);
                     });
 
+                    if(chat.isHasUnreadMessages()){
+                        holder.cardView.setStrokeColor(ContextCompat.getColor(getContext(), R.color.yellowSecondColor));
+                    }
+
                     dataLoadingDialog.DismissDialog();
                 }
             });
@@ -203,12 +248,15 @@ public class MessageBoxFragment extends Fragment {
         public class ChatHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             TextView offerTitle, userName;
             CircleImageView avatar;
+            MaterialCardView cardView;
 
+            @SuppressLint("ResourceAsColor")
             public ChatHolder(@NonNull View itemView) {
                 super(itemView);
 
                 itemView.setOnClickListener(this);
 
+                cardView = (MaterialCardView)itemView;
                 offerTitle = itemView.findViewById(R.id.item_message_box_title);
                 userName = itemView.findViewById(R.id.item_message_box_user_name);
                 avatar = itemView.findViewById(R.id.item_message_box_avatar);
@@ -218,28 +266,101 @@ public class MessageBoxFragment extends Fragment {
             public void onClick(View v) {
 
                 String offerId = chatListMain.get(getAdapterPosition()).getOfferId();
+                String type = chatListMain.get(getAdapterPosition()).getChatType();
+
+                DocumentReference documentReference;
+
+                switch (type){
+                    case "NH":
+
+                        documentReference = FirebaseFirestore.getInstance().collection("announcement").document(offerId);
+                        documentReference.get().addOnSuccessListener(documentSnapshot -> {
+                            if(!documentSnapshot.exists()){
+                                chatList.remove(getAdapterPosition());
+                                adapter.notifyDataSetChanged();
+                                Toast.makeText(myContext, "This announcement not exists", Toast.LENGTH_LONG).show();
+                            }else{
+                                openChat(v);
+                            }
+                        });
+
+                        break;
+                    case "WTH":
+                        documentReference = FirebaseFirestore.getInstance().collection("offers").document(offerId);
+                        documentReference.get().addOnSuccessListener(documentSnapshot -> {
+                            if(!documentSnapshot.exists()){
+                                chatList.remove(getAdapterPosition());
+                                adapter.notifyDataSetChanged();
+                                Toast.makeText(myContext, "This offer not exists", Toast.LENGTH_LONG).show();
+                            }else{
+                                openChat(v);
+                            }
+                        });
+                        break;
+                }
+
+
+            }
+
+            private void openChat(View v){
+
+
 
                 Intent intent = new Intent(myContext, ChatActivity.class);
-                intent.putExtra(ChatActivity.NEED_HELP_ID_EXTRA, offerId);
+                intent.putExtra(ChatActivity.NEED_HELP_ID_EXTRA, chatListMain.get(getAdapterPosition()).getOfferId());
                 intent.putExtra(ChatActivity.TITLE_EXTRA, offerTitle.getText());
                 intent.putExtra(ChatActivity.THIS_USER_ID_EXTRA, chatListMain.get(getAdapterPosition()).getOtherUserId());
                 intent.putExtra(ChatActivity.OTHER_USER_NAME_EXTRA, userName.getText());
                 intent.putExtra(ChatActivity.CHAT_ID_EXTRA, chatListMain.get(getAdapterPosition()).getChatId());
                 intent.putExtra(ChatActivity.CHAT_TYPE_EXTRA, chatListMain.get(getAdapterPosition()).getChatType());
-                myActivity.startActivity(intent);
+
+                chatListMain.get(getAdapterPosition()).setHasUnreadMessages(false);
+                ((MaterialCardView)v).setStrokeColor(ContextCompat.getColor(getContext(), R.color.fui_transparent));
+                adapter.notifyDataSetChanged();
+
+                myActivity.startActivityForResult(intent, 001);
             }
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+
+        if(requestCode == 001){
+            ((MainActivity)myActivity).updateUnreadConversationsNumber();
+        }
+
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
         ((AppCompatActivity) myActivity).getSupportActionBar().hide();
+
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ((AppCompatActivity) myActivity).getSupportActionBar().show();
+    }
+
+    private void addNewChatItem(QueryDocumentSnapshot doc){
+        Chat chat = new Chat();
+        chat.setChatId(doc.getId());
+        chat.setOtherUserId(doc.getString("other user id"));
+        chat.setOfferId(doc.getString("offer id"));
+        chat.setChatType(doc.getString("chat type"));
+        if(doc.contains("has unread messages")) {
+            chat.setHasUnreadMessages(doc.getBoolean("has unread messages"));
+        }else{
+            chat.setHasUnreadMessages(false);
+        }
+        chatListMain.add(chat);
+        adapter.notifyDataSetChanged();
     }
 }

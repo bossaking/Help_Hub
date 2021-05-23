@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10sp"
+        app:drawableEndCompat="@drawable/ic_baseline_chevron_right_24"
         android:text="@string/example_category_title"
-        android:textSize="25sp"
-        app:drawableEndCompat="@drawable/ic_baseline_chevron_right_24" />
+        android:textSize="25sp" />
 
 </androidx.cardview.widget.CardView>

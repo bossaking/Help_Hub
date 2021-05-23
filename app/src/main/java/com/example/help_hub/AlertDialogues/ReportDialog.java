@@ -19,11 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.help_hub.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -34,12 +31,12 @@ public class ReportDialog extends DialogFragment {
 
     private Spinner causesSpinner;
     private Button reportButton;
-
-    private Context mContext;
     private String reportID, type;
 
-    public ReportDialog(Context mContext, String reportID, String type){
-        this.mContext = mContext;
+    private Context context;
+
+    public ReportDialog(Context context, String reportID, String type) {
+        this.context = context;
         this.reportID = reportID;
         this.type = type;
     }
@@ -47,27 +44,21 @@ public class ReportDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.report_dialog, null);
 
         reportButton = view.findViewById(R.id.dialog_report_button);
-        reportButton.setOnClickListener(v -> {
-            report();
-        });
+        reportButton.setOnClickListener(v -> report());
 
         causesSpinner = view.findViewById(R.id.causes_spinner);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mContext, R.array.report_causes, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.report_causes, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         causesSpinner.setAdapter(adapter);
-
-
 
         return view;
     }
 
-    private void report(){
-
+    private void report() {
         CollectionReference ref = FirebaseFirestore.getInstance().collection("reports");
 
         Map<String, Object> reportMap = new HashMap<>();
@@ -76,12 +67,12 @@ public class ReportDialog extends DialogFragment {
         reportMap.put("UserID", FirebaseAuth.getInstance().getUid());
         reportMap.put("Type", type);
 
-        ref.add(reportMap).addOnSuccessListener(documentReference -> {
-            Toast.makeText(mContext, getString(R.string.report_message), Toast.LENGTH_SHORT).show();
-            this.dismiss();
-        }).addOnFailureListener(e -> {
-            Toast.makeText(mContext, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-        });
+        ref.add(reportMap)
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(context, getString(R.string.report_message), Toast.LENGTH_SHORT).show();
+                    this.dismiss();
+                })
+                .addOnFailureListener(e -> Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
     }
 
     @Override
@@ -90,6 +81,7 @@ public class ReportDialog extends DialogFragment {
 
         Window window = Objects.requireNonNull(getDialog()).getWindow();
         int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+
         window.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         window.setGravity(Gravity.CENTER);
     }

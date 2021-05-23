@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.AddTheOfferActivity">
+    tools:context=".Activities.AddWantToHelpActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left"
@@ -98,15 +98,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toEndOf="@id/new_notice_budget"
-        app:layout_constraintTop_toBottomOf="@+id/new_notice_select_category_button"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/pln"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="normal"
-        android:textColor="@color/black"
-        android:text="@string/pln"/>
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toEndOf="@id/new_notice_budget"
+        app:layout_constraintTop_toBottomOf="@+id/new_notice_select_category_button" />
 
     <TextView
         android:id="@+id/new_notice_category_text_view"
@@ -135,8 +135,6 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/new_notice_category_text_view" />
-
-
 
     <TextView
         android:id="@+id/new_notice_description_text_view"
@@ -193,6 +191,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

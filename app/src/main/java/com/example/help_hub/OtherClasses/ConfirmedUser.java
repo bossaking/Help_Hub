@@ -3,9 +3,10 @@ package com.example.help_hub.OtherClasses;
 public class ConfirmedUser {
 
     private String UserId, Id;
-    private boolean opinionSended;
+    private boolean opinionSent;
 
-    public ConfirmedUser(){}
+    public ConfirmedUser() {
+    }
 
     public String getUserId() {
         return UserId;
@@ -15,12 +16,12 @@ public class ConfirmedUser {
         UserId = userId;
     }
 
-    public void setOpinionSended(boolean opinionSended) {
-        this.opinionSended = opinionSended;
+    public void setOpinionSended(boolean opinionSent) {
+        this.opinionSent = opinionSent;
     }
 
     public boolean isOpinionSended() {
-        return opinionSended;
+        return opinionSent;
     }
 
     public String getId() {

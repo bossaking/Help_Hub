@@ -3,7 +3,6 @@ package com.example.help_hub.OtherClasses;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Category {
 
     private String Id;

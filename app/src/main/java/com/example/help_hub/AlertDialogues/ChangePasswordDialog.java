@@ -2,7 +2,6 @@ package com.example.help_hub.AlertDialogues;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
@@ -17,22 +16,24 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ChangePasswordDialog implements TextWatcher {
 
-    private Activity myActivity;
-    private AlertDialog dialog;
     private EditText mPassword;
     private Drawable defaultBackground;
+
+    private Activity myActivity;
+
+    private AlertDialog dialog;
 
     public ChangePasswordDialog(Activity myActivity) {
         this.myActivity = myActivity;
     }
 
     public void StartChangePasswordDialog() {
-
         mPassword = new EditText(myActivity.getApplicationContext());
-        defaultBackground = mPassword.getBackground();
         mPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         mPassword.setTransformationMethod(new PasswordTransformationMethod());
         mPassword.addTextChangedListener(this);
+
+        defaultBackground = mPassword.getBackground();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
         builder.setTitle(R.string.change_password_title);
@@ -51,15 +52,13 @@ public class ChangePasswordDialog implements TextWatcher {
             final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    firebaseAuth.sendPasswordResetEmail(email).addOnSuccessListener(x -> {
-                        Toast.makeText(myActivity.getApplicationContext(), "Change link sent to your e-mail", Toast.LENGTH_LONG).show();
-                    }).addOnFailureListener(e -> {
-                        Toast.makeText(myActivity.getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    });
-                } else {
-                    Toast.makeText(myActivity.getApplicationContext(), "Error: " + task.getException(), Toast.LENGTH_LONG).show();
-                }
+                    firebaseAuth.sendPasswordResetEmail(email)
+                            .addOnSuccessListener(x -> Toast.makeText(myActivity.getApplicationContext(), R.string.Change_password_link, Toast.LENGTH_LONG).show())
+                            .addOnFailureListener(e -> Toast.makeText(myActivity.getApplicationContext(), R.string.error + e.getMessage(), Toast.LENGTH_LONG).show());
+                } else
+                    Toast.makeText(myActivity.getApplicationContext(), myActivity.getApplicationContext().getString(R.string.error) + task.getException(), Toast.LENGTH_LONG).show();
             });
+
             dialog.dismiss();
         });
 
@@ -67,7 +66,6 @@ public class ChangePasswordDialog implements TextWatcher {
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
     }
 
     @Override
@@ -77,6 +75,5 @@ public class ChangePasswordDialog implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable editable) {
-
     }
 }

@@ -3,37 +3,38 @@ package com.example.help_hub.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.help_hub.Fragments.WantToHelpDetailsFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.example.help_hub.Fragments.DetailsNeedHelpFragment;
+
 import com.example.help_hub.R;
 
-public class WantToHelpDetails extends AppCompatActivity {
+public class DetailsNeedHelpActivity extends AppCompatActivity {
 
-
-    public static final String EXTRA_WANT_TO_HELP_ID = "NEED_HELP_ID";
-    public static final String EXTRA_WANT_TO_HELP_TITLE = "NEED_HELP_TITLE";
-    public static final String EXTRA_WANT_TO_HELP_PRICE = "NEED_HELP_PRICE";
-    public static final String EXTRA_WANT_TO_HELP_DESCRIPTION = "NEED_HELP_DESCRIPTION";
-    public static final String EXTRA_WANT_TO_HELP_USER_ID = "NEED_HELP_USER_ID";
+    public static final String EXTRA_NEED_HELP_ID = "NEED_HELP_ID",
+            EXTRA_NEED_HELP_TITLE = "NEED_HELP_TITLE",
+            EXTRA_NEED_HELP_PRICE = "NEED_HELP_PRICE",
+            EXTRA_NEED_HELP_DESCRIPTION = "NEED_HELP_DESCRIPTION",
+            EXTRA_NEED_HELP_USER_ID = "NEED_HELP_USER_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_want_to_help_details);
+        setContentView(R.layout.activity_need_help_details);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Fragment detailsFragment = new WantToHelpDetailsFragment();
+        Fragment detailsFragment = new DetailsNeedHelpFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.want_to_help_details_container, detailsFragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.need_help_details_container, detailsFragment).commit();
     }
 
     @Override
@@ -50,10 +51,8 @@ public class WantToHelpDetails extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0)
             getSupportFragmentManager().popBackStackImmediate();
-        } else {
-            super.onBackPressed();
-        }
+        else super.onBackPressed();
     }
 }

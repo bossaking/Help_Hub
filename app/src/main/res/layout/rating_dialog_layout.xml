@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RatingBar
-            android:layout_gravity="center"
-            android:id="@+id/rating_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/medium_margin"
-            android:numStars="5"
-            android:stepSize="1"/>
+        android:id="@+id/rating_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/medium_margin"
+        android:numStars="5"
+        android:stepSize="1" />
 
     <EditText
-            android:id="@+id/comment_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxHeight="250dp"
-            android:hint="@string/optional_comment"
-            android:inputType="textMultiLine"/>
+        android:id="@+id/comment_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/optional_comment"
+        android:inputType="textMultiLine"
+        android:maxHeight="250dp" />
 
     <Button
-            android:id="@+id/rating_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/send"
-            android:background="@color/greenButtonColor"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/medium_margin"/>
+        android:id="@+id/rating_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/medium_margin"
+        android:background="@color/greenButtonColor"
+        android:text="@string/send" />
 
 </LinearLayout>

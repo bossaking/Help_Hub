@@ -15,7 +15,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,43 +38,31 @@ import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MessageBoxFragment extends Fragment {
 
-    private RecyclerView recyclerView;
-
-    DatabaseReference databaseReference;
-
-    private Activity myActivity;
-    private Context myContext;
-
+    private String userId;
     private List<Chat> chatListMain;
 
+    private RecyclerView recyclerView;
     private ChatAdapter adapter;
 
-    private String userId;
+    private DatabaseReference databaseReference;
 
     private LoadingDialog dataLoadingDialog;
 
-
-    //private FirebaseRecyclerOptions<Chat> options;
-    //private FirebaseRecyclerAdapter<Chat, ChatHolder> adapter;
+    private Activity myActivity;
+    private Context myContext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,15 +89,14 @@ public class MessageBoxFragment extends Fragment {
 
         userId = FirebaseAuth.getInstance().getUid();
 
-        CollectionReference chatsRef = FirebaseFirestore.getInstance().collection("users").document(userId)
-                .collection("chats");
+        CollectionReference chatsRef = FirebaseFirestore.getInstance().collection("users").document(userId).collection("chats");
 
         dataLoadingDialog = new LoadingDialog(getActivity());
         dataLoadingDialog.StartLoadingDialog();
         chatsRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
-            if (queryDocumentSnapshots.getDocumentChanges().size() == 0) {
+            if (queryDocumentSnapshots.getDocumentChanges().size() == 0)
                 dataLoadingDialog.DismissDialog();
-            } else {
+            else {
                 for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
                     switch (dc.getType()) {
                         case ADDED:
@@ -160,6 +146,7 @@ public class MessageBoxFragment extends Fragment {
                 }
             }
         });
+
         return view;
     }
 
@@ -169,7 +156,6 @@ public class MessageBoxFragment extends Fragment {
     }
 
     public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
-
         private List<Chat> chatList;
 
         public ChatAdapter(List<Chat> chatList) {
@@ -180,6 +166,7 @@ public class MessageBoxFragment extends Fragment {
         @Override
         public ChatHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message_box, parent, false);
+
             return new ChatHolder(view);
         }
 
@@ -189,21 +176,26 @@ public class MessageBoxFragment extends Fragment {
                 Chat chat = chatList.get(position);
 
                 //Pobieranie tytułu oferty
-                DocumentReference offerRef = FirebaseFirestore.getInstance().collection("offers")
-                        .document(chat.getOfferId());
+                DocumentReference offerRef = FirebaseFirestore.getInstance()
+                        .collection("offers").document(chat.getOfferId());
                 offerRef.get().addOnCompleteListener(task1 -> {
                     if (task1.isSuccessful()) {
                         DocumentSnapshot documentSnapshot = task1.getResult();
+
                         if (documentSnapshot.getString("Title") != null) {
-                            holder.offerTitle.setText(documentSnapshot.getString("Title"));
+                            String Title = documentSnapshot.getString("Title");
+                            if (Title.length() > 20) Title = Title.substring(0, 20) + "...";
+                            holder.offerTitle.setText(Title);
                             getOtherUserData(holder, position);
                         } else {
-                            DocumentReference announcementRef = FirebaseFirestore.getInstance().collection("announcement")
-                                    .document(chat.getOfferId());
+                            DocumentReference announcementRef = FirebaseFirestore.getInstance()
+                                    .collection("announcement").document(chat.getOfferId());
                             announcementRef.get().addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
                                     DocumentSnapshot ds = task.getResult();
-                                    holder.offerTitle.setText(ds.getString("Title"));
+                                    String Title = ds.getString("Title");
+                                    if (Title.length() > 20) Title = Title.substring(0, 20) + "...";
+                                    holder.offerTitle.setText(Title);
                                     getOtherUserData(holder, position);
                                 }
                             });
@@ -215,21 +207,22 @@ public class MessageBoxFragment extends Fragment {
 
         @SuppressLint("ResourceAsColor")
         private void getOtherUserData(ChatHolder holder, int position) {
-
             Chat chat = chatListMain.get(position);
 
             //Pobieranie danych innego użytkownika
-            DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(chat.getOtherUserId());
+            DocumentReference userRef = FirebaseFirestore.getInstance()
+                    .collection("users").document(chat.getOtherUserId());
             userRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     DocumentSnapshot docSnap = task.getResult();
                     holder.userName.setText(docSnap.getString("Name"));
 
-                    StorageReference avatarRef = FirebaseStorage.getInstance().getReference().child("users/" + chat.getOtherUserId() + "/profile.jpg");
-                    avatarRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        Glide.with(getActivity()).load(uri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
-                                .into(holder.avatar);
-                    });
+                    StorageReference avatarRef = FirebaseStorage.getInstance()
+                            .getReference().child("users/" + chat.getOtherUserId() + "/profile.jpg");
+                    avatarRef.getDownloadUrl()
+                            .addOnSuccessListener(uri -> Glide.with(getActivity())
+                                    .load(uri).placeholder(R.drawable.image_with_progress)
+                                    .error(R.drawable.broken_image_24).into(holder.avatar));
 
                     if(chat.isHasUnreadMessages()){
                         holder.cardView.setStrokeColor(ContextCompat.getColor(getContext(), R.color.yellowSecondColor));
@@ -264,7 +257,6 @@ public class MessageBoxFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-
                 String offerId = chatListMain.get(getAdapterPosition()).getOfferId();
                 String type = chatListMain.get(getAdapterPosition()).getChatType();
 

@@ -1,13 +1,16 @@
 package com.example.help_hub.Activities;
 
 import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.help_hub.Adapters.OpinionsAdapter;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.OtherClasses.Opinion;
@@ -21,12 +24,12 @@ public class AllOpinionsActivity extends AppCompatActivity {
 
     public static final String USER_ID = "userid", USER_NAME = "username";
 
+    private List<Opinion> opinions;
+    private String userId;
+
     private RecyclerView recyclerView;
     private OpinionsAdapter adapter;
     private LoadingDialog loadingDialog;
-
-    private List<Opinion> opinions;
-    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +57,8 @@ public class AllOpinionsActivity extends AppCompatActivity {
     }
 
     private void getAllOpinions() {
-
         FirebaseFirestore.getInstance().collection("users").document(userId).collection("opinions")
                 .addSnapshotListener((queryDocumentSnapshots, e) -> {
-
                     for (DocumentSnapshot ds : queryDocumentSnapshots) {
                         opinions.add(ds.toObject(Opinion.class));
                         adapter.notifyDataSetChanged();
@@ -65,12 +66,10 @@ public class AllOpinionsActivity extends AppCompatActivity {
 
                     loadingDialog.DismissDialog();
                 });
-
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
@@ -80,5 +79,4 @@ public class AllOpinionsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }

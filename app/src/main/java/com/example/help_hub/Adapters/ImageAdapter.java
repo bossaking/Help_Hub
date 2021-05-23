@@ -1,5 +1,6 @@
 package com.example.help_hub.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,14 +13,13 @@ import com.example.help_hub.R;
 
 public class ImageAdapter extends BaseAdapter {
 
-    Context context;
-    ClipData clipData;
+    private Context context;
+    private ClipData clipData;
 
     public ImageAdapter(Context context, ClipData clipData) {
         this.context = context;
         this.clipData = clipData;
     }
-
 
     @Override
     public int getCount() {
@@ -36,9 +36,9 @@ public class ImageAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         View gridView = convertView;
 
         if (gridView == null) {

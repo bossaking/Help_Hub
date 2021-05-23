@@ -1,85 +1,62 @@
 package com.example.help_hub.AlertDialogues;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
-import android.provider.ContactsContract;
-import android.renderscript.ScriptGroup;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Patterns;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.example.help_hub.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ResetPasswordDialog implements TextWatcher {
 
-    Activity myActivity;
-    EditText mEmail;
-    Drawable defaultBackground;
-    AlertDialog dialog;
+    private EditText mEmail;
+    private Drawable defaultBackground;
+
+    private AlertDialog dialog;
+
+    private Activity myActivity;
 
     public ResetPasswordDialog(Activity myActivity) {
         this.myActivity = myActivity;
     }
 
     public void StartResetPasswordDialog() {
-
         mEmail = new EditText(myActivity.getApplicationContext());
-        defaultBackground = mEmail.getBackground();
         mEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         mEmail.addTextChangedListener(this);
+
+        defaultBackground = mEmail.getBackground();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
         builder.setView(mEmail);
         builder.setTitle(R.string.reset_password_title);
         builder.setMessage(R.string.reset_password_message);
-
         builder.setPositiveButton(R.string.reset_positive_button, null);
 
         dialog = builder.create();
         builder.setCancelable(true);
         dialog.show();
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = mEmail.getText().toString().trim();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String email = mEmail.getText().toString().trim();
 
-                if (!ValidateEmail(email)) {
-                    return;
-                }
-                FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(myActivity.getApplicationContext(), "Reset link sent to your e-mail", Toast.LENGTH_LONG).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(myActivity.getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
+            if (!validateEmail(email)) return;
 
-                dialog.dismiss();
-            }
+            FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                    .addOnSuccessListener(aVoid -> Toast.makeText(myActivity.getApplicationContext(), R.string.Reset_password, Toast.LENGTH_LONG).show())
+                    .addOnFailureListener(e -> Toast.makeText(myActivity.getApplicationContext(), R.string.error + e.getMessage(), Toast.LENGTH_LONG).show());
+
+            dialog.dismiss();
         });
     }
 
-    private boolean ValidateEmail(String email) {
-
-
+    private boolean validateEmail(String email) {
         if (email.isEmpty()) {
             mEmail.setError(myActivity.getString(R.string.email_empty_error));
             mEmail.setBackgroundResource(R.drawable.edit_error_border);
@@ -97,7 +74,6 @@ public class ResetPasswordDialog implements TextWatcher {
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
     }
 
     @Override

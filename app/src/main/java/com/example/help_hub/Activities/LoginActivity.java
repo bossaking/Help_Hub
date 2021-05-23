@@ -33,10 +33,10 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements TextWatcher {
 
-    EditText mEmail, mPassword;
-    Button mLoginButton;
-    TextView goToRegistration, loginErrorSpan, forgotPassword;
-    Drawable defaultTextView;
+    private EditText mEmail, mPassword;
+    private Button mLoginButton;
+    private TextView goToRegistration, loginErrorSpan, forgotPassword;
+    private Drawable defaultTextView;
 
     LoadingDialog loadingDialog;
 
@@ -73,10 +73,11 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
         mLoginButton.setOnClickListener(v -> {
             String email = mEmail.getText().toString().trim();
             String password = mPassword.getText().toString().trim();
+
             final LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
             loadingDialog.StartLoadingDialog();
 
-            if (!ValidateEmail(email) || !ValidatePassword(password)) {
+            if (!validateEmail(email) || !validatePassword(password)) {
                 loadingDialog.DismissDialog();
                 return;
             }
@@ -106,7 +107,6 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
     }
 
     @Override
@@ -118,11 +118,9 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-
     }
 
-    private boolean ValidateEmail(String email) {
-
+    private boolean validateEmail(String email) {
         if (email.isEmpty()) {
             mEmail.setError(getString(R.string.email_empty_error));
             mEmail.setBackgroundResource(R.drawable.edit_error_border);
@@ -138,8 +136,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
         return true;
     }
 
-    private boolean ValidatePassword(String password) {
-
+    private boolean validatePassword(String password) {
         if (password.length() < 8) {
             mPassword.setError(getString(R.string.password_length_error));
             mPassword.setBackgroundResource(R.drawable.edit_error_border);

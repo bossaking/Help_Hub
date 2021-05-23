@@ -1,6 +1,5 @@
 package com.example.help_hub.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,21 +14,17 @@ import android.widget.TextView;
 
 import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.SignInMethodQueryResult;
 
 import java.util.List;
 
 public class RegistrationActivity extends AppCompatActivity implements TextWatcher {
 
-    EditText mEmail, mPassword, mRepeatPassword;
-    Button signUpButton;
+    private EditText mEmail, mPassword, mRepeatPassword;
+    private Button signUpButton;
+    private Drawable defaultEditTextDrawable;
 
-    Drawable defaultEditTextDrawable;
-
-    FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,59 +41,52 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
 
         mEmail = findViewById(R.id.registration_email);
         defaultEditTextDrawable = mEmail.getBackground();
+        mPassword = findViewById(R.id.registration_password_text);
+        mRepeatPassword = findViewById(R.id.registration_repeat_password_text);
 
         mEmail.addTextChangedListener(this);
-
-        mPassword = findViewById(R.id.registration_password_text);
         mPassword.addTextChangedListener(this);
-
-        mRepeatPassword = findViewById(R.id.registration_repeat_password_text);
         mRepeatPassword.addTextChangedListener(this);
 
         signUpButton = findViewById(R.id.registration_button);
 
         //Gdy naciskamy przycisk rejestracji
         signUpButton.setOnClickListener(v -> {
-
             final String email = mEmail.getText().toString().trim();
             final String password = mPassword.getText().toString().trim();
+
             String repeatPassword = mRepeatPassword.getText().toString().trim();
 
-            if (!ValidateEmail(email) || !ValidatePassword(password, repeatPassword)) {
-                return;
-            }
+            if (!validateEmail(email) || !validatePassword(password, repeatPassword)) return;
 
             final LoadingDialog loadingDialog = new LoadingDialog(RegistrationActivity.this);
             loadingDialog.StartLoadingDialog();
 
             //Sprawdzamy, czy podany E-mail nie jest już zarejestrowany
-            firebaseAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                @Override
-                public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                    if (task.isSuccessful()) {
-                        List<String> methods = task.getResult().getSignInMethods();
-                        if (!methods.isEmpty()) {
+            firebaseAuth.fetchSignInMethodsForEmail(email)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            List<String> methods = task.getResult().getSignInMethods();
 
-                            mEmail.setError(getString(R.string.email_exists_error));
-                            mEmail.setBackgroundResource(R.drawable.edit_error_border);
-                            mEmail.requestFocus();
-                        } else {
-                            Intent intent = new Intent(getApplicationContext(), NewUserBasicInformationsActivity.class);
-                            intent.putExtra("USER_EMAIL", email);
-                            intent.putExtra("USER_PASSWORD", password);
-                            startActivity(intent);
-                            finish();
+                            if (!methods.isEmpty()) {
+                                mEmail.setError(getString(R.string.email_exists_error));
+                                mEmail.setBackgroundResource(R.drawable.edit_error_border);
+                                mEmail.requestFocus();
+                            } else {
+                                Intent intent = new Intent(getApplicationContext(), NewUserBasicInformationActivity.class);
+                                intent.putExtra("USER_EMAIL", email);
+                                intent.putExtra("USER_PASSWORD", password);
+                                startActivity(intent);
+                                finish();
+                            }
                         }
-                    }
-                    loadingDialog.DismissDialog();
-                }
-            });
-        });
 
+                        loadingDialog.DismissDialog();
+                    });
+        });
     }
 
-    private boolean ValidateEmail(String email) {
-
+    private boolean validateEmail(String email) {
         if (email.isEmpty()) {
             mEmail.setError(getString(R.string.email_empty_error));
             mEmail.setBackgroundResource(R.drawable.edit_error_border);
@@ -114,8 +102,7 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
         return true;
     }
 
-    private boolean ValidatePassword(String password, String repeatPassword) {
-
+    private boolean validatePassword(String password, String repeatPassword) {
         if (password.length() < 8) {
             mPassword.setError(getString(R.string.password_length_error));
             mPassword.setBackgroundResource(R.drawable.edit_error_border);
@@ -133,7 +120,6 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
     }
 
     @Override
@@ -145,6 +131,5 @@ public class RegistrationActivity extends AppCompatActivity implements TextWatch
 
     @Override
     public void afterTextChanged(Editable s) {
-
     }
 }

@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.help_hub.AlertDialogues.LoadingDialog;
-import com.example.help_hub.OtherClasses.Category;
+import com.example.help_hub.R;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -16,7 +16,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewOfferNoticeCategory extends AppCompatActivity {
+public class NewAnnouncementCategoryActivity extends AppCompatActivity {
 
     public interface OnTitleChangedListener {
         void onTitleChanged();
@@ -38,32 +38,23 @@ public class NewOfferNoticeCategory extends AppCompatActivity {
     }
 
     public void titleChanged() {
-        if (onTitleChangedListener != null) {
-            onTitleChangedListener.onTitleChanged();
-        }
+        if (onTitleChangedListener != null) onTitleChangedListener.onTitleChanged();
     }
 
     public void forbiddenWordsLoads() {
-        if (onForbiddenWordsLoadsListener != null) {
+        if (onForbiddenWordsLoadsListener != null)
             onForbiddenWordsLoadsListener.onForbiddenWordsLoads();
-        }
     }
 
-    protected String title;
-    protected String price;
-    protected String description;
-
-    protected String categoryTitle = "";
-    protected String subCategoryTitle = "";
-
-    List<String> forbiddenWords;
+    protected String title, price, description, categoryTitle = "", subCategoryTitle = "";
+    private List<String> forbiddenWords;
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getForbiddenWords();
-        onForbiddenWordsLoadsListener = () -> {
 
+        onForbiddenWordsLoadsListener = () -> {
         };
     }
 
@@ -83,7 +74,6 @@ public class NewOfferNoticeCategory extends AppCompatActivity {
     }
 
     private void getForbiddenWords() {
-
         forbiddenWords = new ArrayList<>();
 
         CollectionReference collection = FirebaseFirestore.getInstance().collection("forbiddenWords");
@@ -92,26 +82,27 @@ public class NewOfferNoticeCategory extends AppCompatActivity {
                 for (QueryDocumentSnapshot doc : task.getResult()) {
                     forbiddenWords.add(doc.getString("word"));
                 }
+
                 forbiddenWordsLoads();
-            } else {
-                Toast.makeText(getApplicationContext(), "Error: " + task.getException(), Toast.LENGTH_LONG).show();
-            }
+            } else
+                Toast.makeText(getApplicationContext(), getString(R.string.error) + task.getException(), Toast.LENGTH_LONG).show();
         });
     }
 
-    protected boolean CheckForbiddenWords() {
-
+    protected boolean checkForbiddenWords() {
         LoadingDialog loadingDialog = new LoadingDialog(this);
         loadingDialog.StartLoadingDialog();
 
         for (String word : forbiddenWords) {
             if (title.toLowerCase().contains(word) || description.toLowerCase().contains(word)) {
                 loadingDialog.DismissDialog();
-                Toast.makeText(this, "Your ad contains forbidden words!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.forbidden_words_error, Toast.LENGTH_LONG).show();
                 return false;
             }
         }
+
         loadingDialog.DismissDialog();
+
         return true;
     }
 }

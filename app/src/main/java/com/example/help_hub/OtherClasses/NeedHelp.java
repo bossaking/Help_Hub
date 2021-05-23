@@ -1,7 +1,5 @@
 package com.example.help_hub.OtherClasses;
 
-import android.net.Uri;
-
 public class NeedHelp {
 
     private String Title, Price, Description, Id, UserId, Category, Subcategory, City, PerformerId, Status;

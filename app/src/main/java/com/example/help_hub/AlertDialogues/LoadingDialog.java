@@ -8,8 +8,8 @@ import com.example.help_hub.R;
 
 public class LoadingDialog {
 
-    Activity myActivity;
-    AlertDialog dialog;
+    private Activity myActivity;
+    private AlertDialog dialog;
 
     public LoadingDialog(Activity myActivity) {
         this.myActivity = myActivity;
@@ -29,5 +29,4 @@ public class LoadingDialog {
     public void DismissDialog() {
         dialog.dismiss();
     }
-
 }

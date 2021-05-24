@@ -118,9 +118,14 @@ public class DetailsNeedHelpFragment extends Fragment {
 
         userId = bundle.getString(DetailsNeedHelpActivity.EXTRA_NEED_HELP_USER_ID);
 
-        needHelpUserDataCardView.setOnClickListener(viewListener ->
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.need_help_details_container,
-                        new OtherUserProfileFragment(userId)).addToBackStack(null).commit());
+        if(userId.equals(FirebaseAuth.getInstance().getUid())){
+            writeButton.setVisibility(View.GONE);
+        }
+
+        needHelpUserDataCardView.setOnClickListener(viewListener -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.need_help_details_container,
+                    new OtherUserProfileFragment(userId)).addToBackStack(null).commit();
+        });
 
         writeButton.setOnClickListener(viewListener -> {
             Intent intent = new Intent(myContext, ChatActivity.class);

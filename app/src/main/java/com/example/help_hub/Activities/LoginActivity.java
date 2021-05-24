@@ -17,7 +17,19 @@ import android.widget.Toast;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.AlertDialogues.ResetPasswordDialog;
 import com.example.help_hub.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements TextWatcher {
 
@@ -25,6 +37,8 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
     private Button mLoginButton;
     private TextView goToRegistration, loginErrorSpan, forgotPassword;
     private Drawable defaultTextView;
+
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +48,9 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
         final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
+            loadingDialog = new LoadingDialog(this);
+            loadingDialog.StartLoadingDialog();
+            getTokenAndStartActivity();
         }
 
         mEmail = findViewById(R.id.login_email);
@@ -67,21 +82,21 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
                 return;
             }
 
-            firebaseAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
-                        } else {
-                            Toast.makeText(LoginActivity.this, getString(R.string.error) + task.getException(), Toast.LENGTH_LONG).show();
-                            loadingDialog.DismissDialog();
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        loginErrorSpan.setVisibility(View.VISIBLE);
-                        loadingDialog.DismissDialog();
-                    });
+
+            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+
+                    getTokenAndStartActivity();
+
+                } else {
+                    Toast.makeText(LoginActivity.this, "Error: " + task.getException(), Toast.LENGTH_LONG).show();
+                    loadingDialog.DismissDialog();
+                }
+            }).addOnFailureListener(e -> {
+                loginErrorSpan.setVisibility(View.VISIBLE);
+                loadingDialog.DismissDialog();
+            });
         });
 
         forgotPassword.setOnClickListener(v -> {
@@ -129,5 +144,24 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
         }
 
         return true;
+    }
+
+    private void getTokenAndStartActivity(){
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(LoginActivity.this, instanceIdResult -> {
+            String token = instanceIdResult.getToken();
+            FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid()).removeValue().
+                    addOnSuccessListener(unused -> {
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users").
+                                child(FirebaseAuth.getInstance().getUid());
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("token", token);
+                        databaseReference.updateChildren(map);
+                        if(loadingDialog != null)
+                        loadingDialog.DismissDialog();
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
+                    });
+
+        });
     }
 }

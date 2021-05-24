@@ -1,6 +1,7 @@
 package com.example.help_hub.Activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,12 +16,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.help_hub.Adapters.MessagesAdapter;
 import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.AlertDialogues.RatingDialog;
+import com.example.help_hub.Fragments.OtherUserProfileFragment;
 import com.example.help_hub.OtherClasses.*;
 import com.example.help_hub.R;
+import com.example.help_hub.Singletones.UserDatabase;
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
 import com.google.firebase.firestore.*;
@@ -28,6 +45,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -72,12 +93,24 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
     private WantToHelp wantToHelp;
     private String chatType;
 
-    @SuppressLint("SimpleDateFormat")
+    private FrameLayout frameLayout;
+    private RelativeLayout relativeLayout;
+
+    private Activity activity;
+
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        activity = this;
+
+        frameLayout = findViewById(R.id.user_profile_container);
+        frameLayout.setVisibility(View.GONE);
+
+        relativeLayout = findViewById(R.id.messages);
+        relativeLayout.setVisibility(View.VISIBLE);
         context = getApplicationContext();
 
         loadingDialog = new LoadingDialog(this);
@@ -149,6 +182,18 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                 .addOnSuccessListener(v -> Glide.with(context).load(v).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24).into(avatarImage))
                 .addOnFailureListener(v -> avatarImage.setImageResource(R.drawable.default_user_image));
 
+        avatarImage.setOnClickListener(view -> {
+//            FrameLayout fragmentLayout = new FrameLayout(this);
+//            fragmentLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//            fragmentLayout.setId(1000);
+            //setContentView(fragmentLayout);
+            relativeLayout.setVisibility(View.GONE);
+            frameLayout.setVisibility(View.VISIBLE);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.user_profile_container, new OtherUserProfileFragment(otherUserId)).addToBackStack(null).commit();
+        });
+
         readMessages();
     }
 
@@ -168,11 +213,13 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
     }
 
     private void sendMessage(String sender, String message, String type) {
-        if (messages.size() == 0) {
-            DocumentReference docRef = FirebaseFirestore.getInstance().collection("users")
-                    .document(userId).collection("chats").document(chatId);
 
-            HashMap<String, Object> chatMap = new HashMap<>();
+        DocumentReference docRef;
+        HashMap<String, Object> chatMap = new HashMap<>();;
+
+        if (messages.size() == 0) {
+            docRef = FirebaseFirestore.getInstance().collection("users").document(userId)
+                    .collection("chats").document(chatId);
             chatMap.put("offer id", Id);
             chatMap.put("other user id", otherUserId);
             chatMap.put("chat type", chatType);
@@ -187,6 +234,12 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
             chatMap.put("chat type", chatType);
             docRef.set(chatMap);
         }
+
+        docRef = FirebaseFirestore.getInstance().collection("users").document(otherUserId)
+                .collection("chats").document(chatId);
+        chatMap.clear();
+        chatMap.put("has unread messages", true);
+        docRef.update(chatMap);
 
         reference = FirebaseDatabase.getInstance().getReference();
 
@@ -206,6 +259,8 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                     })
                     .addOnFailureListener(e -> Toast.makeText(this, R.string.error + e.getLocalizedMessage(), Toast.LENGTH_LONG).show());
         } else reference.child("Chats").child(chatId).push().setValue(messageMap);
+
+        getToken(message, otherUserId, chatId);
 
         messageEdit.setText("");
     }
@@ -330,6 +385,8 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
         performerActionsButton.setBackgroundColor(getColor(R.color.greenButtonColor));
         performerActionsSecondButton.setVisibility(View.GONE);
 
+        if(needHelp == null) return;
+
         if (needHelp.getUserId().equals(userId)) {
             performerActionsButton.setVisibility(View.VISIBLE);
 
@@ -432,6 +489,9 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
     }
 
     private void checkDataWantToHelp(List<ConfirmedUser> confirmedUsers) {
+
+        if (wantToHelp == null) return;
+
         if (wantToHelp.getUserId().equals(userId)) {
             performerActionsLinearLayout.setVisibility(View.VISIBLE);
 
@@ -575,5 +635,105 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
 
             checkDataNeedHelp();
         } else if (chatType.equals("WTH")) performerActionsLinearLayout.setVisibility(View.GONE);
+    }
+
+    private void getToken(String message, String hisId, String chatId){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users").child(hisId);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+
+                if(!snapshot.child("token").exists()){
+                    return;
+                }
+
+                String token = snapshot.child("token").getValue().toString();
+
+                DocumentReference documentReference = FirebaseFirestore.getInstance().collection("users").document(userId);
+                documentReference.addSnapshotListener((documentSnapshot, e) -> {
+
+                    String name = documentSnapshot.get("Name").toString();
+
+                    JSONObject to = new JSONObject();
+                    JSONObject data = new JSONObject();
+
+                    try{
+
+                        data.put("name", name);
+                        data.put("message", message);
+                        data.put("hisId", userId);
+                        data.put("otherUserName", UserDatabase.getInstance(activity, otherUserId).getUser().getName());
+                        data.put("title", Title);
+                        data.put("chatId", chatId);
+                        data.put("chatType", chatType);
+                        data.put("id", Id);
+
+                        to.put("to", token);
+                        to.put("data", data);
+
+                        sendNotification(to);
+
+                    }catch (JSONException ex){
+                        ex.printStackTrace();
+                    }
+
+                });
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void sendNotification(JSONObject to){
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", to, response -> {
+
+        }, error->{
+
+        }){
+            @Override
+            public Map<String, String> getHeaders() {
+
+                Map<String, String> map = new HashMap<>();
+                map.put("Authorization", "key="+"AAAAY8PfmRo:APA91bFDo2WoLN_hpi5fQ3pF5VFuS9_jSSnPQavDjj7SoFfL5cvcjKtaUvQMTICCbG_AyyECt5_rKKhkXbKv2yvEkQLERwlpahqZa0gQ1V-SGRBd_YF_UdyvFZrkY92E2k4qMZNhsbLO");
+                map.put("Content-type", "application/json");
+                return map;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        request.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(request);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        frameLayout.setVisibility(View.GONE);
+        relativeLayout.setVisibility(View.VISIBLE);
+
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(userId)
+                .collection("chats").document(chatId);
+        HashMap<String, Object> chatMap = new HashMap<>();
+        chatMap.put("has unread messages", false);
+        docRef.update(chatMap);
+
+        super.onDestroy();
     }
 }

@@ -2,10 +2,14 @@ package com.example.help_hub.OtherClasses;
 
 public class Chat {
 
-    private String chatId, otherUserId, offerId, offerTitle, otherUserName, chatType;
+    private String chatId;
+    private String otherUserId;
+    private String offerId;
+    private String offerTitle;
+    private String otherUserName, chatType;
+    private boolean hasUnreadMessages;
 
-    public Chat() {
-    }
+    public Chat() { }
 
     public Chat(String chatId) {
         this.chatId = chatId;
@@ -57,5 +61,13 @@ public class Chat {
 
     public String getChatType() {
         return chatType;
+    }
+
+    public boolean isHasUnreadMessages() {
+        return hasUnreadMessages;
+    }
+
+    public void setHasUnreadMessages(boolean hasUnreadMessages) {
+        this.hasUnreadMessages = hasUnreadMessages;
     }
 }

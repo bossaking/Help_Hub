@@ -25,7 +25,7 @@ import com.bumptech.glide.Glide;
 import com.example.help_hub.Activities.ChatActivity;
 import com.example.help_hub.Activities.MainActivity;
 import com.example.help_hub.Activities.RegistrationActivity;
-import com.example.help_hub.Activities.WantToHelpDetails;
+
 import com.example.help_hub.AlertDialogues.LoadingDialog;
 import com.example.help_hub.OtherClasses.Chat;
 import com.example.help_hub.R;
@@ -48,6 +48,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MessageBoxFragment extends Fragment {
 
@@ -94,7 +95,7 @@ public class MessageBoxFragment extends Fragment {
         dataLoadingDialog = new LoadingDialog(getActivity());
         dataLoadingDialog.StartLoadingDialog();
         chatsRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
-            if (queryDocumentSnapshots.getDocumentChanges().size() == 0)
+            if (queryDocumentSnapshots.getDocumentChanges().size() == 0 || queryDocumentSnapshots.isEmpty())
                 dataLoadingDialog.DismissDialog();
             else {
                 for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
@@ -138,7 +139,7 @@ public class MessageBoxFragment extends Fragment {
                             }else if(chatListMain.size() > 0){
                                 chatListMain.get(dc.getOldIndex()).setHasUnreadMessages(false);
                                 ((MaterialCardView)recyclerView.getChildAt(dc.getOldIndex()))
-                                        .setStrokeColor(ContextCompat.getColor(getContext(), R.color.fui_transparent));
+                                        .setStrokeColor(ContextCompat.getColor(requireContext(), R.color.fui_transparent));
                             }
                             adapter.notifyDataSetChanged();
                             break;
@@ -332,7 +333,7 @@ public class MessageBoxFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((AppCompatActivity) myActivity).getSupportActionBar().hide();
-
+        ((MainActivity)myActivity).calculateUnreadConversations();
     }
 
     @Override

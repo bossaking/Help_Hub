@@ -1,6 +1,7 @@
 package com.example.help_hub.Activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -95,12 +96,15 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
     private FrameLayout frameLayout;
     private RelativeLayout relativeLayout;
 
+    private Activity activity;
+
     @SuppressLint("ResourceType")
-    @SuppressLint("SimpleDateFormat")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        activity = this;
 
         frameLayout = findViewById(R.id.user_profile_container);
         frameLayout.setVisibility(View.GONE);
@@ -381,6 +385,8 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
         performerActionsButton.setBackgroundColor(getColor(R.color.greenButtonColor));
         performerActionsSecondButton.setVisibility(View.GONE);
 
+        if(needHelp == null) return;
+
         if (needHelp.getUserId().equals(userId)) {
             performerActionsButton.setVisibility(View.VISIBLE);
 
@@ -483,6 +489,9 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
     }
 
     private void checkDataWantToHelp(List<ConfirmedUser> confirmedUsers) {
+
+        if (wantToHelp == null) return;
+
         if (wantToHelp.getUserId().equals(userId)) {
             performerActionsLinearLayout.setVisibility(View.VISIBLE);
 
@@ -653,7 +662,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesAdapter.o
                         data.put("name", name);
                         data.put("message", message);
                         data.put("hisId", userId);
-                        data.put("otherUserName", UserDatabase.instance.getUser().getName());
+                        data.put("otherUserName", UserDatabase.getInstance(activity, otherUserId).getUser().getName());
                         data.put("title", Title);
                         data.put("chatId", chatId);
                         data.put("chatType", chatType);

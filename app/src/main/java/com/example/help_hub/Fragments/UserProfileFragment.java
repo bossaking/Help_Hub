@@ -104,7 +104,7 @@ public class UserProfileFragment extends Fragment {
             }
             FirebaseAuth.getInstance().signOut();
             UserDatabase.clearInstance();
-            UserPortfolioImagesDatabase.clearInstance();
+            UserPortfolioImagesDatabase.ClearInstance();
             startActivity(new Intent(myContext, LoginActivity.class));
             myActivity.finish();
         });
@@ -192,7 +192,7 @@ public class UserProfileFragment extends Fragment {
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
                 //SetProfileImage(resultUri);
-                userDatabase.SetUserProfileImage(resultUri);
+                userDatabase.setUserProfileImage(resultUri);
                 userDatabase.profileImageChanged = uri -> {
                     Glide.with(getActivity()).load(uri).placeholder(R.drawable.image_with_progress).error(R.drawable.broken_image_24)
                             .apply(RequestOptions.skipMemoryCacheOf(true))
@@ -203,7 +203,7 @@ public class UserProfileFragment extends Fragment {
                 imageLoadingDialog.DismissDialog();
             } else imageLoadingDialog.DismissDialog();
         } else if (requestCode == 100 && resultCode == RESULT_OK) {
-            loadUserPortfolioPhotos();
+            LoadUserPortfolioPhotos();
             imageLoadingDialog.DismissDialog();
         } else imageLoadingDialog.DismissDialog();
     }
@@ -213,13 +213,13 @@ public class UserProfileFragment extends Fragment {
         super.onResume();
 
         userPortfolioImagesDatabase = UserPortfolioImagesDatabase.getInstance(myActivity);
-        userPortfolioImagesDatabase.arrayChangedListener = this::loadUserPortfolioPhotos;
+        userPortfolioImagesDatabase.arrayChangedListener = this::LoadUserPortfolioPhotos;
         userPortfolioImagesDatabase.Initialize(FirebaseAuth.getInstance().getUid());
 
         userDatabase = UserDatabase.getInstance(myActivity, FirebaseAuth.getInstance().getUid());
         userDatabase.getUserFromFirebase(FirebaseAuth.getInstance().getUid());
         userDatabase.profileDataLoaded = this::getUserInformation;
-        userDatabase.profileImageLoaded = this::setProfileImage;
+        userDatabase.profileImageLoaded = this::SetProfileImage;
     }
 
     private void LoadUserPortfolioPhotos() {

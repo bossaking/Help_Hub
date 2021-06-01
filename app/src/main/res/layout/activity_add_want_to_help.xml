@@ -167,8 +167,10 @@
         android:id="@+id/new_offer_add_offer_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/text_gray"
         android:text="@string/new_offer_add_offer_button"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left" />

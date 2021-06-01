@@ -18,14 +18,15 @@
             android:id="@+id/need_help_image_card_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:elevation="10dp"
-            app:cardCornerRadius="15dp">
+            app:cardCornerRadius="12dp">
 
             <ImageView
                 android:id="@+id/need_help_image"
-                android:layout_width="90dp"
+                android:layout_width="100dp"
                 android:layout_height="90dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_missing_image_24"
                 tools:srcCompat="@drawable/ic_baseline_missing_image_24" />
 
@@ -35,7 +36,7 @@
             android:id="@+id/need_help_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="7dp"
             android:layout_marginTop="8dp"
             android:layout_toEndOf="@id/need_help_image_card_view"
             android:text="@string/title_placeholder"
@@ -48,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/need_help_title"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="7dp"
             android:layout_marginTop="8dp"
             android:layout_toEndOf="@id/need_help_image_card_view"
             android:text="@string/budget"
@@ -59,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/need_help_price"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="7dp"
             android:layout_marginTop="6dp"
             android:layout_toEndOf="@id/need_help_image_card_view"
             android:text="@string/description_placeholder" />

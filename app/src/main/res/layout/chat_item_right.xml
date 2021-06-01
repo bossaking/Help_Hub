@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_margin="@dimen/little_margin"
-            android:text="10:55"
+            android:text="-:-"
             android:textColor="@color/grayColor"
             android:textSize="12sp" />
 
@@ -43,7 +43,7 @@
             android:paddingTop="4dp"
             android:paddingEnd="10dp"
             android:paddingBottom="15dp"
-            android:text="aasdasdasd"
+            android:text="-"
             android:textColor="@color/blackColor"
             android:textSize="15sp" />
 

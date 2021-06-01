@@ -36,4 +36,19 @@
     <color name="light_blue_A200">#FF40C4FF</color>
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
+
+    <!--region KOLORY DO UŻYCIA:-->
+    <color name="main_yellow">#FDD835</color>
+    <color name="yellow_background">#FDE476</color>
+    <color name="text_gray">#505050</color>
+    <color name="hint_gray">#696969</color>
+    <color name="dark_gray">#35373b</color>
+
+    <color name="orange">#ff7900</color>
+
+    <!--NA TLO-->
+    <color name="ligth_gray">#e9eaed</color>
+    <color name="gray">#bdbdbd</color>
+    <!--endregion-->
+
 </resources>

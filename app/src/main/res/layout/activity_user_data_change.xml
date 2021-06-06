@@ -16,50 +16,72 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:orientation="vertical">
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5sp"
+                android:text="@string/name_label"
+                android:textStyle="bold"/>
             <EditText
                 android:id="@+id/changed_name"
                 android:layout_width="match_parent"
                 android:layout_height="50sp"
                 android:layout_margin="5sp"
-                android:background="@drawable/simple_borders"
+
+                android:background="@color/text_input_background"
                 android:gravity="top"
                 android:inputType="text"
                 android:padding="5sp"
-                android:scrollbars="vertical" />
-
+                android:scrollbars="vertical"
+                android:hint="@string/name_hint"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5sp"
+                android:text="@string/phone_number_label"
+                android:textStyle="bold"/>
             <EditText
                 android:id="@+id/changed_phoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="50sp"
                 android:layout_margin="5sp"
-                android:background="@drawable/simple_borders"
-                android:gravity="top"
+                android:background="@color/text_input_background"                android:gravity="top"
                 android:inputType="number"
                 android:padding="5sp"
-                android:scrollbars="vertical" />
-
+                android:scrollbars="vertical"
+                android:hint="@string/phone_number_hint"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5sp"
+                android:text="@string/city_label"
+                android:textStyle="bold"/>
             <EditText
                 android:id="@+id/changed_city"
                 android:layout_width="match_parent"
                 android:layout_height="50sp"
                 android:layout_margin="5sp"
-                android:background="@drawable/simple_borders"
-                android:gravity="top"
+                android:background="@color/text_input_background"                android:gravity="top"
                 android:inputType="text"
                 android:padding="5sp"
-                android:scrollbars="vertical" />
-
+                android:scrollbars="vertical"
+                android:hint="@string/city_hint"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5sp"
+                android:text="@string/description_label"
+                android:textStyle="bold"/>
             <EditText
                 android:id="@+id/changed_portfolio_description"
                 android:layout_width="match_parent"
                 android:layout_height="200sp"
                 android:layout_margin="5sp"
-                android:background="@drawable/simple_borders"
-                android:gravity="top"
+                android:background="@color/text_input_background"                android:gravity="top"
                 android:inputType="textMultiLine|textCapSentences"
                 android:padding="5sp"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                android:hint="@string/description_hint"/>
 
             <Button
                 android:id="@+id/user_data_changes_apply"
@@ -74,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="20sp"
+                android:layout_marginTop="10sp"
                 android:text="@string/user_data_change_new_password_button" />
 
         </LinearLayout>

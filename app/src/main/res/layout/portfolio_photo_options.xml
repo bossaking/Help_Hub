@@ -22,7 +22,9 @@
             android:id="@+id/delete_portfolio_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/Delete" />
+            android:backgroundTint="@color/redColor"
+            android:text="@string/Delete"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 

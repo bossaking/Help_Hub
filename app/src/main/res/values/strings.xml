@@ -201,6 +201,14 @@
     <string name="no_wantHelp_offerts">Wow...It looks like there is no offerts.</string>
     <string name="Delete">Delete</string>
     <string name="remove_performer">Performer removed. Announcement available.</string>
+    <string name="description_hint">A little description of yourself</string>
+    <string name="city_hint">City where you live.</string>
+    <string name="phone_number_hint">Your phone number</string>
+    <string name="name_hint">Shown on your profile page</string>
+    <string name="description_label">Description</string>
+    <string name="city_label">City</string>
+    <string name="phone_number_label">Phone number</string>
+    <string name="name_label">Name</string>
 
     <string-array name="report_causes">
         <item>Inappropriate content.</item>

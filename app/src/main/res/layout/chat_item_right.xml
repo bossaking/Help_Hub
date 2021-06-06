@@ -1,36 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/little_margin"
-    android:layoutDirection="rtl">
+    android:layoutDirection="rtl"
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/outgoing_speech">
-
-        <TextView
-            android:id="@+id/message_time_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_margin="@dimen/little_margin"
-            android:text="-:-"
-            android:textColor="@color/grayColor"
-            android:textSize="12sp" />
-
-        <ImageView
-            android:id="@+id/message_image_view"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_margin="@dimen/little_margin"
-            android:paddingStart="10dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="20dp"
-            android:visibility="gone" />
 
         <TextView
             android:id="@+id/message_text_view"
@@ -42,11 +22,34 @@
             android:paddingStart="20dp"
             android:paddingTop="4dp"
             android:paddingEnd="10dp"
-            android:paddingBottom="15dp"
+            android:paddingBottom="10dp"
             android:text="-"
             android:textColor="@color/blackColor"
             android:textSize="15sp" />
 
     </FrameLayout>
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/message_image_view"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="@dimen/little_margin"
+        android:layout_marginRight="@dimen/little_margin"
+        android:layout_marginLeft="@dimen/little_margin"
+        android:paddingStart="10dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="10dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/message_time_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/little_margin"
+        android:layout_marginLeft="@dimen/little_margin"
+        android:layout_marginBottom="@dimen/little_margin"
+        android:text="-:-"
+        android:textColor="@color/grayColor"
+        android:textSize="12sp" />
+
+</LinearLayout>

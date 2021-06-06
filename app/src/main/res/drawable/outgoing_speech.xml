@@ -11,13 +11,13 @@
                 android:pivotY="0%"
                 android:toDegrees="0">
             <shape android:shape="rectangle">
-                <solid android:color="@color/ownMessageColor" />
+                <solid android:color="@color/light_gray" />
             </shape>
         </rotate>
     </item>
     <item android:right="8dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/ownMessageColor" />
+            <solid android:color="@color/light_gray" />
             <corners android:radius="4dp" />
         </shape>
     </item>

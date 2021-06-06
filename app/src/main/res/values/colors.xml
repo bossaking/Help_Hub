@@ -43,6 +43,8 @@
     <color name="text_gray">#505050</color>
     <color name="hint_gray">#696969</color>
     <color name="dark_gray">#35373b</color>
+    <color name="blue_gray">#90a4ae</color>
+    <color name="light_gray">#bdbdbd</color>
 
     <color name="orange">#ff7900</color>
 

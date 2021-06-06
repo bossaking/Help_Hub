@@ -142,4 +142,12 @@
     <string name="cost_placeholder" translatable="false">Koszt</string>
     <string name="placeholder" translatable="false">Placeholder</string>
     <string name="_0" translatable="false">0</string>
+    <string name="description_hint">Krótki twój opis</string>
+    <string name="city_hint">Miasto w którym mieszkasz</string>
+    <string name="phone_number_hint">Twój number telefonu</string>
+    <string name="name_hint">Wyświetlana przy twoim profilu</string>
+    <string name="description_label">Opis</string>
+    <string name="city_label">Miasto</string>
+    <string name="phone_number_label">Numer telefonu</string>
+    <string name="name_label">Nazwa</string>
 </resources>
